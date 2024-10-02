@@ -1,0 +1,591 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+}
+
+@layer base {
+  body {
+    @apply bg-zinc-950 text-neutral-200;
+    background-image: url('http://patron.visioncommunity.xyz/img/bg.jpg');
+  }
+}
+@font-face {
+  font-family: 'BaseFont';
+  src: url('./assets/fonts/Coinbase_Mono-Medium-web.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.header{
+	margin-bottom:20px !important;
+}
+.subtitle {
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+  font-size:18px;
+  font-weight: 300;
+  text-align:center;
+  margin-top:15px;
+  margin-bottom:15px
+}
+.menudesk{
+	font-family: 'Prompt', sans-serif !important;
+	font-size:20px;
+}
+.profiletitlebox{
+	font-family: 'Prompt', sans-serif !important;
+	font-size:20px !important;
+	text-transform: uppercase !important
+}
+.bigtext{
+	font-size:20px !important;
+	text-transform: uppercase !important
+}
+h2{
+	font-family: 'Prompt', sans-serif !important;
+	font-size:22px;
+	text-transform: uppercase;
+}
+.menuopt{
+	background-color:black;
+	border-bottom:1px solid #2b2b2b;
+	border-top:1px solid white;
+}
+.parentdiv{
+	min-height: 100vh;
+	margin-top:30px;
+	padding-left:100px;
+	padding-right:100px
+}
+.logo{
+	text-align:center
+}
+.patron{
+	border: 1px solid #9f9f9f !important;
+	border-radius:10px;
+	padding:15px;
+	background-color: #0b0b0b
+}
+.element{
+	width: 75% !important;
+	color: black !important;
+	font-family: 'BaseFont', sans-serif;
+}
+.tagcathigh{
+	color: black !important;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:10px !important;
+	text-transform: uppercase !important;
+	border:1px solid black !important;
+	padding:5px !important;
+	border-radius: 5px !important;
+}
+.advdiv{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.nametitle{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.patronamt{
+	font-family: 'BaseFont', sans-serif !important;
+	color: white !important;
+	font-size:12px !important;
+}
+.txtblack{
+	color: black !important;
+}
+.btnsend{
+	background-color: #0052ff !important;
+	color: white !important
+}
+.containercomm{
+
+}
+.btnpatronme:disabled{
+	background-color:darkgray !important
+}
+.basefont{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.basefontblue{
+	font-family: 'BaseFont', sans-serif !important;
+	color: #0052ff !important;
+}
+.smalltext{
+	font-size:12px !important
+}
+.basefontblcktitle{
+	font-family: 'BaseFont', sans-serif !important;
+	color: #000 !important;
+	text-transform: uppercase !important;
+	font-size:16px;
+}
+.detailan{
+
+    color: rgba(0, 0, 0, 0.6);
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: 3px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-left: 14px;
+    margin-right: 14px;
+}
+.btnsend:disabled{
+	color: #575757 !important;
+	background-color: #d4d4d4 !important;
+	cursor: not-allowed
+}
+.elementadv{
+	width:100%;
+	text-align:left !important;
+	font-family: 'BaseFont', sans-serif;
+	font-size:14px
+}
+.labeladv{
+	width:70%;
+}
+.advbox{
+	color: black !important
+}
+.tw-connect-wallet{
+	font-weight: 500 !important;
+	background-color: #0052ff !important;
+	color: white !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.claimpara{
+	font-size:18px;
+	color: white !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.btnfilter{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.tw-connected-wallet{
+	width: 75% !important
+}
+.extraclass{
+	margin-bottom:50px !important
+}
+.descriptionsmall{
+	margin-top:20px !important;
+	font-size:12px !important;
+	color:darkgray
+}
+.patrontext{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 14px !important;
+	
+}
+.adv{
+	background-color: #0b0b0b !important;
+	border: none;
+	font-size: 14px;
+	font-weight: 500;
+	color: #0052ff;
+	font-family: 'BaseFont', sans-serif;
+}
+.transactionresume{
+	font-family: 'BaseFont', sans-serif;
+	color: #c6c6c6;
+	font-size: 12px;
+	width:90%;
+}
+.sep{
+	border:1px solid #212121;
+	width:100%;
+}
+.sep2{
+	border:1px solid #212121;
+	width:100%;
+	margin-bottom:80px;
+}
+.label{
+	background-color: #0b0b0b !important;
+	border: none;
+	font-size: 14px;
+	font-weight: 500;
+	color: #c6c6c6;
+	font-family: 'BaseFont', sans-serif;
+}
+.status{
+	width:90%;
+	border:1px solid #1e1e1e;
+	font-size: 14px;
+	font-weight: 500;
+	color: white;
+	font-family: 'BaseFont', sans-serif;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:20px;
+	padding-bottom:20px	
+}
+.status a{
+	text-decoration: underline
+}
+.welcomeuser{
+	width:100%;
+	text-align:center;
+	margin-top:15px;
+}
+.welcomeuser h3{
+	font-size: 14px;
+	font-weight: 500;
+	color: white;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+  margin-top:10px
+}
+.welcomeuser h4{
+	font-size: 18px;
+	font-weight: 500;
+	color: white;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.communityanounce{
+	font-size: 20px;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.activitetile{
+	font-size: 18px;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.annoutitle{
+	font-size: 18px !important;
+  font-family: 'Prompt', sans-serif;
+}
+.sepact{
+	width:100%;
+	border:1px solid grey;
+	margin-top:20px
+}
+.act{
+	font-family: 'BaseFont', sans-serif !important;
+	color: white
+}
+.communityinfo{
+	font-size: 18px;
+	font-weight: 500;
+	color: black;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+}
+.btnpatronme{
+	font-size: 18px;
+	font-weight: 500;
+	color: white !important;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  background-color: #0052ff !important
+}
+.modaltitle{
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  color: #0052ff !important;
+  width:100%;
+  text-align:center;
+  font-size: 22px !important;
+}
+.modaltext{color:black; width:100%;}
+.steps{
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase !important;
+  font-size: 22px !important;
+}
+.exp{
+	font-size: 16px !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.btnpatronmecancel{
+	font-size: 18px;
+	font-weight: 500;
+	color: white !important;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  background-color: orangered !important
+}
+.alltitle{
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  font-size: 18px;
+  color:black
+}
+.mtop{
+	margin-top:20px
+}
+.nft-image{
+	padding:10px;
+	border-radius:10px;
+	border:1px solid #1e1e1e;
+}
+.nft-image-display{
+	border-radius:10px
+}
+.maindivparent {
+    
+    width: 100%;
+    min-height: 100vh;
+}
+.nft-buttons {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  gap: 10px; /* Add space between the buttons */
+}
+
+.btn-opensea,
+.btn-community {
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  background-color: #0052ff;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  font-size: 14px; 
+  text-align: center;
+}
+
+.btn-opensea:hover,
+.btn-community:hover {
+  background-color: #005bb5;
+  cursor: pointer;
+}
+.nft-title{
+	width:100%;
+	text-align:center;
+	font-size: 22px;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.nft-description {
+  text-align: center; /* Center the text */
+  font-size: 11px; /* Smaller font size */
+  color: gainsboro; /* Slightly muted color */
+  margin-top: 10px; /* Add some space between buttons and text */
+  font-family: 'BaseFont', sans-serif !important;
+}
+@keyframes tchanram {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.nft-image-display {
+  animation: tchanram 0.8s ease-out;
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Optional for effect */
+}
+
+.spinner {
+  text-align: center;
+  font-size: 20px;
+  color: #0070f3;
+}
+.confetti-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Prevent interaction */
+  z-index: 2; /* Make sure it's above the image */
+}
+
+.nft-image {
+  position: relative; /* Confetti will be positioned relative to this container */
+  display: inline-block; /* To contain the image and confetti */
+}
+
+.nft-image-display {
+  width: 100%;
+  height: auto;
+  z-index: 1; /* Image should be beneath the confetti */
+}
+.footer{
+	margin-top:100px;
+	margin-bottom:50px;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:12px !important
+}
+.footer a{
+	text-decoration: underline;	
+	font-size:12px !important
+}
+
+.titleroad{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:18px !important;
+	text-transform: uppercase;
+}
+.faq-title {
+  font-family: 'BaseFont', sans-serif !important;
+  font-size: 18px !important;
+  text-transform: uppercase;
+  color: white !important;
+}
+.swap-icon {
+  width: 100px; /* Adjust the size of the icon */
+  height: 100px; /* Adjust the size of the icon */
+  margin-bottom: 20px;
+}
+.titlepage{
+	background-color: #fff !important;
+	color: #000 !important;
+	padding:10px;
+}
+.roadmapelement{
+	border:1px solid white;
+}
+/* Fade-in animation for the step containers */
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styling for each step container */
+.step-container {
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(-20px);
+  transition: all 0.5s ease-in-out;
+}
+
+/* Apply the fade-in animation on scroll */
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeInFromTop 0.5s ease-in-out forwards;
+}
+.imghow{
+	width:80px;
+	height:80px;
+	margin-top: 20px;
+	margin-bottom:20px
+}
+
+
+/* CSS for smooth animation from bottom to top */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.logo-animation {
+  animation: slideUp 1.2s ease-out forwards;
+  opacity: 0; /* Initially hidden */
+}
+
+.subtitle-animation {
+  animation: slideUp 1.5s ease-out forwards; /* Slight delay for subtitle */
+  opacity: 0;
+}
+.connectmenu{
+	max-width:170px;
+}
+.testnet{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #0070f3;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 1000;
+}
+.connwallet{
+	max-width:250px;
+}
+.tokeninfo{
+	text-align:center;
+	margin-top: 20px;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.tokeninfo a{
+	text-decoration: underline;
+	color: #0070f3;
+}
+.social {
+  width: 100%; /* Full width of the container */
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  align-items: center; /* Align the icons vertically */
+  gap: 20px; /* Add space between the icons */
+  margin-bottom: 30px;
+  margin-top: -50px
+}
+
+.social a img {
+  width: 30px; /* Set the icon size */
+  height: 30px; /* Set the icon size */
+  display: block;
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.social a img:hover {
+  transform: scale(1.2); /* Scale up by 20% */
+}
+
+@media screen and (max-width: 768px) {
+  .testnet {
+    bottom: 60px;
+  }
+}
+@media (min-width: 768px) {
+    .maindivparent {
+		padding-top: 80px;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+@media only screen and (min-width: 768px) {
+  /* For devices wider than mobile (e.g., tablets and desktops), reset the position */
+  .connwallet {
+    position: static;
+    margin: 0;
+  }
+}
