@@ -1,27 +1,27 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers"; // for Ethereum address validation
+import { ethers } from "ethers";
 import { useAddress, useContract, useContractWrite } from "@thirdweb-dev/react";
 import { client } from "../client";
-import { resolveL2Name, resolveAddress, BASENAME_RESOLVER_ADDRESS } from "thirdweb/extensions/ens"; // Import Basename resolver
-import { base } from "thirdweb/chains"; // Import Base L2 chain
+import { resolveL2Name, resolveAddress, BASENAME_RESOLVER_ADDRESS } from "thirdweb/extensions/ens";
+import { base } from "thirdweb/chains";
 import Lottie from "lottie-react";
 import confettiAnimation from "../assets/lootie/confetti.json";
-import { useSearchParams } from "react-router-dom"; // Import to handle URL parameters
+import { useSearchParams } from "react-router-dom";
 
 export default function TipComponent() {
-  const [searchParams] = useSearchParams(); // Hook to get URL parameters
+  const [searchParams] = useSearchParams();
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
-  const [donationPercentage, setDonationPercentage] = useState(5); // Default donation percentage
-  const [burnPercentage, setBurnPercentage] = useState(10); // Default burn percentage
-  const [statusMessage, setStatusMessage] = useState(""); // State to store the notification message
-  const [recipientType, setRecipientType] = useState("wallet"); // Track recipient type
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false); // Track advanced options visibility
-  const [isInputValid, setIsInputValid] = useState(true); // Validate input
-  const [basenameAddress, setBasenameAddress] = useState(""); // Store resolved Basename address
-  const [userBasename, setUserBasename] = useState(""); // To store the basename for the connected wallet
-  const userAddress = useAddress(); // Fetches the connected wallet address
-  const [isImageLoading, setIsImageLoading] = useState(false); // For spinner
+  const [donationPercentage, setDonationPercentage] = useState(5);
+  const [burnPercentage, setBurnPercentage] = useState(10);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [recipientType, setRecipientType] = useState("wallet");
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [isInputValid, setIsInputValid] = useState(true);
+  const [basenameAddress, setBasenameAddress] = useState("");
+  const [userBasename, setUserBasename] = useState("");
+  const userAddress = useAddress();
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [nftImage, setNftImage] = useState(""); // Store NFT image URL
   const [tokenId, setTokenId] = useState<number | null>(null); // Store token ID for NFT
   const [resolvedRecipient, setResolvedRecipient] = useState("");

@@ -1,7 +1,7 @@
 import { Grid, Box, Typography, Button, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSigner } from "@thirdweb-dev/react"; // For wallet interaction
-import { ethers } from "ethers"; // For signing messages
+import { useActiveAccount } from "thirdweb/react";  // Updated for SDK v5
+import { signMessage } from "thirdweb/utils";  // Use SDK v5 utility for signing messages
 
 interface Announcement {
   id: number;
@@ -21,7 +21,7 @@ export default function CommunityAnnouncements({ communityId, isOwner }: Communi
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const signer = useSigner(); // Thirdweb signer for signing messages
+  const account = useActiveAccount();  // SDK v5 for getting the active account
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -48,21 +48,21 @@ export default function CommunityAnnouncements({ communityId, isOwner }: Communi
 
   const deleteAnnouncement = async (announcementId: number) => {
     try {
-      if (!signer) {
+      if (!account?.signer) {
         throw new Error("Wallet not connected.");
       }
 
-      const walletAddress = await signer.getAddress(); // Get the wallet address from signer
-      const timestamp = Math.floor(Date.now() / 1000); // Get current timestamp in seconds
+      const walletAddress = account.address;  // Get the wallet address
+      const timestamp = Math.floor(Date.now() / 1000);  // Get current timestamp in seconds
 
-      // Format the message exactly as it is expected on the backend
+      // Format the message exactly as expected on the backend
       const message = `Delete announcement with ID: ${announcementId} at timestamp: ${timestamp}`;
 
       // Sign the message with the announcement ID and timestamp
-      const signature = await signer.signMessage(message);
+      const signature = await signMessage({ account, message });
 
       const response = await fetch(`https://api.visioncommunity.xyz/v02/announcement/delete/${announcementId}`, {
-        method: "POST", // Use POST for sending the delete request
+        method: "POST",  // Use POST for sending the delete request
         headers: {
           "Content-Type": "application/json",
         },
@@ -76,23 +76,13 @@ export default function CommunityAnnouncements({ communityId, isOwner }: Communi
 
       if (response.ok) {
         setAnnouncements(announcements.filter((announcement) => announcement.id !== announcementId));
-        window.location.reload(); // Reload the page after successful deletion
+        window.location.reload();  // Reload the page after successful deletion
       } else {
         setError("Failed to delete the announcement.");
       }
     } catch (err) {
       setError("An error occurred while deleting the announcement.");
     }
-  };
-
-  const signDeletion = async (announcementId: number) => {
-    if (!signer) {
-      throw new Error("Wallet not connected.");
-    }
-
-    const message = `Delete announcement with ID: ${announcementId}`;
-    const signature = await signer.signMessage(message);
-    return signature;
   };
 
   if (loading) {
@@ -115,9 +105,11 @@ export default function CommunityAnnouncements({ communityId, isOwner }: Communi
 
   return (
     <>
-      <Typography variant="h6" gutterBottom className="communityanounce">
+    <div className="containertitle">
+      <Typography variant="h6" gutterBottom className="communityanounce mgbotannounc">
         Latest Announcements
       </Typography>
+    </div>
       <Grid container spacing={2}>
         {announcements.map((post) => (
           <Grid item xs={12} sm={6} md={4} key={post.id}>

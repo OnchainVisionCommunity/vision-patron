@@ -1,78 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Box, Grid, CircularProgress, Typography, Button } from "@mui/material";
-import { useAddress, useSigner } from "@thirdweb-dev/react";
+import { useActiveAccount, ConnectButton } from "thirdweb/react";  
+import { createThirdwebClient } from "thirdweb";  
+import { signMessage } from "thirdweb/utils"; // Import the signMessage utility
 import axios from "axios";
-import ProfileLeft from "./profile/ProfileLeft";
 import ProfileRight from "./profile/ProfileRight";
-
-// Define the shape of the user data you expect from the API
-interface Community {
-  receiver_wallet: string;
-  amount: string;
-  details?: {
-    avatar?: string;
-    basename?: string;
-  };
-}
-
-interface Notification {
-  sender: string;
-  date: string;
-  announcement_id: string;
-}
-
-interface UserProfileData {
-  user: {
-    wallet: string;
-    avatar?: string;
-    basename?: string;
-    social?: {
-      twitter?: {
-        status: string;
-        account: string;
-      };
-      instagram?: {
-        status: string;
-        account: string;
-      };
-      warpcast?: {
-        status: string;
-        account: string;
-      };
-      lunchbreak?: {
-        status: string;
-        account: string;
-      };
-    };
-  };
-  patronCommunities: Community[]; // Make patronCommunities mandatory
-  notifications: Notification[];
-}
+import UserDetails from './feed/UserDetails';
+import TrendingCommunities from './feed/TrendingCommunities';
 
 const UserProfile: React.FC = () => {
-  const address = useAddress();
-  const [profileData, setProfileData] = useState<UserProfileData | null>(null); // Explicitly typed profileData
+  const client = createThirdwebClient({ clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "" });
+  const account = useActiveAccount();  // Get the active account
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const signer = useSigner();
+
 
   // Fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!address) {
+      if (!account?.address) {
         setLoading(false);
         return;
       }
       try {
         const response = await axios.get(
-          `https://api.visioncommunity.xyz/v02/user/get?wallet=${address}`
+          `https://api.visioncommunity.xyz/v02/user/get?wallet=${account.address}`
         );
-        console.log("API Response:", response.data); // Log the API response for debugging
-
         const { data } = response;
+        console.log("API Response:", response);
         if (data.success) {
           setProfileData({
             ...data,
-            patronCommunities: data.patronCommunities || [], // Ensure it's an empty array if not present
+            patronCommunities: data.patronCommunities || [], 
           });
         } else {
           setProfileData(null);
@@ -85,23 +44,34 @@ const UserProfile: React.FC = () => {
     };
 
     fetchProfile();
-  }, [address]);
+  }, [account?.address]);
 
-  // Profile creation
+  // Profile creation using signMessage from thirdweb/utils
   const createProfile = async () => {
-    if (!signer) return;
+    console.log('Create Profile function called');
+    if (!account?.address) {
+      console.log('No account available');
+      return;
+    }
+
     try {
-      const timestamp = Math.floor(Date.now() / 1000); // Generate the current timestamp
-      const message = `Sign to create your profile for wallet: ${address} at ${timestamp}`;
-      const signature = await signer.signMessage(message);
+      const timestamp = Math.floor(Date.now() / 1000);
+      const message = `Sign to create your profile for wallet: ${account.address} at ${timestamp}`;
+      console.log('Message to sign:', message);
+
+      // Use the signMessage utility to sign the message
+      const signature = await signMessage({ account, message });
+      console.log('Signature:', signature);
 
       await axios.post("https://api.visioncommunity.xyz/v02/user/create", {
-        walletAddress: address,
+        walletAddress: account.address,
         signature,
         message,
         timestamp,
       });
-      window.location.reload(); // Refresh page to load the new profile
+
+      console.log('Profile created, reloading page');
+      window.location.reload();
     } catch (error) {
       console.error("Profile creation error:", error);
     }
@@ -121,7 +91,7 @@ const UserProfile: React.FC = () => {
   }
 
   // Wallet not connected
-  if (!address) {
+  if (!account?.address) {
     return (
       <Box
         display="flex"
@@ -129,8 +99,8 @@ const UserProfile: React.FC = () => {
         alignItems="center"
         minHeight="100vh"
       >
-        <Typography variant="h5">
-          Please connect your wallet to view your profile.
+        <Typography className="walletnotconn">
+          Please connect your wallet/sign-in to view your profile.
         </Typography>
       </Box>
     );
@@ -158,19 +128,67 @@ const UserProfile: React.FC = () => {
   }
 
   return (
-    <Box sx={{ width: "100%", padding: "2%", minHeight: "100vh" }}>
-      <Grid container spacing={4}>
-        {/* Right Side (Avatar, Edit Profile, Social Media) */}
-        <Grid item xs={12} md={4} order={{ xs: 1, md: 1 }}>
-          <ProfileRight profileData={profileData.user} />
-        </Grid>
+<>
+    <div className="pagefeed" style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {/* Check if wallet is connected */}
+      {account?.address ? (
+        <Grid container spacing={2} sx={{ height: 'calc(100vh)', overflow: 'hidden' }}>
+          
+          {/* Left Sidebar */}
 
-        {/* Left Side (Communities, Badges, Notifications) */}
-        <Grid item xs={12} md={8} order={{ xs: 2, md: 2 }}>
-          <ProfileLeft profileData={profileData} />
+            <UserDetails walletAddress={account.address} />
+
+
+          {/* Middle Section (Feed) */}
+          <Grid
+            item
+            className="feedcustom pdtop30"
+            xs={12}
+            md={6}
+            sx={{
+              height: '100%', // Adjust height dynamically
+              padding: 2,
+              overflowY: 'auto',
+              '&::-webkit-scrollbar': { display: 'none' },
+              scrollbarWidth: 'none',
+            }}
+          >
+            <ProfileRight
+            	profileData={profileData.user}
+            	connectionType="user"
+            />
+          </Grid>
+
+          {/* Right Sidebar */}
+          <Grid
+            className="feedcustom pdtop30"
+            item
+            xs={0}
+            md={3}
+            sx={{
+              display: { xs: 'none', md: 'block' }, // Hide on small screens
+              overflowY: 'auto',
+              height: '100%', // Adjust height dynamically
+              backgroundColor: '#f9f9f9',
+              padding: 2,
+              borderLeft: '1px solid #333',
+              '&::-webkit-scrollbar': { display: 'none' },
+              scrollbarWidth: 'none',
+            }}
+          >
+            <TrendingCommunities />
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      ) : (
+        // Show message if wallet is not connected
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="h6" gutterBottom>
+            Please, sign in / connect wallet to see this page
+          </Typography>
+        </Box>
+      )}
+    </div>
+</>
   );
 };
 

@@ -1,0 +1,2249 @@
+@font-face {
+  font-family: 'BaseFont';
+  src: url('../assets/fonts/Coinbase_Mono-Medium-web.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Importing Prompt-Medium */
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Importing Prompt-Regular */
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Importing Prompt-Thin */
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-Thin.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    color: white;
+    background-color: #111 !important
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+.header{
+	margin-bottom:20px !important;
+}
+.logoheader{
+	max-width:220px
+}
+
+.subtitle {
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+  font-size:18px;
+  font-weight: 300;
+  text-align:center;
+  margin-top:15px;
+  margin-bottom:15px
+}
+.menudesk{
+	font-family: 'Prompt', sans-serif !important;
+	font-size:20px;
+}
+.profiletitlebox{
+	font-family: 'Prompt', sans-serif !important;
+	font-size:20px !important;
+	text-transform: uppercase !important
+}
+.bigtext{
+	font-size:20px !important;
+	text-transform: uppercase !important
+}
+h2{
+	font-family: 'Prompt', sans-serif !important;
+	font-size:22px;
+	text-transform: uppercase;
+}
+.menuopt{
+	font-family: 'Prompt', sans-serif !important;
+	font-weight: 500 !important;
+	
+
+	font-size:18px !important;
+	text-decoration: none !important;
+	line-height: 2rem !important;
+}
+.navdes{
+	border-bottom:1px solid #2b2b2b;
+	border-top:1px solid white;
+	background-color:black;
+}
+.menuopt:hover{
+	text-decoration:overline !important
+}
+.parentdiv{
+	min-height: 100vh;
+	margin-top:30px;
+	padding-left:100px;
+	padding-right:100px
+}
+.logo{
+	text-align:center
+}
+.patron{
+	border: 1px solid #666 !important;
+	border-radius:10px;
+	padding:15px;
+	background-color: #111;
+
+}
+.custom-select {
+  padding: 12px 20px; /* Increase padding for a bigger feel */
+  padding-right: 40px; /* Extra right padding for the arrow */
+  font-size: 16px; /* Optional: Change the font size if necessary */
+  appearance: none; /* Remove default select styles */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 15px center;
+  background-color: white; /* Background of the select element */
+  background-size: 20px; /* Adjust arrow size */
+  border-radius: 8px; /* Make select more rounded */
+  cursor: pointer; /* Make it a pointer when hovering */
+}
+.spaceextra{
+	text-align:center
+}
+.react-select__control {
+  border-radius: .375rem !important; /* Rounds the select dropdown */
+  border: 1px solid #ccc;
+  padding: 4px;
+  font-family: 'BaseFont', sans-serif !important;
+  color: black !important;
+  font-size: .875rem !important;
+}
+
+
+.visiocomp{
+	width:100%
+}
+.containerswap{
+	background-color: #0b0b0b !important;
+	width: 100% !important;
+	padding:0px !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.visionswap{
+	background-color: #0b0b0b !important;
+	height: auto !important;
+	display: none !important
+}
+.divswapinfo{
+	width:100%;
+	text-align:center;
+	color:white;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:1rem;
+	margin-top:15px !important
+}
+.visionvalueswap{
+	font-size:20px;
+	font-weight: 800;
+}
+.tokenswap{
+	background-color: white !important;
+}
+.bg-ock-primary{
+	border-radius: 50px !important;
+	border:0px !important;
+	background-color: #3873f5 !important;
+	border-radius: .375rem !important;
+}
+.bg-ock-primary:disabled{
+	font-family: 'BaseFont', sans-serif !important;
+color: #575757 !important;
+    background-color: #d4d4d4 !important;
+    cursor:auto !important;
+    font-size: 15px !important;
+    border-radius: .375rem !important;
+    
+}
+.text-ock-inverse{
+	font-family: 'BaseFont', sans-serif !important;
+	text-transform: uppercase !important;
+	font-weight: 500 !important;
+}
+.smallmsginput{
+	font-family: 'BaseFont', sans-serif !important;
+	color: orangered;
+	font-size:12px
+}
+.font-display {
+	font-family: 'BaseFont', sans-serif !important;
+}
+.visionswap .text-ock-foreground{
+	color: white !important
+}
+.visionswap .leading-5{
+	display: none
+}
+.visionswap .mt-4{
+	display: none
+}
+.visiondisplay{
+	width:100%;
+	text-align:left;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 12px !important;
+	color: lightgray !important
+}
+.socialmedia{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 12px !important;
+	color: #666 !important
+}
+.containerswap .leading-7{
+	display: none
+}
+.swapmsg{
+	color: white !important
+}
+.swap-success-message{
+	color: red !important;
+	font-size:24px !important
+}
+
+
+
+.react-select__menu {
+  border-radius: 8px; /* Rounds the dropdown options container */
+  font-family: 'BaseFont', sans-serif !important;
+  color: black !important
+}
+
+.react-select__option {
+  display: flex;
+  align-items: center;
+}
+
+.react-select__option img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* Makes the images circular */
+  margin-right: 10px;
+}
+
+
+.custom-select-dropdown {
+  width: 100%; /* Ensure the dropdown takes full width */
+}
+
+.custom-select option {
+  padding-top: 20px;
+padding-bottom: 20px;
+}
+.custom-select::-ms-expand {
+  display: none; /* Hide the default arrow in Internet Explorer */
+}
+
+/* Ensure the select element is styled correctly across browsers */
+.custom-select:focus {
+  outline: none;
+  border-color: #0070f3; /* Optional: Add focus border color */
+}
+.element{
+	width: 75% !important;
+	color: black !important;
+	font-family: 'BaseFont', sans-serif;
+}
+.tagcathigh{
+	color: black !important;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:.55rem !important;
+	text-transform: uppercase !important;
+	border:1px solid black !important;
+	padding:5px !important;
+	border-radius: 5px !important;
+}
+.advdiv{
+	font-family: 'BaseFont', sans-serif !important;
+	margin:0px !important;
+	font-size: .8rem !important;
+	padding: 0px !important;
+	text-align:center !important;
+	border-bottom: 1px solid #333 !important;
+	padding-bottom: 15px !important
+}
+.nametitle{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.patronamt{
+	font-family: 'BaseFont', sans-serif !important;
+	color: white !important;
+	font-size:12px !important;
+}
+.txtblack{
+	color: black !important;
+}
+.btnsend{
+	background-color: #3873f5 !important;
+	color: white !important
+}
+.noborderbtn{
+	border: 0px !important
+}
+.btnpatronme:disabled{
+	background-color:darkgray !important;
+	cursor: not-allowed !important
+}
+.basefont{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.basefontblue{
+	font-family: 'BaseFont', sans-serif !important;
+	color: #3873f5 !important;
+}
+.smalltext{
+	font-size:12px !important
+}
+.basefontblcktitle{
+	font-family: 'BaseFont', sans-serif !important;
+	color: #000 !important;
+	text-transform: uppercase !important;
+	font-size:16px;
+}
+.fullwidth{
+	width:100% !important;
+}
+.indprofile{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:14px;
+	text-align:center
+}
+.conttitleprofile{
+	width:100% !important;
+	text-align: left !important;
+	font-family: 'BaseFont', sans-serif !important;
+	color: white !important;
+	font-size:16px !important;
+	padding-top:20px !important;
+	border-top:1px solid #333 !important;
+	margin-bottom:10px !important;
+}
+.detailan{
+
+    color: rgba(0, 0, 0, 0.6);
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+    text-align: left;
+    margin-top: 3px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-left: 14px;
+    margin-right: 14px;
+}
+.connwallcomp{
+	width:100%;
+	text-align:center;
+	font-family: 'BaseFont', sans-serif !important;
+	color:lightgray;
+	font-size:12px;
+	padding-top:30px;
+	padding-bottom:30px;
+}
+.btnsend:disabled{
+	color: #575757 !important;
+	background-color: #d4d4d4 !important;
+	cursor: not-allowed
+}
+.elementadv{
+	width:100%;
+	text-align:left !important;
+	font-family: 'BaseFont', sans-serif;
+	font-size:14px
+}
+.labeladv{
+	width:70%;
+}
+.advbox{
+	color: black !important
+}
+.tw-connect-wallet{
+	font-weight: 500 !important;
+	background-color: #3873f5 !important;
+	color: white !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.claimpara{
+	font-size:18px;
+	color: white !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.btnfilter{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.tw-connected-wallet{
+	width: 75% !important
+}
+.extraclass{
+	margin-bottom:50px !important
+}
+.descriptionsmall{
+	margin-top:20px !important;
+	font-size:12px !important;
+	color:darkgray
+}
+.patrontext{
+	font-size: 0.75rem !important;
+	color: black !important
+	
+}
+.adv{
+	background-color: #0b0b0b !important;
+	border: none;
+	font-size: 14px;
+	font-weight: 500;
+	color: #3873f5;
+	font-family: 'BaseFont', sans-serif;
+}
+.transactionresume{
+	font-family: 'BaseFont', sans-serif;
+	color: #c6c6c6;
+	font-size: 11px;
+	width:100%;
+}
+.sep{
+	border:1px solid #333;
+	width:100%;
+}
+.sep2{
+	border:1px solid #212121;
+	width:100%;
+	margin-bottom:80px;
+}
+.label{
+	border: none;
+	font-size: .875rem;
+	color: #c6c6c6;
+	font-family: 'BaseFont', sans-serif;
+}
+.status{
+	width:100%;
+	border:1px solid #1e1e1e;
+	font-size: 14px;
+	font-weight: 500;
+	color: white;
+	font-family: 'BaseFont', sans-serif;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:20px;
+	padding-bottom:20px	
+}
+.status a{
+	text-decoration: underline
+}
+.welcomeuser{
+	width:100%;
+	text-align:center;
+	margin-top:15px;
+}
+.welcomeuser h3{
+	font-size: 14px;
+	font-weight: 500;
+	color: white;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+  margin-top:10px
+}
+.welcomeuser h4{
+	font-size: 18px;
+	font-weight: 500;
+	color: white;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.communityanounce{
+	font-size: 20px;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.activitetile{
+	font-size: 18px;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.annoutitle{
+	font-size: 18px !important;
+  font-family: 'Prompt', sans-serif;
+}
+.sepact{
+	width:100%;
+	border:1px solid grey;
+	margin-top:20px
+}
+.act{
+	font-family: 'BaseFont', sans-serif !important;
+	color: white
+}
+.communityinfo{
+	font-size: 18px;
+	font-weight: 500;
+	color: black;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+}
+.btnpatronme{
+	font-size: 18px;
+	font-weight: 500;
+	color: white !important;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  background-color: #3873f5 !important;
+  border-radius:.375rem !important
+}
+.modaltitle{
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  color: #3873f5 !important;
+  width:100%;
+  text-align:center;
+  font-size: 22px !important;
+}
+.modaltext{color:black; width:100%;}
+.steps{
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase !important;
+  font-size: 22px !important;
+}
+.exp{
+	font-size: 16px !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.modaclosenft{
+	margin-top:10px;
+	width:100%;
+}
+.w100w{
+	width: 100%;
+}
+.btnpatronmecancel{
+	font-size: 18px;
+	font-weight: 500;
+	color: orangered !important;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  background-color: rgba(0,0,0,0) !important;
+  border:1px solid orangered !important;
+  border-radius: .375rem !important;
+}
+.modalmaintitle{
+	width:100%;
+	text-align:center;
+	text-transform:uppercase;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 22px;
+	color: #3873f5 !important;
+}
+.modalmainsubtitle{
+	width:100%;
+	text-align:center;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 14px;
+	color: #000;
+	margin-bottom:20px
+}
+.btnpatronmecancel:hover {
+  background-color: #cc3300 !important;
+  color: white !important
+}
+.nfttitle{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 22px !important;
+	color: #000 !important;
+}
+.nftsubtitle{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 12px !important;
+	color: darkgray !important;
+}
+.minortext{
+	font-size:12px
+}
+.alltitle{
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  font-size: 18px;
+  color:black
+}
+.mtop{
+	margin-top:20px
+}
+.nft-image{
+  display: inline-block !important; /* Ensure the image container is visible */
+  position: relative;
+  z-index: 2; /* Make sure it's above any background or other elements */
+}
+.nft-image-display{
+	border-radius:10px
+}
+.maindivparent {
+    
+    width: 100%;
+    min-height: 100vh;
+}
+.nft-buttons {
+	margin-top:20px;
+  display: flex;
+  justify-content: space-between; /* Spread the buttons evenly across the width */
+  gap: 10px; /* Space between the buttons */
+  z-index: 2;
+  width: 100%; /* Make the container take up the full width */
+}
+
+.btn-opensea, .btn-community {
+  flex: 1; /* Make each button take up an equal amount of space */
+  text-align: center; /* Center the text inside the button */
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #3873f5;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.btn-opensea,
+.btn-community {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #3873f5;
+  font-family: 'BaseFont', sans-serif !important;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  font-size: 14px; 
+  text-align: center;
+}
+
+.btn-opensea:hover,
+.btn-community:hover {
+  background-color: #005bb5;
+  cursor: pointer;
+}
+.nft-title{
+	width:100%;
+	text-align:center;
+	font-size: 22px;
+  font-family: 'Prompt', sans-serif;
+  text-transform: uppercase;
+}
+.nft-description {
+  text-align: center; /* Center the text */
+  font-size: 11px; /* Smaller font size */
+  color: gainsboro; /* Slightly muted color */
+  margin-top: 10px; /* Add some space between buttons and text */
+  font-family: 'BaseFont', sans-serif !important;
+}
+@keyframes tchanram {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.nft-image-display {
+  animation: tchanram 0.8s ease-out;
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Optional for effect */
+}
+
+.spinner {
+  text-align: center;
+  font-size: 20px;
+  color: #0070f3;
+}
+.confetti-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Prevent interaction */
+  z-index: 3; /* Make sure it's above the image */
+}
+
+.nft-image {
+  position: relative; /* Confetti will be positioned relative to this container */
+  display: inline-block; /* To contain the image and confetti */
+}
+
+.nft-image-display {
+  display: block !important;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.userleftdesktop {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-y: auto !important;
+}
+.classBaseNameProfile {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+width:100%;
+}
+.profileNametitle{
+	width:100%;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+   flex-direction: column;
+   margin-top:100px;
+}
+.profileNametitle h4{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:12px;
+}
+.profiledescsmall{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:10px !important;
+	color: #666 !important
+}
+.content {
+  flex: 1; 
+}
+
+.footer {
+  margin-top: auto; 
+  padding-top:30px;
+  padding-bottom:30px;
+  font-family: 'BaseFont', sans-serif;
+  font-size: 9px;
+  color: #666;
+  text-align: left;
+}
+.otherlinks{
+	width:100%;
+	text-align:right;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:10px !important;
+	margin-top:20px;
+	color: #666
+}
+.footer a{
+	text-decoration: underline;	
+	font-size:8px !important
+}
+
+.titleroad{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:18px !important;
+	text-transform: uppercase;
+}
+.faq-title {
+  font-family: 'BaseFont', sans-serif !important;
+  font-size: 18px !important;
+  text-transform: uppercase;
+  color: white !important;
+}
+.swap-icon {
+  width: 100px; /* Adjust the size of the icon */
+  height: 100px; /* Adjust the size of the icon */
+  margin-bottom: 20px;
+}
+.titlepage{
+	background-color: #fff !important;
+	color: #000 !important;
+	padding:10px;
+}
+.roadmapelement{
+	border:1px solid white;
+}
+/* Fade-in animation for the step containers */
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styling for each step container */
+.step-container {
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(-20px);
+  transition: all 0.5s ease-in-out;
+}
+
+/* Apply the fade-in animation on scroll */
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeInFromTop 0.5s ease-in-out forwards;
+}
+.imghow{
+	width:80px;
+	height:80px;
+	margin-top: 20px;
+	margin-bottom:20px
+}
+
+
+/* CSS for smooth animation from bottom to top */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.logo-animation {
+  animation: slideUp 1.2s ease-out forwards;
+  opacity: 0; /* Initially hidden */
+}
+
+.subtitle-animation {
+  animation: slideUp 1.5s ease-out forwards; /* Slight delay for subtitle */
+  opacity: 0;
+}
+.connectmenu{
+	max-width:170px;
+}
+.testnet{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #0070f3;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 1000;
+}
+.connwallet{
+	max-width:250px;
+}
+.tokeninfo{
+	text-align:center;
+	margin-top: 20px;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.nofounerror{
+	font-family: 'BaseFont', sans-serif !important;
+	color: orangered;
+	font-size:13px;
+	margin-bottom:20px;
+	width:100%;
+	text-align:center;
+}
+.tokenfound{
+	font-family: 'BaseFont', sans-serif !important;
+	color: lightgray;
+	font-size:14px;
+	margin-bottom:20px;
+	width:100%;
+	text-align:left;
+	padding-left:20px
+}
+.tokeninfo a{
+	text-decoration: underline;
+	color: #0070f3;
+}
+.social {
+  width: 100%; /* Full width of the container */
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  align-items: center; /* Align the icons vertically */
+  gap: 20px; /* Add space between the icons */
+  margin-bottom: 30px;
+  margin-top: 30px
+}
+
+.social a img {
+  width: 30px; /* Set the icon size */
+  height: 30px; /* Set the icon size */
+  display: block;
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.social a img:hover {
+  transform: scale(1.2); /* Scale up by 20% */
+}
+.left-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  margin-right: 20px; /* Add margin between containers */
+}
+
+.right-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Align content to the top */
+  margin-left: 20px; /* Add margin between containers */
+}
+
+.parent-container {
+  display: flex;
+  max-width: 1100px; /* Set the parent container width */
+  margin: 0 auto; /* Center the parent container */
+  padding: 20px;
+  justify-content: space-between;
+  align-items: flex-start; /* Align content to the top of the container */
+  min-height:100vh
+}
+
+.header, .subtitle {
+  margin-bottom: 20px;
+  text-align: center; /* Align text to the right */
+}
+.tipcompinputlong{
+	width:100% !important;
+	border-radius: .375rem !important;
+	text-align:center !important;
+	margin-top:10px !important;
+	margin-bottom:10px !important;
+	height:45px !important;
+	font-size: .875rem !important;
+}
+.tipcompinputlongcust{
+	width:100% !important;
+	border-radius:50px !important;
+	text-align:left !important;
+	margin-top:10px !important;
+	margin-bottom:10px !important;
+	height:45px !important;
+	font-size:15px !important;
+	padding-left: 55px !important
+}
+.imagecust{
+	margin-left:15px;
+	border-radius:50px !important;
+	width:30px !important
+}
+
+@media screen and (max-width: 768px) {
+  .parent-container {
+    flex-direction: column;
+    max-width: 100%; /* Make it responsive */
+    padding: 10px;
+  }
+
+  .left-container, .right-container {
+    margin: 0;
+  }
+
+  .header, .subtitle, .tokeninfo {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .testnet {
+    bottom: 60px;
+  }
+}
+@media (min-width: 768px) {
+    .maindivparent {
+		
+    }
+    .parent {
+		padding-top: 80px;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+@media only screen and (min-width: 768px) {
+  /* For devices wider than mobile (e.g., tablets and desktops), reset the position */
+  .connwallet {
+    position: static;
+    margin: 0;
+  }
+}
+
+
+.shrink-0{
+	display: none !important
+}
+
+
+.boxleft{
+	background-color: rgba(0, 0, 0, 0.1) !important;
+	color:white !important;
+}
+.viewpublicontainer{
+	justify-content: center !important;
+}
+.profilenamecont{
+	width:100% !important;
+	text-align:center!important;
+}
+.socialmedia{
+	margin-bottom:10px;
+	
+}
+
+
+
+
+
+
+
+
+
+.badge-notification {
+  position: relative;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  border-radius: 50%;
+  padding: 0.5em;
+  color: white;
+  font-weight: bold;
+}
+
+
+
+/* Notification Icon */
+.notification-icon {
+  font-size: 18px;
+margin-right:20px
+}
+
+/* Notification Badge */
+.notification-badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  margin-right:10px;
+  background-color: red;
+  color: white;
+  font-size: 0.75rem; /* Adjust the text size */
+  height: 1.25rem;    /* Adjust the badge size */
+  width: 1.25rem;     /* Adjust the badge size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+/* Adjust the Icon Size for Mobile */
+@media (max-width: 768px) {
+	.notification-icon {
+	    margin-right: 0px;
+	}
+}
+.walletnotconn{
+	max-width:100%;
+	text-align:center;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:18px;
+	padding:10px;
+}
+
+
+
+.based-animation {
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  color: #0070f3;
+  opacity: 0;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:18px;
+  animation: showBased 1s ease-in-out forwards;
+}
+
+@keyframes showBased {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+
+/* Mobile-specific styles */
+@media screen and (max-width: 768px) {
+  .nav-menu .mobile-menu-text {
+    font-size: 12px; /* Make text smaller */
+    margin-top: 3px;
+    color: white;
+  }
+
+  .nav-menu .flex-col {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Inferior menu (bottom menu) on mobile */
+  .navdes {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+    background-color: #222; /* Change the background color */
+    border-top: 1px solid gray; /* Add a gray line on top */
+    border-bottom:0px;
+    padding: 8px 0; /* Adjust padding to make the bottom menu more compact */
+  }
+
+  /* Make each menu item fill the available space */
+  .nav-menu {
+    display: flex;
+    width: 100%;
+  }
+
+  .nav-menu a {
+    flex-grow: 1; /* Allow each item to grow and take equal space */
+    text-align: center;
+  }
+
+  /* Adjust FontAwesome icon size */
+  .nav-menu a svg {
+    font-size: 20px;
+  }
+
+  /* Smaller top logo on mobile */
+  .top-mobile-menu .logo-container img {
+    max-width: 120px !important;
+    height: auto; /* Keep aspect ratio */
+  }
+
+  .nav-menu .mobile-menu-item {
+    text-align: center;
+    width: 100%;
+  }
+  .maindivparent{
+	  padding-bottom:120px !important;
+	  padding-left:0px !important;
+  }
+  .patron{
+	  margin:0px !important;
+	  max-width:100%;
+	  width: 100%;
+	  border-radius:0px;
+	  border:0px !important;
+	  border-top:1px solid #333 !important;
+	  border-bottom:1px solid #212121 !important;
+	  padding-top:15px !important
+	  
+  }
+  .tipcomponent{
+	  padding:0px !important;
+	  max-width:100%;
+	  
+  }
+  .maindivparent{
+	  width:100%
+  }
+  .a100width{
+	  width:100% !important
+  }
+  .parent-container{
+	  padding:0px !important;
+	  flex-direction: column-reverse;
+	  width:100% !important
+  }
+  .left-container{
+	  width: 100% !important
+  }
+  .header{
+	  width:100%;
+	  justify-content: center !important;
+  }
+  .logoheader{
+	  max-width: 140px !important
+  }
+}
+
+/* Desktop-specific styles */
+@media screen and (min-width: 769px) {
+  .nav-menu {
+    justify-content: flex-end; /* Align items to the right */
+  }
+  
+  .ml-auto {
+    margin-left: auto; /* Align items to the right */
+  }
+  
+  .navdes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+  }
+}
+
+
+
+
+
+.feedcustom{
+	background-color: #111 !important
+}
+.feedcustomparent{
+	background-color: #111 !important;
+	border: 1px solid #333 !important
+}
+.userleftparent{
+	min-height: 100% !important;
+	padding: 1rem !important;
+	border-radius: 8px !important
+}
+.smallbtn{
+	font-size:10px !important;
+	background-color: #111 !important;
+	border:1px solid #3873f5 !important;
+	color: #fff !important;
+	padding-left:12px !important;
+	padding-right:12px !important;
+	padding-bottom:2px !important;
+	padding-top:2px !important
+}
+.smallbtn:hover{
+	background-color: #3873f5 !important;
+	color:white !important;
+}
+.optionsparent{
+	background-color: #111 !important;
+	border: 0px !important;
+	color: white !important;
+	padding:0px !important;
+}
+.robototstylefont{
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+.basestylefont{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.marginbot{
+	margin-bottom:10px
+}
+.marginbot20{
+	margin-bottom:20px
+}
+.usernamemenu{
+	font-family: 'BaseFont', sans-serif !important;
+	color: white !important;
+	font-size: 12px !important;
+	font-weight:100px !important;
+}
+
+
+.trending-communities {
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.community-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.community-item img {
+  width: 40px;
+  height: 40px;
+  margin-right: 16px;
+  border-radius: 50%;
+}
+
+.community-item p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.community-item small {
+  color: #888;
+}
+  .pagefeed {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    height: 100vh !important;
+    
+    }
+    
+.msgmural{
+	color:white !important;
+	border:0px !important;
+	background-color: #111 !important
+}
+.msgmuralind{
+	color:white !important;
+	border:0px !important;
+	background-color: #111 !important;
+	border-bottom:1px solid #333 !important
+}
+.white{
+	color: white !important;
+}
+.black{
+	color: black !important;
+}
+.communitminibox{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:11px !important;
+}
+.at{
+	margin-right:5px
+}
+.usernamemural{
+	font-weight:300 !important;
+	font-size:14px !important
+}
+
+
+.textinputnft .MuiOutlinedInput-root {
+  border: 1px solid white !important;
+  color: white !important;
+  border-top-left-radius: 50px !important;
+  border-bottom-left-radius: 50px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  height: 40px !important;
+  margin-right:0px !important;
+  
+}
+.nomarginbtn{
+	margin-bottom:0px !important
+}
+.srcbtn{
+	height: 40px !important;
+	width:40px !important;
+	font-size: 20px !important;
+	margin-left:-10px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 50px !important;
+  border-bottom-right-radius: 50px !important;
+  border: 1px solid white !important;
+  padding:5px !important
+}
+.textinputnft .MuiOutlinedInput-input {
+  color: white !important; /* Text color */
+}
+
+.textinputnft .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: 1px solid white !important; /* Focused border color */
+}
+
+.textinputnft .MuiOutlinedInput-input::placeholder {
+  color: gray !important; /* Placeholder color */
+}
+
+.textinputnft .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border: 1px solid white !important; /* Hover border color */
+}
+.iconnft{
+	color: white !important;
+}
+.community-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+}
+/* Rounded and consistent size avatars */
+.community-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+}
+
+/* Styling for positive, negative, and neutral reputation changes */
+.positive-change {
+  color: green;
+  font-weight: bold;
+}
+
+.negative-change {
+  color: orangered;
+  font-weight: bold;
+}
+
+.neutral-change {
+  color: #555;
+  font-weight: bold;
+}
+
+/* Styling for the icons next to the titles */
+.title-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.title-icon {
+  margin-right: 0.5rem;
+  color: white;  /* White icon color */
+}
+
+/* Ensure spacing between community items */
+.community-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.community-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.community-reputation {
+  font-size: 12px;
+  color: #777;
+}
+
+.basestylefont {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.marginbot {
+  margin-bottom: 1rem;
+}
+.menudekitem{
+	flex: display !important;
+	align-items: center !important;
+	padding:3px !important;
+	font-size:14px !important;
+	margin-bottom:5px !important;
+}
+.menudekitem:hover{
+	background-color: #223 !important;
+}
+.leftside{
+	
+}
+.nftimagegallery{
+	border-bottom-left-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+}
+.roll-button{
+	border-top-left-radius: 0px !important;
+	border-top-right-radius: 0px !important;
+	font-family: 'BaseFont', sans-serif !important;
+	background-color: #0070f3 !important;
+}
+.roll-button:disabled{
+	background-color: gray !important
+}
+
+
+.rolled-fragment-card{
+	color: lightgray !important
+}
+@keyframes spin3D {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+/* Full width parent container */
+.fullwidth-container {
+  width: 100%;
+  margin-top: 20px; /* Adds space above */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Energy container */
+.energy-container {
+  background-color: rgba(255, 99, 71, 0.1); /* Light red/orange background */
+  padding: 20px;
+  border-radius: 10px;
+  color: #ff6347; /* Red/orange color */
+}
+
+/* Reputation container */
+.reputation-container {
+  background-color: rgba(30, 144, 255, 0.1); /* Light blue background */
+  padding: 20px;
+  border-radius: 10px;
+  color: #1e90ff; /* Blue color */
+}
+
+/* Small title styling */
+.small-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Energy and reputation content */
+.energy-content, .reputation-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px; /* Font size for the number */
+}
+
+/* Icons for energy and reputation */
+.energy-icon {
+  color: #ff6347; /* Fire color */
+}
+
+.reputation-icon {
+  color: #1e90ff; /* Trophy color */
+}
+
+/* Spacing between icon and number */
+.ml-2 {
+  margin-left: 8px;
+}
+.inputselectcommunity{
+	min-width:150px !important;
+	border: 0px !important;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 14px
+}
+.pdtop30{
+	padding-top:30px !important
+}
+.containernotification{
+	background-color: #111 !important;
+	padding:0px !important;
+	border:0px !important
+}
+.notcard{
+	background-color: #111 !important;
+	padding:0px !important;
+	border:0px !important;
+	color: white !important;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:14px !important
+}
+.nottitle{
+	color: white !important;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:16px !important
+}
+.nosubtitle{
+	color: #ccc !important;
+	font-size:12px !important;
+	font-family: 'Prompt', sans-serif !important;
+}
+.nodate{
+	color: gray !important;
+	font-size:11px !important;
+	font-family: 'Prompt', sans-serif !important;
+}
+.logobuttoncont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+margin-bottom:20px;
+}
+.logobuttoncont a{
+	width:40%
+}
+
+.smalllogovision {
+  width:100%;
+  text-align: left; /* Align the logo to the left */
+}
+
+.connwalletcont {
+  text-align: right; /* Align the connect button to the right */
+}
+.editcommunitypageparent{
+	padding-top:15px;
+	width:100% !important;
+	
+}
+.containeredit{
+	width:100% !important;
+	padding:20px !important;
+	border-radius:10px !important
+}
+.editcommunitypagecont{
+	background-color: #fff !important;
+	color: black !important
+}
+.topbottom10pxmargin{
+	margin-top: 10px;
+	margin-bottom: 10px
+}
+.divmenuicons {
+    width: 100%; /* Full-width container */
+    display: flex;
+    justify-content: flex-end; /* Align content to the right */
+    gap: 7px;
+margin-top:10px;
+}
+
+.divmenuicons a {
+    display: inline-block;
+}
+
+.divmenuicons img {
+    width: 17px; /* Set the size of the icons here */
+    height: 17px; /* Maintain aspect ratio by adjusting both width and height */
+}
+.alignicon {
+    display: flex;
+    align-items: center; /* Vertically aligns the icon and text in the center */
+}
+
+.imgicon {
+    width: 24px; /* Adjust the icon size as needed */
+    height: 24px;
+    margin-right: 10px; /* Same margin as in HomeIcon */
+    display: inline-block;
+    vertical-align: middle; /* Ensures that the icon aligns properly with the text */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.rollednotrolled{
+	width:100% !important;
+	text-align: center !important;
+	font-size:12px !important;
+	background-color: #f2f2f2 !important;
+	padding:5px !important;
+	border-radius: 3px !important
+}
+
+.whatis-container {
+  width: 100%;
+  padding-top: 20px;
+  background-color: #111;
+}
+
+.whatis-step {
+  opacity: 0;
+  transform: translateY(100px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-bottom: 30px;
+}
+
+.whatis-step h2.step-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.whatis-step img.step-image {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.whatis-step p.step-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Animation delays for each step */
+.step1 {
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 0s;
+}
+
+.step2 {
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.step3 {
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 1s;
+}
+
+/* Keyframes for the bottom-to-top animation */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.communitindicators{
+	color: black !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.indicatorProfileTitle{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:14px !important;
+}
+.indicatorProfileNumber{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:12px !important;
+}
+.wintitle{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:16px !important;
+}
+.winsubtitle{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:14px !important;
+	color: #eee !important
+}
+.step-text{
+	font-size:12px !important;
+	color: #eee !important;
+	width:100%;
+	text-align:center
+}
+.step-title{
+	font-family: 'BaseFont', sans-serif !important;
+	font-size:16px !important;
+	color: white;
+	width:100%;
+	text-align:center
+}
+.step-image{
+	height: 130px;
+	padding: 5px;
+}
+.welcometext{
+	color:black !important;
+	font-size:14px !important;
+	margin-bottom:20px !important
+}
+.welcometitle{
+	color: black !important;
+	font-family: 'BaseFont', sans-serif !important;
+	font-size: 16px;
+	margin-bottom: 10px !important
+}
+.smalltextadvtip{
+	font-size: .7rem !important;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	padding-top:10px !important;
+	width:100%;
+	text-align:center
+}
+@media (min-width: 1400px) {
+  .pagefeed {
+    padding-left: 8% !important;
+    padding-right: 8% !important;
+    height: calc(100vh - 0px) !important;
+    
+  }
+  .custom-desktop-padding{
+	padding-left:100px !important;
+	padding-right: 100px !important
+}
+}
+.selectwalletbasename{
+	margin: 0px! important;
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+	border-right: 0px !important;
+	text-align: left !important;
+	padding-right: 0px !important;
+    font-size: .8rem !important;
+}
+.inputwalletbasename{
+	border-top-left-radius: 0px !important;
+	border-bottom-left-radius: 0px !important;
+	text-align: left !important;
+	font-size: .8rem !important;
+}
+.visioninput{
+	height:120px !important;
+	padding-top: 0.5rem !important;
+	border-top-left-radius: 0px !important;
+	border-top-right-radius: 0px !important;
+	margin-top: 0px !important;
+	width: 100% !important;
+	font-size: 2.5rem !important;
+	text-align: left !important
+}
+.selectcurrencyselect{
+	margin-bottom: 0px !important;
+}
+.selectcurrencyselect .react-select__control{
+	border-bottom-left-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+	border-bottom: 0px !important
+}
+.tokenswap{
+	height:120px !important;
+	padding-top: 0.5rem !important;
+	border-top-left-radius: 0px !important;
+	border-top-right-radius: 0px !important;
+	margin-top: -16px !important;
+	width: 100% important
+}
+.leading-5{
+	display: none;
+}
+.mt-4 .leading-5{
+	display: block !important;
+}
+.marginhrtopbottom{
+	margin-top:15px;
+	margin-bottom:15px
+}
+.customtokeninput{
+	font-size: .8rem !important;
+	text-align: left !important;
+	margin: 0px !important;
+	border-radius:0px !important;
+}
+.advoptswap{
+	color:white !important;
+	background-color: rgba(0,0,0,0) !important;
+	margin-top: 0px !important;
+	margin-bottom:0px !important
+}
+.flex .pt-2{
+	color: white !important;
+	background-color: rgba(0,0,0,0) !important;
+	text-align:center !important;
+	width: 100%;
+	margin-top:-15px !important
+}
+.advopttitle{
+	font-size: .8rem !important;
+	text-align:right !important
+}
+.advdiv input{
+	border: 0px !important;
+	background-color: rgba(0,0,0,0) !important;
+	color: white !important;
+	text-align: center !important;
+	margin-left: 10px !important;
+	border-bottom: 1px dashed white !important;
+	padding:5px !important;
+	border-radius: 0px !important;
+}
+.btnslideadvwelcome{
+	margin-top:20px !important;
+	font-family: 'BaseFont', sans-serif !important;
+	text-decoration: dashed !important
+}
+  .tutorialoptbtn button{
+	border-radius: .375rem !important;
+	text-align:center !important;
+	font-size: .875rem !important;
+	}
+.tutorialoptbtn{
+	width:100%;
+	display: flex;
+	justify-content: space-between;
+}
+.mobilebottommenu{
+	z-index: 9990 !important
+}
+.explorecommunities{
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.imgexplorehome{
+	height: auto;
+	margin: auto;
+	width:40%;
+}
+.nftinfogrid{
+	font-size: .8rem !important;
+}
+
+
+
+
+
+
+
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+.nftshardmodal.slide-in {
+  animation: slideInBottom 0.3s forwards;
+}
+
+.nftshardmodal.slide-out {
+  animation: slideOutBottom 0.3s forwards;
+}
+.youmustpatrontitle{
+	font-size: .9rem !important;
+}
+.youmustpatrondesc{
+	font-size: .8rem !important;
+}
+.communitiespagetitlescont{
+	font-size: 1.3rem !important;
+	color: white !important;
+	text-transform: uppercase !important;
+	font-family: 'BaseFont', sans-serif !important;
+	margin-bottom:10px !important
+}
+.communitiespagetitlesfiltr{
+	font-size: 1.1rem !important;
+	color: white !important;
+	text-transform: uppercase !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.communitiespagesfiltr{
+	font-size: 0.9rem !important;
+	color: white !important;
+	text-transform: uppercase !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.titlefix{
+	margin:0px !important;
+	padding-left:30px !important;
+	margin-bottom:-20px !important
+}
+.catyoumustpat{
+	margin:0px !important;
+	margin-bottom: 10px !important
+}
+.searchcominput{
+	margin:0px !important;
+}
+.searchbtncomm{
+	margin:0px !important;
+	height: 50px !important;
+	border-radius: 0px 5px 5px 0px !important
+}
+.erronofoundmsg{
+	font-size: 0.7rem !important;
+	color: red !important;
+	text-transform: uppercase !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.headercommunityname{
+	font-size: 1.1rem !important;
+	text-transform: uppercase !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.headercommunitynamecontainer{
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+.headercommunitydescription{
+	font-size: 0.8rem !important;
+}
+.headercommunityinfo{
+	font-size: 0.9rem !important;
+}
+
+.menuiconmobile {
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-block !important;
+  line-height: 1 !important;
+}
+.datetime{
+	color: #ccc !important;
+	font-size: 0.7rem !important;
+}
+.notitle{
+	font-size: 0.8rem !important
+}
+.feedimg{
+	border-radius:5px !important
+}
+.viewmorebtn{
+	font-size: 0.7rem !important;
+	color: #ccc !important;
+	font-family: 'BaseFont', sans-serif !important;
+	text-decoration: dashed !important
+}
+.btnoptmsg{
+	color: white !important;
+}
+.communityanounce{
+	font-size: 1.1rem !important;
+	color: #ccc !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.mgbotannounc{
+	margin-bottom:20px !important
+}
+.patronnameside{
+	font-size: 0.75rem !important;
+}
+.patronnamesideamount{
+	font-size: 0.7rem !important;
+	color: #ccc !important
+}
+.reptitleot{
+	padding:5px;
+	font-size: 0.85rem !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.btn15mchart{
+	border: 0px !important
+}
+.btn1hchart{
+	border: 0px !important;
+	border-left: 1px solid #ccc !important;
+	border-right: 1px solid #ccc !important
+}
+.btn1dchart{
+	border: 0px !important
+}
+.msgtab{
+	font-size: 1rem !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.unreadmobi {
+  height: 20px !important; /* Make the circle smaller */
+  width: 20px !important; /* Make the circle smaller */
+  font-size: 0.7rem !important; /* Adjust font size */
+  line-height: 14px !important; /* Ensure the text is vertically centered */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.terms ul {
+    list-style-type: disc; /* Ensures bullet points are displayed */
+    margin-left: 20px; /* Adds left margin for better alignment */
+}
+.terms {font-size: 0.9rem}
+.terms ul li {
+    display: list-item; /* Ensures the list item style is applied */
+}
+@media screen and (max-width: 768px) {
+	.nftinfogrid{
+		font-size: .7rem !important;
+	}
+	.mobpatronmedet{
+		margin:0px !important;
+		margin-bottom: 15px !important;
+	}
+	.communityheaderavatarcontainer{
+		margin-top: 15px !important; 
+	}
+	.maincontentheadercommunity{
+		margin:0px !important;
+		margin-top:-16px !important
+	}
+	.searchbtncomm{
+		border-radius: 0px 0px 5px 5px !important
+	}
+  .logobuttoncont{
+	  background-color: #0a0b0d !important;
+	  padding:10px;
+	  margin: 0px !important
+  }
+  .imgexplorehome{
+	  width:66%;
+  }
+  .contmenumobile{
+	  border-radius: 0px !important
+  }
+  .patronedcommunitiesmobile{
+	  border-top: 1px solid #666;
+	  padding-top:10px;
+	  padding-bottom: 10px
+  }
+  .footermobile{
+	  border-top: 1px solid #666;
+	  padding-top:10px;
+  }
+  .modalwelcome{
+	  min-width: 99% !important;
+	  min-height: auto !important;
+	  border: 0px !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    position: fixed !important;
+    margin: 0 auto;
+    box-shadow: none !important;
+	}
+	.modalparentwelcome{
+		min-height: 100vh !important;
+		background-color: white !important;
+		border: 0px none !important;
+		min-width:100% !important;
+		overflow-y: auto;
+	}
+	.nftshardmodal {
+	  overflow-y: auto !important;
+	  z-index: 9991 !important;
+	  width: 100% !important;
+	  padding-left: 10px !important;
+	  padding-right: 10px !important;
+	  border-radius:0px !important;
+	}
+	.botmobmen{
+		padding-bottom:25px !important;
+	}
+	.bottom-left-image{
+		bottom: 80px !important
+	}
+	.fsizeb {
+		font-size: 1.2em !important;
+		line-height: 10px !important;
+	}
+	.animated-icons{
+		margin-top:-10px
+	}
+}
+@media (max-width: 600px) {
+  .mobilePostContainer {
+    display: none;
+  }
+}
+.patron{
+	max-width: 642px !important
+}
+
+.FloatingMenu_icon__Op6XW {
+  font-size: 24px !important;
+}
+
+	.banner-section{
+		max-height: 100vh !important
+	}
+/* Adjustments for mobile devices */
+@media (max-width: 768px) {
+  .FloatingMenu_icon__Op6XW {
+    font-size: 24px !important;
+  }
+	.botmobmen{
+		padding-left:5% !important;
+		padding-right: 5% !important;
+		background-color: rgba(0,0,0,0.5) !important;
+		position: fixed;
+		padding-top:10px !important;
+		padding-bottom: 10px !important;
+		bottom: 10px
+	}
+	.logoheader{
+		height: 30px !important;
+		width: auto !important
+	}
+	.containernotification{
+		width:100% !important
+	}
+	.grinot{
+		padding: 0px !important
+	}
+}
+@media (min-width: 768px) {
+	.botmobmen{
+		padding-left:5% !important;
+		padding-right: 5% !important;
+		background-color: rgba(0,0,0,0.5) !important;
+		position: fixed;
+		padding-top:10px !important;
+		padding-bottom: 10px !important
+	}
+	.logoheader{
+		height: 40px !important;
+		width: auto !important
+	}
+
+}
+
+
+/* CSS for PWA mode */
+.pwa-mode .mobilebottommenu {
+  padding-bottom:25px !important;
+  padding-top:15px !important
+}

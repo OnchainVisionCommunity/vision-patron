@@ -1,0 +1,309 @@
+/* General Styles */
+@font-face {
+  font-family: 'BaseFont';
+  src: url('../assets/fonts/Coinbase_Mono-Medium-web.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Importing Prompt-Medium */
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Importing Prompt-Regular */
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Importing Prompt-Thin */
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-Thin.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+.banner-section {
+  width: 100% !important;
+  height: 100vh !important;
+  background-size: cover !important;
+  background-position: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+}
+.bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
+
+.overlay {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  z-index: 2 !important;
+}
+
+.banner-content {
+  position: relative !important;
+  z-index: 2 !important;
+  text-align: center !important;
+  color: #fff !important;
+  padding: 3rem !important;
+}
+
+.banner-logo {
+  width: 350px !important;
+  margin: 20px auto !important;
+}
+
+.animated-icons {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+}
+
+.grow-icon {
+  width: 50px !important;
+  height: 50px !important;
+  transition: transform 0.3s ease !important;
+  padding:10px;
+}
+
+.grow-icon:hover {
+  transform: scale(1.1) !important;
+}
+
+.ps-text {
+  margin-top: 20px !important;
+}
+
+/* What is Section */
+.what-is-section {
+  width: 100% !important;
+  background-color: #fff !important;
+  padding: 5rem 0 !important;
+  text-align: center !important;
+  color: black !important
+}
+
+.info-block {
+  background-size: cover !important;
+  background-position: center !important;
+  padding: 2rem !important;
+  color: #fff !important;
+  height: 200px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  transition: transform 0.3s ease !important;
+  background-color:#333 !important;
+  border-radius:5px !important
+}
+
+.info-block:hover {
+  transform: scale(1.05) !important;
+}
+
+/* Shape Divider */
+.shape-divider {
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.shape-divider::before {
+  content: '' !important;
+  font-family: 'shape divider from ShapeDividers.com' !important;
+  position: absolute !important;
+  z-index: 3 !important;
+  pointer-events: none !important;
+  background-repeat: no-repeat !important;
+  bottom: -0.1vw !important;
+  left: -0.1vw !important;
+  right: -0.1vw !important;
+  top: -0.1vw !important;
+  background-size: 133% 121px !important;
+  background-position: 50% 0% !important;
+  background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.28 2.17" preserveAspectRatio="none"><path d="M0 .5c3.07.55 9.27-.42 16.14 0 6.88.4 13.75.57 19.14-.11V0H0z" fill="%23ffffff"/><path d="M0 1c3.17.8 7.29-.38 10.04-.55 2.75-.17 9.25 1.47 12.67 1.3 3.43-.17 4.65-.84 7.05-.87 2.4-.02 5.52.88 5.52.88V0H0z" opacity=".5" fill="%23ffffff"/><path d="M0 1.85c2.56-.83 7.68-.3 11.79-.42 4.1-.12 6.86-.61 9.58-.28 2.73.33 5.61 1.17 8.61 1 3-.19 4.73-.82 5.3-.84V.1H0z" opacity=".5" fill="%23ffffff"/></svg>') !important;
+}
+
+@media (min-width: 2100px) {
+  .shape-divider::before {
+    background-size: 133% calc(2vw + 121px) !important;
+  }
+}
+
+/* Features Section */
+.features-section {
+  width: 100% !important;
+  background-color: #333 !important;
+  color: #fff !important;
+  padding: 5rem 0 !important;
+}
+
+.feature-block {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-radius: 10px !important;
+  padding: 2rem !important;
+  text-align: center !important;
+  transition: transform 0.3s ease !important;
+}
+
+.feature-block:hover {
+  transform: scale(1.05) !important;
+}
+
+.feature-icon {
+  width: 60px !important;
+  height: 60px !important;
+  margin-top: 1rem !important;
+}
+
+/* Partners Section */
+.partners-section {
+  width: 100% !important;
+  background-color: #fff !important;
+  padding: 5rem 0 !important;
+}
+
+.partner-logo {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* FAQ and Contact Section */
+.faq-contact-section {
+  width: 100% !important;
+  background-color: #f9f9f9 !important;
+  padding: 5rem 0 !important;
+}
+
+/* Call-to-Action Section */
+.cta-section {
+  width: 100% !important;
+  background-color: #222 !important;
+  color: #fff !important;
+  padding: 5rem 0 !important;
+  text-align: center !important;
+}
+
+#typed-text{
+	font-family: 'BaseFont', sans-serif !important;
+}
+.bannertitle{
+	font-family: 'BaseFont', sans-serif !important;
+	text-transform: uppercase !important
+}
+.fsizeb{
+	font-size: 38px;
+}
+.typing-animation {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid;
+  font-size: 32px; /* You can adjust the font size */
+  font-family: 'Courier', monospace;
+  border-right: 2px solid transparent;
+}
+
+#cursor {
+  display: inline-block;
+  width: 1px;
+  background-color: white;
+  margin-left: 2px;
+  animation: blink 0.7s infinite step-start;
+}
+.divsoon{
+	margin-top:30px;
+	margin-bottom:30px;
+	border:1px solid gray;
+	width:75%;
+	text-align:center;
+	color: gray;
+	padding:20px;
+	border-radius:5px
+}
+.divsoon a{
+	text-decoration: underline
+}
+@media screen and (man-width: 769px) {
+	.divsoon{
+		width:95%;	
+	}
+	.banner-content{
+		min-height: 100vh;
+		height: auto;
+	}
+	.banner-text{
+		
+	}
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Optional: Styling for erasing */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes erase {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
+
+.bottom-left-image {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 100px; /* Set a width for the image */
+  animation: moveUp 5s ease-in-out infinite;
+  z-index: 3;
+}
+
+.banner-subtitle{
+	font-family: 'Prompt', sans-serif !important;
+	text-transform: none !important;
+	font-size:18px !important;
+	color: #eee !important;
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px); /* Adjust as needed */
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

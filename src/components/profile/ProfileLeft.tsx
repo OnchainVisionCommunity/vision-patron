@@ -137,7 +137,7 @@ const ProfileLeft: React.FC<ProfileLeftProps> = ({ profileData }) => {
               <Button
                 disabled={communitiesPage === 1}
                 onClick={() => setCommunitiesPage((prev) => prev - 1)}
-                variant="outlined"
+                className="btnpatronme"
               >
                 Previous
               </Button>
@@ -147,7 +147,7 @@ const ProfileLeft: React.FC<ProfileLeftProps> = ({ profileData }) => {
               <Button
                 disabled={communitiesPage >= totalCommunityPages}
                 onClick={() => setCommunitiesPage((prev) => prev + 1)}
-                variant="outlined"
+                className="btnpatronme"
               >
                 Next
               </Button>
@@ -170,7 +170,7 @@ const ProfileLeft: React.FC<ProfileLeftProps> = ({ profileData }) => {
       <Card>
         <CardContent>
           <Typography className="profiletitlebox" gutterBottom>
-            Recent Notifications
+            My Community
           </Typography>
           {profileData.notifications.length ? (
             profileData.notifications

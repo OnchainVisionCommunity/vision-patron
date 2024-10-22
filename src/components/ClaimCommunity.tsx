@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Box, Typography, Button, Modal } from "@mui/material";
-import { useAddress, useSigner } from "@thirdweb-dev/react";
+import { useActiveAccount } from "thirdweb/react";  // SDK v5 import
+import { signMessage } from "thirdweb/utils";  // SDK v5 signMessage import
 import axios from "axios";
 import community from '../assets/images/community.png';
 
@@ -20,17 +21,16 @@ const modalStyle = {
 const ClaimCommunity = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [modalMessage, setModalMessage] = useState(""); // To store message for modal
-  const [communityLink, setCommunityLink] = useState(""); // To store community link
-  const [showSuccess, setShowSuccess] = useState(false); // To show success modal
-  const address = useAddress(); // Get the connected wallet address
-  const signer = useSigner(); // Get the signer to sign messages
+  const [modalMessage, setModalMessage] = useState("");  // To store message for modal
+  const [communityLink, setCommunityLink] = useState("");  // To store community link
+  const [showSuccess, setShowSuccess] = useState(false);  // To show success modal
+  const account = useActiveAccount();  // SDK v5: Get the active account
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleClaimCommunity = async () => {
-    if (!address || !signer) {
+    if (!account?.address) {
       alert("Wallet is not connected");
       return;
     }
@@ -39,26 +39,31 @@ const ClaimCommunity = () => {
       setLoading(true);
 
       // Include the timestamp in the message
-      const timestamp = Math.floor(Date.now() / 1000); // Current Unix timestamp (seconds)
-      const message = `I want to claim my community onchain: ${address} at ${timestamp}`;
-      const signature = await signer.signMessage(message);
+      const timestamp = Math.floor(Date.now() / 1000);  // Current Unix timestamp (seconds)
+      const message = `I want to claim my community onchain: ${account.address} at ${timestamp}`;
+      
+      // Use the SDK v5 signMessage utility
+      const signature = await signMessage({
+        account,
+        message,
+      });
 
       const response = await axios.post("https://api.visioncommunity.xyz/v02/user/signmessage", {
-        walletAddress: address,
+        walletAddress: account.address,
         signature,
         message,
-        timestamp, // Send the timestamp along with the request
+        timestamp,  // Send the timestamp along with the request
       });
 
       // Handle the different responses from the backend
       if (response.data.success) {
         setModalMessage(response.data.message);
-        setCommunityLink(response.data.link); // Store the community link
+        setCommunityLink(response.data.link);  // Store the community link
         setShowSuccess(true);
       } else {
         setModalMessage(response.data.message || "Failed to claim community");
         if (response.data.link) {
-          setCommunityLink(response.data.link); // Store the community link if already claimed
+          setCommunityLink(response.data.link);  // Store the community link if already claimed
         }
         setShowSuccess(false);
       }
@@ -66,17 +71,15 @@ const ClaimCommunity = () => {
       console.error("Error claiming community:", error);
 
       if (error instanceof Error) {
-        // If error is of type Error, safely access message
         setModalMessage("An error occurred: " + error.message);
       } else {
-        // Handle the case where error is not an instance of Error
         setModalMessage("An unknown error occurred");
       }
 
       setShowSuccess(false);
     } finally {
       setLoading(false);
-      setOpen(false); // Close initial modal
+      setOpen(false);  // Close initial modal
     }
   };
 
@@ -103,19 +106,17 @@ const ClaimCommunity = () => {
 
       {/* Subtitle */}
       <Typography variant="body1" className="claimpara">
-        Claim your community for free and let your audience become your patrons!<br/>
+        Claim your community for free and let your audience become your patrons!<br />
         Send announcements and exclusives to patrons and curate your onchain community
       </Typography>
-      <Button variant="contained" color="primary" className="btnpatronme extraclass" sx={{ mt: 2 }} onClick={handleOpen} >
+      <Button variant="contained" color="primary" className="btnpatronme extraclass" sx={{ mt: 2 }} onClick={handleOpen}>
         Claim Your Community
       </Button>
-
-      {/* Claim Button */}
 
       {/* Modal for Claiming Community */}
       <Modal open={open} onClose={handleClose} aria-labelledby="claim-community-modal" aria-describedby="claim-community-description">
         <Box sx={modalStyle}>
-          <Typography id="claim-community-modal" className="modaltitle" gutterBottom >
+          <Typography id="claim-community-modal" className="modaltitle" gutterBottom>
             Claim Community
           </Typography>
           <Typography id="claim-community-description" sx={{ mb: 2 }} className="modaltext">
@@ -143,7 +144,7 @@ const ClaimCommunity = () => {
           <Typography className="modaltitle" gutterBottom>
             {showSuccess ? "Success" : "Info"}
           </Typography>
-          <Typography  className="modaltext">{modalMessage}</Typography>
+          <Typography className="modaltext">{modalMessage}</Typography>
           {communityLink && (
             <Button
               variant="contained"

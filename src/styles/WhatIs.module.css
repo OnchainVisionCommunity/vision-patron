@@ -1,0 +1,60 @@
+.whatis-container {
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background for better visibility */
+}
+
+.whatis-step {
+  opacity: 0;
+  transform: translateY(100px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-bottom: 30px;
+}
+
+.whatis-step h2.step-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.whatis-step img.step-image {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.whatis-step p.step-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Animation delays for each step */
+.step1 {
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 0s;
+}
+
+.step2 {
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.step3 {
+  animation: slideUp 0.6s ease forwards;
+  animation-delay: 1s;
+}
+
+/* Keyframes for the bottom-to-top animation */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

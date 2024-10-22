@@ -1,0 +1,228 @@
+@font-face {
+  font-family: 'BaseFont';
+  src: url('../assets/fonts/Coinbase_Mono-Medium-web.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Base styles for the fixed position and transitions */
+.menu {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styling for the initial small rectangle */
+.smallMenu {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border-radius: 50px; /* Very rounded borders */
+  padding: 10px 15px; /* Increased padding for larger numbers */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Soft gray separator between the two icons */
+.separator {
+  width: 1px;
+  background-color: #dcdcdc; /* Soft gray */
+  margin: 0 15px; /* Spacing between icons */
+}
+
+/* Dynamic color for reputation (blue) and energy (red) */
+.counter {
+  display: flex;
+  align-items: center;
+  font-size: 14px !important;
+  font-weight: bold;
+  font-family: 'BaseFont', sans-serif !important;
+}
+
+.counter.reputation {
+  color: #0052ff; /* Blue for reputation */
+}
+
+.counter.energy {
+  color: #ff4500; /* Red for energy */
+}
+
+.counter span {
+  margin-left: 5px;
+}
+
+/* The circle with the X icon when expanded */
+.expanded {
+  width: 40px;
+  height: 40px;
+  background-color: #ff0000;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  font-family: 'BaseFont', sans-serif !important;
+}
+
+.closeIcon {
+  color: white;
+  font-size: 24px;
+  transition: transform 0.3s ease-in-out;
+  font-family: 'BaseFont', sans-serif !important;
+}
+
+/* Spin animation for the X icon */
+.closeIcon:hover {
+  transform: rotate(90deg);
+}
+
+/* Expanded container with a fixed position relative to the button */
+.expandedContainer {
+  position: fixed; /* Fixed to follow the button position */
+  bottom: 60px;
+  right: 20px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.3s forwards ease-in-out;
+  font-family: 'BaseFont', sans-serif !important;
+  font-size: 14px !important;
+  z-index: 999; /* Ensure it appears above other elements */
+}
+
+/* Slide-up animation when opening */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide-down animation when closing */
+@keyframes slideDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* Row styles for the expanded container, aligned to the left */
+.row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 0;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards ease-in-out;
+  animation-delay: 0.3s;
+  color: #333;
+  width: 100%;
+}
+
+/* Soft gray line between the rows */
+.row + .row {
+  border-top: 1px solid #dcdcdc; /* Soft gray line */
+  padding-top: 15px; /* Additional padding after the line */
+}
+
+/* Left-aligned content for icons and text */
+.row .icon {
+  margin-right: 10px;
+  font-size: 24px;
+}
+
+.row.reputation .icon, .row.reputation span {
+  color: #0052ff; /* Blue for reputation */
+}
+
+.row.energy .icon, .row.energy span {
+  color: #ff4500; /* Red for energy */
+}
+
+.whatitbtn {
+  font-family: 'BaseFont', sans-serif !important;
+  font-size: 10px !important;
+  text-decoration: dashed !important;
+}
+
+/* Fade-in effect for each row */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal animation */
+.modalBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 300px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  opacity: 0;
+  animation: popUp 0.4s forwards ease-in-out;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  font-family: 'BaseFont', sans-serif !important;
+  color: black; /* Set all text inside modal to black */
+}
+
+/* Keyframes for modal pop-up */
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.modalImage {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.modalTitle {
+  font-family: 'BaseFont', sans-serif !important; /* Apply custom font to the modal title */
+  color: black; /* Modal title in black */
+  font-size: 18px; /* Adjust the size for better readability */
+}
+
+/* Media query for mobile */
+@media screen and (max-width: 768px) {
+  .menu {
+    bottom: 75px; /* Move the floating menu higher on mobile */
+    right: 15px;  /* Slightly adjust the right position */
+  }
+
+  .expandedContainer {
+    bottom: 130px; /* Adjust the expanded container position on mobile */
+  }
+}

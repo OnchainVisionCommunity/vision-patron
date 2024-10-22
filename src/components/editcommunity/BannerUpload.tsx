@@ -3,7 +3,7 @@ import { Button, Box, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import ImageCropper from "./ImageCropper";
-import { useAddress } from "@thirdweb-dev/react"; // For getting wallet address
+import { useActiveAccount } from "thirdweb/react"; // SDK5 update
 
 interface BannerUploadProps {
   banner: string;
@@ -16,7 +16,7 @@ const BannerUpload: React.FC<BannerUploadProps> = ({ banner, setBanner }) => {
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const address = useAddress(); // Get wallet address
+  const account = useActiveAccount(); // Get wallet account details (SDK5)
 
   // Maximum file size in bytes (2MB)
   const maxFileSize = 2 * 1024 * 1024;
@@ -66,7 +66,7 @@ const BannerUpload: React.FC<BannerUploadProps> = ({ banner, setBanner }) => {
     try {
       const response = await axios.post("https://api.visioncommunity.xyz/v02/image/upload", {
         banner: base64Image, // Sending banner data instead of avatar
-        walletAddress: address, // Pass the wallet address
+        walletAddress: account?.address, // Pass the wallet address from active account (SDK5)
       });
 
       if (response.data.success) {

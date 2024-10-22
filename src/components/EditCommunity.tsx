@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Card, Typography, Modal, Box, Grid } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAddress } from "@thirdweb-dev/react";
+import { useActiveAccount } from "thirdweb/react";
 import EditCommunityForm from "./editcommunity/EditCommunityForm";
+import { createThirdwebClient } from "thirdweb"; 
 
 // Modal styling
 const modalStyle = {
@@ -17,10 +18,15 @@ const modalStyle = {
   borderRadius: "8px",
 };
 
-export default function EditCommunity() {
+interface EditCommunityProps {
+  walletAddress: string;  // Receive wallet address as a prop from the parent
+}
+
+const EditCommunity: React.FC<EditCommunityProps> = ({ walletAddress }) => {
+  const client = createThirdwebClient({ clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID || "" });
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const address = useAddress();
+  const account = useActiveAccount();
 
   const [communityData, setCommunityData] = useState({
     avatar: "",
@@ -67,70 +73,73 @@ export default function EditCommunity() {
 
   // Validate wallet address
   useEffect(() => {
-    if (loading || !address) return;
+    if (loading || !account) return;
 
-    if (!address) {
+    if (!walletAddress) {
       setModalMessage("Please connect your wallet.");
       handleOpen();
-    } else if (address.toLowerCase() !== id?.toLowerCase()) {
+    } else if (walletAddress.toLowerCase() !== id?.toLowerCase()) {
       setModalMessage("You are not the owner.");
       handleOpen();
     }
-  }, [address, id, loading]);
+  }, [account, id, loading, walletAddress]);
 
-const handleSave = async () => {
-  try {
-    const response = await fetch(
-      `https://api.visioncommunity.xyz/v02/communities/edit/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(communityData),
+  const handleSave = async () => {
+    try {
+      const response = await fetch(
+        `https://api.visioncommunity.xyz/v02/communities/edit/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(communityData),
+        }
+      );
+
+      if (response.ok) {
+        // Redirect to the community's main view page after successful save
+        navigate(`/communities/${id}`); 
+      } else {
+        console.error("Failed to save community details.");
+        alert("Failed to save community details.");
       }
-    );
-
-    if (response.ok) {
-      // Redirect to the community's main view page after successful save
-      navigate(`/communities/${id}`); 
-    } else {
-      console.error("Failed to save community details.");
-      alert("Failed to save community details.");
+    } catch (error) {
+      console.error("Error while saving community details:", error);
     }
-  } catch (error) {
-
-  }
-};
-
+  };
 
   if (loading) {
     return <Typography>Loading...</Typography>;
   }
 
   return (
-    <Card>
-      <Grid container>
-        <Grid item xs={12}>
-          <EditCommunityForm
-            avatar={communityData.avatar}           // Pass avatar
-            banner={communityData.banner}           // Pass banner
-            description={communityData.description} // Pass description
-            setAvatar={(url: string) => setCommunityData({ ...communityData, avatar: url })} // Setter for avatar
-            setBanner={(url: string) => setCommunityData({ ...communityData, banner: url })} // Setter for banner
-            setDescription={(desc: string) => setCommunityData({ ...communityData, description: desc })} // Setter for description
-            connectedWalletAddress={address || ""}
-            handleSave={handleSave}
-          />
-        </Grid>
-      </Grid>
+    <>
+      <Card>
+          <div className="editcommunitypagecont">
+            <EditCommunityForm
+              avatar={communityData.avatar}           // Pass avatar
+              banner={communityData.banner}           // Pass banner
+              description={communityData.description} // Pass description
+              setAvatar={(url: string) => setCommunityData({ ...communityData, avatar: url })} // Setter for avatar
+              setBanner={(url: string) => setCommunityData({ ...communityData, banner: url })} // Setter for banner
+              setDescription={(desc: string) => setCommunityData({ ...communityData, description: desc })} // Setter for description
+              connectedWalletAddress={walletAddress}  // Use the walletAddress from parent props
+              handleSave={handleSave}
+              connectionType="community"
+            />
+          </div>
 
-      {/* Modal */}
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={modalStyle}>
-          <Typography>{modalMessage}</Typography>
-        </Box>
-      </Modal>
-    </Card>
+
+        {/* Modal */}
+        <Modal open={open} onClose={handleClose}>
+          <Box sx={modalStyle}>
+            <Typography>{modalMessage}</Typography>
+          </Box>
+        </Modal>
+      </Card>
+    </>
   );
-}
+};
+
+export default EditCommunity;

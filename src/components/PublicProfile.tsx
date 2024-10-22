@@ -8,16 +8,32 @@ import {
   CardContent,
   Button,
   IconButton,
+  Modal,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { sanitizeId } from "../utils/sanitizeId"; // Utility function for sanitizing wallet addresses
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward"; // Import the Icon
-import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFire, faTrophy, faCheckCircle, faTimes } from "@fortawesome/free-solid-svg-icons"; // Icons
 
 // Helper to format wallet address as 0x1234...5678
 const formatWalletAddress = (wallet: string): string => {
   return wallet ? `${wallet.slice(0, 6)}...${wallet.slice(-4)}` : "";
+};
+
+// Helper to format numbers with thousands/millions and 1 decimal
+const formatNumber = (value: number | string): string => {
+  const numberValue = typeof value === "string" ? parseFloat(value) : value;
+
+  if (isNaN(numberValue)) return "0.0";
+  if (numberValue >= 1000000) {
+    return `${(numberValue / 1000000).toFixed(1)}M`;
+  } else if (numberValue >= 1000) {
+    return `${(numberValue / 1000).toFixed(1)}K`;
+  } else {
+    return numberValue.toFixed(1);
+  }
 };
 
 // Helper to format VISION amount with 2 decimals
@@ -37,42 +53,35 @@ interface Community {
   };
 }
 
-interface SocialMedia {
-  twitter?: {
-    status: string;
-    account: string;
-  };
-  instagram?: {
-    status: string;
-    account: string;
-  };
-  warpcast?: {
-    status: string;
-    account: string;
-  };
-  lunchbreak?: {
-    status: string;
-    account: string;
-  };
+interface Badge {
+  status_label: string;
+  image: string;
 }
 
 interface ProfileData {
   wallet: string;
   avatar?: string;
   basename?: string;
-  social?: {
-    social?: SocialMedia;
-  };
+  social?: any;
+}
+
+interface ReputationEnergy {
+  reputation: number;
+  energy: number;
+  normalizedReputation: number;
 }
 
 const PublicProfile: React.FC = () => {
   const { walletAddress } = useParams<{ walletAddress: string }>(); // Get wallet address from URL parameters
   const sanitizedWalletAddress = sanitizeId(walletAddress || ""); // Sanitize wallet address
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [badges, setBadges] = useState<Badge[]>([]); // Store badges
   const [patronCommunities, setPatronCommunities] = useState<Community[]>([]); // Patron communities state
+  const [reputationEnergy, setReputationEnergy] = useState<ReputationEnergy | null>(null); // Store reputation and energy
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // State to handle errors
   const [communitiesPage, setCommunitiesPage] = useState(1); // Page state for paginated communities
+  const [openModal, setOpenModal] = useState<"reputation" | "energy" | "normalizedReputation" | null>(null);
   const navigate = useNavigate();
 
   // Fetch profile data based on wallet address
@@ -85,8 +94,14 @@ const PublicProfile: React.FC = () => {
         if (response.status === 404) {
           throw new Error("Profile not found");
         }
-        setProfileData(response.data.user); // Access user data inside the response
-        setPatronCommunities(response.data.patronCommunities || []); // Set patron communities from the response
+        setProfileData(response.data.user);
+        setBadges([...response.data.badges.highlight, ...response.data.badges.earned]); // Combine badges
+        setPatronCommunities(response.data.patronCommunities || []); // Set patron communities
+        setReputationEnergy({
+          reputation: response.data.reputation.raw,
+          energy: response.data.energy,
+          normalizedReputation: response.data.reputation.normalized,
+        });
       } catch (error) {
         console.error("Error fetching public profile:", error);
         setError("Profile not found or an error occurred");
@@ -121,8 +136,8 @@ const PublicProfile: React.FC = () => {
     );
   }
 
-  const socialMedia = profileData.social?.social || {}; // Access nested social structure safely
   const avatarUrl = profileData.avatar || "/default-avatar.png";
+  const bannerUrl = profileData.banner || "/default-banner.jpg";
   const displayName = profileData.basename
     ? profileData.basename
     : formatWalletAddress(profileData.wallet);
@@ -134,150 +149,226 @@ const PublicProfile: React.FC = () => {
     communitiesPage * PAGE_SIZE
   );
 
-  return (
-    <Box
-      sx={{
-        padding: "2rem",
-        backgroundColor: "#fff",
-        borderRadius: "8px",
-        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-        maxWidth: "600px",
-        margin: "0 auto",
-      }}
-    >
-      {/* Display Name (Basename or Wallet Address) */}
-      <Box display="flex" justifyContent="center" mb={3}>
-        <Typography className="basefontblue bigtext" fontWeight="bold">
-          {displayName}
-        </Typography>
-      </Box>
+  const handleOpenModal = (type: "reputation" | "energy" | "normalizedReputation") => {
+    setOpenModal(type);
+  };
 
-      {/* Avatar Section */}
-      <Box display="flex" justifyContent="center" mb={4}>
+  const handleCloseModal = () => {
+    setOpenModal(null);
+  };
+
+  return (
+    <div  style={{ backgroundColor: "#111", borderRadius: "8px", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }} className="boxleft">
+      {/* Banner Section */}
+      <Box
+        sx={{
+          position: "relative",
+          backgroundColor: "#f5f5f5",
+          height: "200px",
+          backgroundImage: `url(${bannerUrl})`,
+          backgroundSize: "cover",
+          borderRadius: "5px"
+        }}
+      />
+
+      {/* Avatar Section - Positioned to be 50% inside banner */}
+      <Box display="flex" justifyContent="center" position="relative" sx={{ top: "-60px" }}>
         <Avatar
           src={avatarUrl}
           alt="Profile Avatar"
-          sx={{ width: 120, height: 120, border: "3px solid #ddd" }}
+          sx={{ width: 120, height: 120, border: "3px solid #fff" }}
         />
       </Box>
 
-      <Box mt={2} display="flex" gap={2} alignItems="center" justifyContent="center" mb={3}>
-        {socialMedia?.twitter?.status === "yes" && (
-          <a href={`https://twitter.com/${socialMedia.twitter.account}`} target="_blank" rel="noopener noreferrer">
-            <img
-              src="https://patron.visioncommunity.xyz/img/icons/x-black.png"
-              alt="Twitter"
-              style={{ width: 28, height: 28 }}
-            />
-          </a>
-        )}
-        {socialMedia?.instagram?.status === "yes" && (
-          <a href={`https://instagram.com/${socialMedia.instagram.account}`} target="_blank" rel="noopener noreferrer">
-            <img
-              src="https://patron.visioncommunity.xyz/img/icons/instagram-black.png"
-              alt="Instagram"
-              style={{ width: 28, height: 28 }}
-            />
-          </a>
-        )}
-        {socialMedia?.warpcast?.status === "yes" && (
-          <a href={`https://warpcast.com/${socialMedia.warpcast.account}`} target="_blank" rel="noopener noreferrer">
-            <img
-              src="https://patron.visioncommunity.xyz/img/icons/warpcast-black.png"
-              alt="Warpcast"
-              style={{ width: 28, height: 28 }}
-            />
-          </a>
-        )}
-        {socialMedia?.lunchbreak?.status === "yes" && (
-          <a href={`https://lunchbreak.com/${socialMedia.lunchbreak.account}`} target="_blank" rel="noopener noreferrer">
-            <img
-              src="https://patron.visioncommunity.xyz/img/icons/lunchbreak-black.png"
-              alt="Lunchbreak"
-              style={{ width: 28, height: 28 }}
-            />
-          </a>
+      <Box>
+        {/* Display Name (Basename or Wallet Address) */}
+        <Box display="flex" justifyContent="center" mb={3}>
+          <Typography className="basefont bigtext" fontWeight="bold">
+            {displayName}
+          </Typography>
+          {/* Highlighted Badges */}
+          <Box ml={2} display="flex">
+            {badges
+              .filter((badge) => badge.status_label === "highlight")
+              .slice(0, 2)
+              .map((badge, index) => (
+                <Avatar
+                  key={index}
+                  src={badge.image}
+                  alt="Badge"
+                  sx={{ width: 32, height: 32, marginLeft: 1 }}
+                />
+              ))}
+          </Box>
+        </Box>
+
+<Box display="flex" justifyContent="center" mb={4}>
+  <Box
+    display="flex"
+    gap={2}
+    sx={{
+      padding: "10px 20px", // More padding on left and right
+      borderRadius: "8px",
+      backgroundColor: "transparent",
+      border: "1px solid #333",
+      gap: "30px"
+    }}
+  >
+    {/* Reputation */}
+    <Box
+      onClick={() => handleOpenModal("reputation")}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        color: "#0052ff", // Blue for reputation
+        cursor: "pointer",
+        '&:hover': {
+          '&::after': {
+            content: '"Reputation: raw reputation in the community."',
+            position: 'absolute',
+            gap: "2px",
+            backgroundColor: '#fff',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            color: '#000',
+            whiteSpace: 'nowrap',
+            zIndex: 1000,
+            top: '-35px',
+          },
+        },
+        position: 'relative',
+      }}
+    >
+      <FontAwesomeIcon icon={faTrophy} />
+      <span className="indprofile">Reputation
+      <br/><b>{formatNumber(reputationEnergy?.reputation || 0)}</b></span>
+    </Box>
+
+    {/* Energy */}
+    <Box
+      onClick={() => handleOpenModal("energy")}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "2px",
+        color: "#ff4500",
+        cursor: "pointer",
+        '&:hover': {
+          '&::after': {
+            content: '"Energy: Qauntity of energy available."',
+            position: 'absolute',
+            backgroundColor: '#fff',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            color: '#000',
+            whiteSpace: 'nowrap',
+            zIndex: 1000,
+            top: '-35px',
+          },
+        },
+        position: 'relative',
+      }}
+    >
+      <FontAwesomeIcon icon={faFire} />
+      <span className="indprofile">Energy
+      <br/><b>{formatNumber(reputationEnergy?.energy || 0)}</b></span>
+    </Box>
+
+    {/* Normalized Reputation */}
+    <Box
+      onClick={() => handleOpenModal("normalizedReputation")}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        color: "green", // Green for normalized reputation
+        cursor: "pointer",
+        '&:hover': {
+          '&::after': {
+            content: '"Normalized Reputation: A scaled 0 to 100 of the reputation compared with all community."',
+            position: 'absolute',
+            backgroundColor: '#fff',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            color: '#000',
+            gap: "2px",
+            whiteSpace: 'nowrap',
+            zIndex: 1000,
+            top: '-35px',
+          },
+        },
+        position: 'relative',
+      }}
+    >
+      <FontAwesomeIcon icon={faCheckCircle} />
+      <span className="indprofile">Norm. Rep.
+      <br/><b>{formatNumber(reputationEnergy?.normalizedReputation || 0)}</b></span>
+    </Box>
+  </Box>
+</Box>
+
+
+        {/* Badges Section */}
+        <Box display="flex" flexWrap="wrap" gap={2} mb={4}>
+          {badges.map((badge, index) => (
+            <Card key={index} sx={{ width: "120px", padding: 2, textAlign: "center" }}>
+              <Avatar src={badge.image} alt="Badge" sx={{ width: 64, height: 64 }} />
+              <Typography>{badge.status_label === "highlight" ? "Highlight" : "Earned"}</Typography>
+            </Card>
+          ))}
+        </Box>
+
+        {/* Patroned Communities Section */}
+        <div className="conttitleprofile">Latest Patrons</div>
+        <Box display="flex" flexWrap="wrap" gap={2}>
+          {paginatedCommunities.map((community: Community, index: number) => {
+            const communityDetails = community.details || {};
+            const communityAvatarUrl = communityDetails.avatar || "/default-community-avatar.png";
+            
+            const communityName = communityDetails.basename
+              ? communityDetails.basename
+              : formatWalletAddress(community.receiver_wallet);
+
+            return (
+              <Card key={index} sx={{ flex: "1 0 calc(50% - 16px)", marginBottom: "16px" }}>
+                <CardContent>
+                  <Box display="flex" alignItems="center">
+                    <Avatar src={communityAvatarUrl} alt={communityName} />
+                    <Box ml={2}>
+                      <Typography variant="body1">{communityName}</Typography>
+                      <Typography>{formatVisionAmount(community.amount)} $VISION</Typography>
+                    </Box>
+                    <IconButton onClick={() => navigate(`/community/${community.receiver_wallet}`)} sx={{ marginLeft: "auto" }}>
+                      <ArrowForwardIcon />
+                    </IconButton>
+                  </Box>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </Box>
+
+        {/* Pagination Controls */}
+        {patronCommunities.length > PAGE_SIZE && (
+          <Box mt={2} display="flex" justifyContent="space-between">
+            <Button disabled={communitiesPage === 1} onClick={() => setCommunitiesPage((prev) => prev - 1)}>
+              Previous
+            </Button>
+            <Typography>
+              Page {communitiesPage} of {totalCommunityPages}
+            </Typography>
+            <Button disabled={communitiesPage >= totalCommunityPages} onClick={() => setCommunitiesPage((prev) => prev + 1)}>
+              Next
+            </Button>
+          </Box>
         )}
       </Box>
-
-      {/* Badges Section */}
-      <Card sx={{ marginBottom: 4 }}>
-        <CardContent>
-          <Typography className="profiletitlebox" gutterBottom>
-            Badges
-          </Typography>
-          <Typography>Coming Soon</Typography>
-        </CardContent>
-      </Card>
-
-      {/* Patroned Communities */}
-      <Card>
-        <CardContent>
-          <Typography className="profiletitlebox" gutterBottom>
-            Patroned Communities
-          </Typography>
-          {paginatedCommunities.length ? (
-            paginatedCommunities.map((community: Community, index: number) => {
-              const communityDetails = community.details || {};
-              const communityAvatarUrl = communityDetails.avatar || "/default-community-avatar.png";
-              const communityName = communityDetails.basename
-                ? communityDetails.basename
-                : formatWalletAddress(community.receiver_wallet);
-
-              return (
-                <Box
-                  key={community.receiver_wallet + index}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  my={1}
-                >
-                  <Avatar src={communityAvatarUrl} alt={communityName} />
-                  <Box ml={2}>
-                    <Typography variant="body1">{communityName}</Typography>
-                    <Typography className="basefont smalltext" color="textSecondary">
-                      {formatVisionAmount(community.amount)} $VISION
-                    </Typography>
-                  </Box>
-                  <IconButton
-                    onClick={() => navigate(`/community/${community.receiver_wallet}`)}
-                    color="primary"
-                    sx={{ marginLeft: "auto" }}
-                  >
-                    <ArrowForwardIcon />
-                  </IconButton>
-                </Box>
-              );
-            })
-          ) : (
-            <Typography>No patroned communities found.</Typography>
-          )}
-
-          {/* Pagination Controls */}
-          {patronCommunities.length > PAGE_SIZE && (
-            <Box mt={2} display="flex" justifyContent="space-between">
-              <Button
-                disabled={communitiesPage === 1}
-                onClick={() => setCommunitiesPage((prev) => prev - 1)}
-                variant="outlined"
-              >
-                Previous
-              </Button>
-              <Typography>
-                Page {communitiesPage} of {totalCommunityPages}
-              </Typography>
-              <Button
-                disabled={communitiesPage >= totalCommunityPages}
-                onClick={() => setCommunitiesPage((prev) => prev + 1)}
-                variant="outlined"
-              >
-                Next
-              </Button>
-            </Box>
-          )}
-        </CardContent>
-      </Card>
-    </Box>
+    </div>
   );
 };
 

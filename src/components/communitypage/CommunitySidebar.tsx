@@ -44,15 +44,18 @@ export default function CommunitySidebar({ communityId }: CommunitySidebarProps)
   const formatAddress = (address: string) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
   return (
-    <Box sx={{ border: "1px solid #ddd", padding: 2 }}>
-      <Typography variant="h6" gutterBottom className="activitetile">
+    <Box sx={{ border: "1px solid #333", padding: 2, borderRadius: "5px" }}>
+    <div className="containertitle">
+      <Typography variant="h6" gutterBottom className="communityanounce">
         Latest Patrons
       </Typography>
+    </div>
+      <hr className="sep topbottom10pxmargin" />
 
       {loading ? (
         <CircularProgress />
       ) : patrons.length === 0 ? (
-        <Typography variant="body2">No patrons available</Typography>
+        <Typography variant="body2">No patrons yet, be the first one!</Typography>
       ) : (
         patrons.map((patron) => (
           <Box
@@ -66,12 +69,12 @@ export default function CommunitySidebar({ communityId }: CommunitySidebarProps)
             <Avatar
               alt={patron.basename || patron.wallet}
               src={patron.avatar || "https://api.visioncommunity.xyz/img/placeholder/avatar.jpg"}
-              sx={{ width: 40, height: 40, marginRight: 2 }}
+              sx={{ width: 30, height: 30, marginRight: 2 }}
             />
             <Box>
               <Typography
-                variant="body1"
                 component="a"
+                className="patronnameside"
                 href={`/profile/${patron.wallet}`}
                 sx={{
                   fontWeight: "bold",
@@ -82,10 +85,10 @@ export default function CommunitySidebar({ communityId }: CommunitySidebarProps)
                 }}
               >
                 {patron.basename ? patron.basename : formatAddress(patron.wallet)}
-                <OpenInNewIcon fontSize="small" sx={{ marginLeft: 1 }} />
+                <OpenInNewIcon fontSize="verysmall" sx={{ marginLeft: 1 }} />
               </Typography>
-              <Typography variant="body2" className="patronamt">
-                Patron {parseFloat(patron.amount).toFixed(2)} $VISION
+              <Typography variant="body3" className="patronamt patronnamesideamount" >
+                {parseFloat(patron.amount).toFixed(2)} $VISION
               </Typography>
             </Box>
           </Box>

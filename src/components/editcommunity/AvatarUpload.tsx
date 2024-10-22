@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, Button, Box, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { useAddress } from "@thirdweb-dev/react"; // Use address hook
+import { useActiveAccount } from "thirdweb/react";  // Updated for SDK v5
 import ImageCropper from "./ImageCropper";
 
 interface AvatarUploadProps {
@@ -16,8 +16,8 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ avatar, setAvatar }) => {
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Get the connected wallet address from Thirdweb
-  const walletAddress = useAddress(); // Use the address hook to get the connected address
+  // Get the active account using SDK v5 hook
+  const account = useActiveAccount();  // SDK v5, fetches both address and other wallet details
 
   // Maximum file size in bytes (2MB)
   const maxFileSize = 2 * 1024 * 1024;
@@ -48,19 +48,17 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ avatar, setAvatar }) => {
   });
 
   // Handle after cropping is done and send image to the backend
-  const handleCropComplete = async (croppedUrl: string) => {
+const handleCropComplete = async (croppedUrl: string) => {
     setCroppedImage(croppedUrl); // Preview cropped image locally
     setOpenCropper(false);
 
-    // Convert the file to Base64 for uploading
-    const base64Image = await fileToBase64(selectedFile!);
-
-    // Upload the image to the backend
-    const uploadedUrl = await uploadAvatar(base64Image, walletAddress);
+    // Upload the cropped image (croppedUrl is already a Base64 string)
+    const uploadedUrl = await uploadAvatar(croppedUrl, account?.address);
     if (uploadedUrl) {
       setAvatar(uploadedUrl); // Update the parent with the URL received from the backend
     }
-  };
+};
+
 
   // Upload Base64 image to the backend
   const uploadAvatar = async (base64Image: string, walletAddress: string | undefined): Promise<string | null> => {

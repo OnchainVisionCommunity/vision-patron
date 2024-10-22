@@ -1,48 +1,252 @@
-import React, { useState } from "react";
-import { Box, Card, Avatar, Typography, IconButton, Menu, MenuItem } from "@mui/material";
+//MESSAGES TO COMMUNITY MURAL
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Card,
+  Avatar,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
+  ListItemIcon,
+  ListItemText,
+  Modal
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { format } from "date-fns"; // Using date-fns for date formatting
-import { useAddress, useSigner } from "@thirdweb-dev/react"; // Import useAddress and useSigner to get connected wallet and sign
-
-import axios from "axios"; // Import axios for API requests
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { useActiveAccount } from "thirdweb/react";
+import { signMessage } from "thirdweb/utils";
+import axios from "axios";
+import { useUserStatus } from "../../context/UserStatusContext";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+import { parseISO, formatDistanceToNow, addMinutes } from 'date-fns';
 
 interface Message {
-  id: number; // Stream ID added
+  id: number;
   user: string;
   avatar: string;
   content: string;
   date: string;
-  media?: string; // Optional media URL
-  media_kind?: string; // Media type (e.g., image, video, etc.)
-  wallet: string; // The poster's wallet address
+  media?: string;
+  media_kind?: string;
+  wallet: string;
+  likes_count: number;
+  downvotes_count: number;
+  replies_count: number;
 }
 
 interface CommunityMessagesProps {
   isOwner: boolean;
-  ownerWallet: string; // Community owner's wallet address
+  ownerWallet: string;
   messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>; // Function to update the messages
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 const formatToLocalDate = (utcDateString: string) => {
   try {
-    const [datePart, timePart] = utcDateString.split(", ");
-    const [day, month, year] = datePart.split("/");
-    const isoDateString = `${year}-${month}-${day}T${timePart}Z`;
-    const parsedDate = new Date(isoDateString);
+    const parsedDate = new Date(utcDateString);
+    if (isNaN(parsedDate.getTime())) {
+      return "Invalid date";
+    }
     return format(parsedDate, "PPpp");
   } catch (error) {
     return "Invalid date";
   }
 };
 
-export default function CommunityMessages({ isOwner, ownerWallet, messages, setMessages }: CommunityMessagesProps) {
+// Define the modal style
+const modalStyle = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+const formatWalletAddress = (wallet: string) => {
+  return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
+};
+
+const timeAgo = (date) => {
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - new Date(date).getTime()) / 1000);
+
+  if (seconds < 60) return 'Now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d`;
+
+  // If more than a week, return the formatted date (e.g., "Oct 15, 2024")
+  return new Date(date).toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
+
+  
+export default function CommunityMessages({
+  isOwner,
+  ownerWallet,
+  messages,
+  setMessages,
+}: CommunityMessagesProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const [loadingDelete, setLoadingDelete] = useState<boolean>(false); // Loading state for deletion
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+  const [visibleMessages, setVisibleMessages] = useState<number>(50);
+  const [likedMessages, setLikedMessages] = useState<Set<number>>(new Set());
+  const [downvotedMessages, setDownvotedMessages] = useState<Set<number>>(new Set());
+  const [feedbackMessage, setFeedbackMessage] = useState<{
+    id: number;
+    text: string;
+    color: string;
+  } | null>(null);
+  const { updateEnergy, updateReputation } = useUserStatus();
+  const account = useActiveAccount();
+  const navigate = useNavigate();
+const [isPortrait, setIsPortrait] = useState(false);
+  const [openBoostModal, setOpenBoostModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string>(""); 
 
-  const connectedWallet = useAddress(); // Get the connected wallet address
-  const signer = useSigner(); // Get the signer for signing the delete request
+  const handleBoostModalOpen = () => setOpenBoostModal(true);
+const handleBoostModalClose = () => {
+  setOpenBoostModal(false);
+  setModalMessage(""); // Clear the modal message to close the feedback modal
+};
+  
+// Function to handle image load and determine aspect ratio
+const handleImageLoad = (event) => {
+  const { naturalWidth, naturalHeight } = event.target;
+  setIsPortrait(naturalHeight > naturalWidth);
+};
+
+const handleBoostAction = async () => {
+    if (!account?.address || !selectedMessage) {
+      alert("Wallet is not connected or no stream selected");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Include the timestamp in the message
+      const timestamp = Math.floor(Date.now() / 1000);  // Current Unix timestamp (seconds)
+      const message = `I am boosting the stream ${selectedMessage.id} at ${timestamp} in ${ownerWallet}`;
+
+      // Sign the message using the SDK v5 signMessage utility
+      const signature = await signMessage({
+        account,
+        message,
+      });
+
+      // Send the signed message and other data to the backend
+      const response = await axios.post("https://api.visioncommunity.xyz/v02/user/stream/boost", {
+        walletAddress: account.address,
+        signature,
+        streamId: selectedMessage.id,
+        communityOwner: ownerWallet,
+        timestamp,
+      });
+
+      // Handle the response
+      if (response.data.success) {
+        setModalMessage("Post boosted successfully!");
+      } else {
+        setModalMessage(response.data.message || "Failed to boost the stream");
+      }
+    } catch (error) {
+      console.error("Error boosting stream:", error);
+      setModalMessage("An error occurred while boosting the stream");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Fetch like and downvote status
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      if (!account?.address || messages.length === 0) return;
+
+      try {
+        const likeCheckPayload = {
+          owner: ownerWallet,
+          liker: account?.address,
+          streams: messages.map((msg) => msg.id),
+        };
+
+        const response = await axios.post(
+          "https://api.visioncommunity.xyz/v02/community/stream/like/check",
+          likeCheckPayload
+        );
+
+        if (response.data.success) {
+          const likes = response.data.likes;
+          const likedStreams = new Set<number>();
+
+          for (const streamId in likes) {
+            if (likes[streamId]) {
+              likedStreams.add(parseInt(streamId));
+            }
+          }
+          setLikedMessages(likedStreams);
+        }
+      } catch (error) {
+        console.error("Error fetching like statuses:", error);
+      }
+    };
+
+    const fetchDownvoteStatus = async () => {
+      if (!account?.address || messages.length === 0) return;
+
+      try {
+        const downvoteCheckPayload = {
+          owner: ownerWallet,
+          liker: account?.address,
+          streams: messages.map((msg) => msg.id),
+        };
+
+        const response = await axios.post(
+          "https://api.visioncommunity.xyz/v02/community/stream/downvote/check",
+          downvoteCheckPayload
+        );
+
+        if (response.data.success) {
+          const downvotes = response.data.downvotes;
+          const downvotedStreams = new Set<number>();
+
+          for (const streamId in downvotes) {
+            if (downvotes[streamId]) {
+              downvotedStreams.add(parseInt(streamId));
+            }
+          }
+          setDownvotedMessages(downvotedStreams);
+        }
+      } catch (error) {
+        console.error("Error fetching downvote statuses:", error);
+      }
+    };
+
+    fetchLikeStatus();
+    fetchDownvoteStatus();
+  }, [messages, account?.address, ownerWallet]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>, message: Message) => {
     setAnchorEl(event.currentTarget);
@@ -55,122 +259,331 @@ export default function CommunityMessages({ isOwner, ownerWallet, messages, setM
   };
 
   const handleDeleteMessage = async () => {
-    if (!selectedMessage || !signer || !connectedWallet) return;
+    if (!selectedMessage || !account?.address) return;
 
-    setLoadingDelete(true); // Start the loading state
+    setLoadingDelete(true);
 
     try {
-      const timestamp = Math.floor(Date.now() / 1000); // Current Unix timestamp
+      const timestamp = Math.floor(Date.now() / 1000);
       const signedMessage = `Delete stream with ID: ${selectedMessage.id} at timestamp: ${timestamp}`;
-      const signature = await signer.signMessage(signedMessage);
 
-      // Prepare the data for deletion request
+      const signature = await signMessage({
+        account,
+        message: signedMessage,
+      });
+
       const deleteData = {
-        walletAddress: connectedWallet, // Wallet requesting the deletion
+        walletAddress: account.address,
         signature,
-        streamId: selectedMessage.id, // ID of the stream to delete
-        community: ownerWallet, // Owner of the community
+        streamId: selectedMessage.id,
+        community: ownerWallet,
         timestamp,
       };
 
-      console.log("Delete request data:", deleteData);
-
-      // Send the delete request to the backend
-      const response = await axios.post("https://api.visioncommunity.xyz/community/stream/delete", deleteData);
+      const response = await axios.post(
+        "https://api.visioncommunity.xyz/community/stream/delete",
+        deleteData
+      );
 
       if (response.data.success) {
-        console.log("Message deleted successfully:", response.data.message);
-        // Remove the deleted message from the local state
-        setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== selectedMessage.id));
-        setSelectedMessage(null); // Reset the selected message
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== selectedMessage.id)
+        );
+        setSelectedMessage(null);
       } else {
         console.error("Failed to delete message:", response.data.error);
       }
     } catch (error) {
       console.error("Error deleting message:", error);
     } finally {
-      setLoadingDelete(false); // Stop the loading state
-      handleMenuClose(); // Close the menu after deletion
+      setLoadingDelete(false);
+      handleMenuClose();
     }
   };
 
-  // Function to format wallet as 0x1234...5678 if user (basename) is missing
-  const formatWalletAddress = (wallet: string) => {
-    return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
+  // Handle like and downvote toggles
+  const handleLikeToggle = async (id: number) => {
+    const liked = likedMessages.has(id);
+
+    try {
+      const likeStatus = liked ? 0 : 1;
+      const likeData = {
+        owner: ownerWallet,
+        liker: account?.address,
+        stream: id,
+        status: likeStatus,
+      };
+
+      const response = await axios.post("https://api.visioncommunity.xyz/v02/community/stream/like", likeData);
+
+      if (response.data.success) {
+        const { energy_spent, reputation_earned_by_liker } = response.data;
+        updateEnergy(-energy_spent);
+        updateReputation(reputation_earned_by_liker);
+
+        setLikedMessages((prevLikedMessages) => {
+          const updatedLikes = new Set(prevLikedMessages);
+
+          setMessages((prevMessages) =>
+            prevMessages.map((msg) => {
+              if (msg.id === id) {
+                if (updatedLikes.has(id)) {
+                  updatedLikes.delete(id);
+                  return { ...msg, likes_count: msg.likes_count - 1 };
+                } else {
+                  updatedLikes.add(id);
+                  return { ...msg, likes_count: msg.likes_count + 1 };
+                }
+              }
+              return msg;
+            })
+          );
+
+          return updatedLikes;
+        });
+      }
+    } catch (error) {
+      console.error("Error liking the stream:", error);
+    }
+  };
+
+const handleDownvoteToggle = async (id: number) => {
+  const downvoted = downvotedMessages.has(id);
+
+  // Find the message by its ID to check if it's a self-downvote
+  const message = messages.find((msg) => msg.id === id);
+  if (message?.wallet.toLowerCase() === account?.address?.toLowerCase()) {
+    // Prevent self-downvote from updating energy or reputation
+    console.warn("Self-downvote is not allowed.");
+    return;
+  }
+
+  try {
+    const downvoteStatus = downvoted ? 0 : 1; // Toggle between 0 (undo) and 1 (downvote)
+    const downvoteData = {
+      owner: ownerWallet,
+      liker: account?.address, // The user doing the downvote
+      stream: id,
+      status: downvoteStatus,
+    };
+
+    // Send the downvote request
+    const response = await axios.post("https://api.visioncommunity.xyz/v02/community/stream/downvote", downvoteData);
+
+    if (response.data.success) {
+      const { energy_spent, reputation_earned_by_downvoter } = response.data; // Ensure these values are returned
+
+      // Update user's energy and reputation only if it's a valid downvote
+      updateEnergy(-energy_spent); // Deduct energy spent on downvote
+      updateReputation(reputation_earned_by_downvoter); // Update reputation with the points earned for downvoting
+
+      // Update local state for downvoted messages
+      setDownvotedMessages((prevDownvotedMessages) => {
+        const updatedDownvotes = new Set(prevDownvotedMessages);
+
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) => {
+            if (msg.id === id) {
+              if (updatedDownvotes.has(id)) {
+                updatedDownvotes.delete(id); // Undo downvote
+                return { ...msg, downvotes_count: msg.downvotes_count - 1 };
+              } else {
+                updatedDownvotes.add(id); // Apply downvote
+                return { ...msg, downvotes_count: msg.downvotes_count + 1 };
+              }
+            }
+            return msg;
+          })
+        );
+
+        return updatedDownvotes;
+      });
+    }
+  } catch (error) {
+    console.error("Error downvoting the stream:", error);
+  }
+};
+
+
+
+  const handleLoadMore = () => {
+    setVisibleMessages((prev) => prev + 20);
+  };
+
+  const handleNavigateToStream = (msgId: number) => {
+    navigate(`/communities/${ownerWallet}/stream/${msgId}`);
   };
 
   return (
-    <Box>
-      {messages.map((msg, index) => {
-        const isPosterOwner = msg.wallet.toLowerCase() === ownerWallet.toLowerCase(); // Check if the poster is the community owner
-        const isPosterSelf = msg.wallet.toLowerCase() === connectedWallet?.toLowerCase(); // Check if the poster is the connected user
-        const displayName2 = msg.user ? msg.user : formatWalletAddress(msg.wallet); // Use basename (user) or formatted wallet address if basename is missing
+    <Box className="msgmural">
+      {messages.slice(0, visibleMessages).map((msg, index) => {
+        const isPosterOwner = msg.wallet.toLowerCase() === ownerWallet.toLowerCase();
+        const isPosterSelf = msg.wallet.toLowerCase() === account?.address?.toLowerCase();
+        const displayName2 = msg.user && msg.user.endsWith(".base.eth") ? msg.user : formatWalletAddress(msg.wallet);
+        const isLiked = likedMessages.has(msg.id);
+        const isDownvoted = downvotedMessages.has(msg.id);
 
         return (
           <Card
             key={index}
             sx={{
-              mb: 2,
+              mb: 0,
               padding: 2,
               display: "flex",
               alignItems: "flex-start",
-              border: "1px solid #ddd", // Common border for all messages
-              borderRadius: "8px",
+              border: "1px solid #ddd",
+              borderRadius: "0px",
+              position: "relative",
             }}
+            className="msgmuralind"
           >
-            {/* Avatar with link to profile */}
-            <a href={`/profile/${msg.wallet}`} style={{ textDecoration: "none" }}> {/* Use relative path */}
+            <a href={`/profile/${msg.wallet}`} style={{ textDecoration: "none" }}>
               <Avatar src={msg.avatar || "/default-avatar.png"} sx={{ mr: 2 }} />
             </a>
             <Box sx={{ flex: 1 }}>
               <Box>
-                {/* Username or Wallet Address with link to profile */}
-                <a href={`/profile/${msg.wallet}`} style={{ textDecoration: "none", color: "inherit" }}> {/* Use relative path */}
-                  <Typography variant="body1" className="nametitle">
+                <a href={`/profile/${msg.wallet}`} style={{ textDecoration: "none", color: "inherit" }}>
+                  <Typography variant="body1" className="usernamemural basestylefont">
                     <strong>{displayName2}</strong>
                   </Typography>
                 </a>
-                {/* Date goes below the username */}
-                <Typography variant="caption" color="textSecondary">
-                  {formatToLocalDate(msg.date)} {/* Format the date to the user's local timezone */}
+                <Typography
+                  variant="caption"
+                  color="white"
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => handleNavigateToStream(msg.id)}
+                  className="datetime"
+                >
+                  {timeAgo(msg.date)}
                 </Typography>
               </Box>
               <Typography variant="body2" sx={{ mt: 1 }}>
                 {msg.content}
               </Typography>
 
-              {/* Render media if media_kind is image */}
-              {msg.media && (!msg.media_kind || msg.media_kind === 'image') && (
-                <Box
-                  component="img"
-                  src={msg.media}
-                  alt="media"
-                  sx={{
-                    mt: 2,
-                    width: "100%", // Full width
-                    maxHeight: 300, // Maximum height for images
-                    objectFit: "cover", // Ensures the image covers the area while maintaining aspect ratio
-                    borderRadius: 2, // Optional rounded corners
-                  }}
-                />
+              {msg.media && (!msg.media_kind || msg.media_kind === "image") && (
+    <Box sx={{ mt: 2 }}>
+      <img
+        src={msg.media}
+        alt="stream media"
+        onLoad={handleImageLoad}
+        className="feedimg"
+        style={{
+          maxWidth: '100%',
+          maxHeight: isPortrait ? '500px' : '300px',
+          objectFit: isPortrait ? 'cover' : 'contain',
+        }}
+      />
+    </Box>
               )}
+
+              <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+                <IconButton onClick={() => handleNavigateToStream(msg.id)} className="white">
+                  <ChatBubbleOutlineIcon sx={{ fontSize: 18 }} />
+                  <Typography color="white" variant="caption" sx={{ ml: 1 }}>
+                    {msg.replies_count}
+                  </Typography>
+                </IconButton>
+
+                <IconButton onClick={() => handleLikeToggle(msg.id)} className="white">
+                  {isLiked ? (
+                    <FavoriteIcon sx={{ fontSize: 18, color: "#0070f3" }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ fontSize: 18 }} />
+                  )}
+                  <Typography variant="caption" sx={{ ml: 1 }}>
+                    {msg.likes_count}
+                  </Typography>
+                </IconButton>
+
+                <IconButton onClick={() => handleDownvoteToggle(msg.id)} className="white">
+                  {isDownvoted ? (
+                    <ThumbDownAltIcon sx={{ fontSize: 18, color: "red" }} />
+                  ) : (
+                    <ThumbDownOffAltIcon sx={{ fontSize: 18 }} />
+                  )}
+                  <Typography color="white" variant="caption" sx={{ ml: 1 }}>
+                    {msg.downvotes_count}
+                  </Typography>
+                </IconButton>
+              </Box>
             </Box>
 
-            {/* Display delete option if the user is the community owner or the poster */}
             {(isOwner || isPosterSelf) && (
-              <IconButton onClick={(event) => handleMenuOpen(event, msg)} sx={{ marginLeft: "auto" }}>
+              <IconButton onClick={(event) => handleMenuOpen(event, msg)} sx={{ marginLeft: "auto" }} className="btnoptmsg">
                 <MoreVertIcon />
               </IconButton>
             )}
 
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-              <MenuItem onClick={handleDeleteMessage} disabled={loadingDelete}>
-                {loadingDelete ? "Deleting..." : "Delete"}
-              </MenuItem>
-            </Menu>
+<Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+  <MenuItem onClick={handleDeleteMessage} disabled={loadingDelete}>
+    <ListItemText primary={loadingDelete ? "Deleting..." : "Delete"} />
+    <ListItemIcon sx={{ minWidth: 'auto', marginRight: 'auto' }}>
+      <DeleteIcon />
+    </ListItemIcon>
+  </MenuItem>
+  <MenuItem onClick={handleBoostModalOpen}>
+    <ListItemText primary="Boost" />
+    <ListItemIcon sx={{ minWidth: 'auto', marginRight: 'auto' }}>
+      <FlashOnIcon />
+    </ListItemIcon>
+  </MenuItem>
+</Menu>
           </Card>
         );
       })}
+
+      {messages.length > visibleMessages && (
+        <Box sx={{ textAlign: "center", mt: 2 }}>
+          <Button variant="outlined" onClick={handleLoadMore}>
+            Load More
+          </Button>
+        </Box>
+      )}
+      
+            {/* Boost Modal */}
+      <Modal
+        open={openBoostModal}
+        onClose={handleBoostModalClose}
+        aria-labelledby="boost-community-modal"
+        aria-describedby="boost-community-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="boost-community-modal" className="modaltitle" gutterBottom>
+            Boost
+          </Typography>
+          <Typography id="boost-community-description" sx={{ mb: 2 }} className="modaltext">
+            You are about to boost this post. This action will consume 10k energy and will make this post publicly visible on everyone's "For You". Do you wish to continue? This action cannot be undone manually.
+          </Typography>
+          <Button
+            variant="contained"
+            className="btnpatronme"
+            fullWidth
+            sx={{ mb: 2 }}
+            onClick={handleBoostAction}
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Confirm Boost"}
+          </Button>
+          <Button variant="outlined" color="secondary" fullWidth onClick={handleBoostModalClose} className="btnpatronmecancel">
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
+
+      {/* Feedback Modal */}
+      <Modal open={!!modalMessage} onClose={handleBoostModalClose}>
+        <Box sx={modalStyle}>
+          <Typography className="modaltitle" gutterBottom>
+            {modalMessage.includes("successfully") ? "Success" : "Info"}
+          </Typography>
+          <Typography className="modaltext">{modalMessage}</Typography>
+          <Button variant="contained" className="btnpatronme" fullWidth onClick={handleBoostModalClose}>
+            Close
+          </Button>
+        </Box>
+      </Modal>
+      
     </Box>
   );
 }
