@@ -21,7 +21,8 @@ Onchain Patron is the primary feature of the Vision platform, designed to bring 
 1. **Donate $VISION**: Any user can send $VISION tokens to a wallet or basename on the platform to become a patron. Once the transaction is complete, you officially gain access to the community.
 2. **Access Communities**: Patrons can explore and access the communities they've supported through the "Communities" menu.
 3. **Support Creators**: Patronage is a way to support your favorite artists, content creators, and builders. The benefits of being a patron depend on what each community owner offers.
-4. **NFT Patron**: By donating $VISION to a community, you also receive a special NFT that recognizes your patronage.
+4. **NFT Patron**: By patronazing a community, you also receive a special NFT that recognizes your patronage.
+5. **Lotteries**: Patrons can "roll" their NFTs in lotteries to win $VISION prizes up to 1000x the pool value. The luck of an NFT is defined by [(normalized user reputation + normalized community reputation) / 2]
 
 ## Creating a Community
 
@@ -31,7 +32,15 @@ Onchain Patron is the primary feature of the Vision platform, designed to bring 
 
 ## Future Features
 
-Vision Patron has a long-term roadmap to introduce new features and improvements over time. Stay updated by following the roadmap section on the platform.
+Vision Patron has a long-term roadmap to introduce new features and improvements over time. Stay updated by following the roadmap section on the platform. Short-mid terms updates includes features as:
+- New mini-game mode (PvP Deck);
+- Public API;
+- Patron with USD or other Fiat currency;
+- Mobile App;
+- Improvement of "For You" algorithm;
+- New features to community owners as: publish airdrops and Zora mints;
+- Communities new features as sub-communities;
+- Live public chat game-mode to patron win reputation
 
 ## Safety and Security
 
@@ -45,6 +54,9 @@ Any wallet can create a community on Patron, but if you believe a community is n
 - **X (formerly Twitter)**: [https://x.com/OCVCommunity](https://x.com/OCVCommunity)
 - **Patron Developer**: [https://warpcast.com/pongl](https://warpcast.com/pongl)
 - **$VISION Dex**: [https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d](https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d)
+
+## Path Updates
+*V2.3.3*: Reply bug correction. Mobile post comment in communities page duplicated "post button" corrected. Remove from menu border on mobile to improve visibility and design.
 
 ---
 

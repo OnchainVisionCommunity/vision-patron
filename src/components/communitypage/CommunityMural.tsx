@@ -316,7 +316,41 @@ const handleToggleContent = () => {
     transition: { xs: 'transform 0.3s ease-in-out', md: 'none' }, // Animation on mobile only
   }}
 >
-  
+
+{/* Cancel Button for Mobile */}
+<Box
+  sx={{
+    display: { xs: 'flex', md: 'none' }, // Flex only on mobile
+    justifyContent: 'space-between',
+    gap: 1,
+    mt: 2,
+    marginTop: '20px',
+    marginBottom: '20px',
+  }}
+>
+<Button
+  variant="contained"
+  onClick={async () => {
+    const success = await handleAddMessage();
+    if (success) {
+      setIsMobileCardOpen(false);
+    }
+  }}
+  className="btnpatronme"
+  disabled={loading || mediaUploading}
+  sx={{ flex: 1 }} // Takes equal space as the cancel button
+>
+  {mediaUploading ? 'Uploading media...' : loading ? '...' : 'Post'}
+</Button>
+  <Button
+    variant="text"
+    onClick={() => setIsMobileCardOpen(false)}
+    sx={{ flex: 1 }} // Takes equal space as the post button
+  >
+    Cancel
+  </Button>
+</Box>
+
   
   
         <TextField
@@ -363,6 +397,7 @@ const handleToggleContent = () => {
           <Button
             variant="contained"
             onClick={handleAddMessage}
+            sx = {{display: { xs: 'none', md: 'block' }}}
             className="btnpatronme"
             disabled={loading || mediaUploading}
           >
@@ -380,38 +415,7 @@ const handleToggleContent = () => {
         )}
         
         
-{/* Cancel Button for Mobile */}
-<Box
-  sx={{
-    display: { xs: 'flex', md: 'none' }, // Flex only on mobile
-    justifyContent: 'space-between',
-    gap: 1,
-    mt: 2,
-	marginTop: '30px'
-  }}
->
-<Button
-  variant="contained"
-  onClick={async () => {
-    const success = await handleAddMessage();
-    if (success) {
-      setIsMobileCardOpen(false);
-    }
-  }}
-  className="btnpatronme"
-  disabled={loading || mediaUploading}
-  sx={{ flex: 1 }} // Takes equal space as the cancel button
->
-  {mediaUploading ? 'Uploading media...' : loading ? '...' : 'Post'}
-</Button>
-  <Button
-    variant="text"
-    onClick={() => setIsMobileCardOpen(false)}
-    sx={{ flex: 1 }} // Takes equal space as the post button
-  >
-    Cancel
-  </Button>
-</Box>
+
       </Card>
 
   

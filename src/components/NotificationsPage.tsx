@@ -179,6 +179,11 @@ useEffect(() => {
                   subtitle = `Congratulations, patron! Your earned ${notification.energy} energy and an NFT Shard`;
                   linkTo = `/communities/${notification.community_info?.owner}`;
                   break;
+                case "custom_notification":
+                  title = `${notification.community_info?.customname || notification.community_info?.basename || formatWalletAddress(notification.community_info?.owner || "")} posted an announcement! You earned +2000 reputation`;
+                  subtitle = `Check out the community and engage to gain more reputation on Patron`;
+                  linkTo = `/communities/${notification.community_info?.owner}`;
+                  break;
                 default:
                   title = "Unknown notification type";
               }

@@ -2106,6 +2106,13 @@ margin-top:10px;
 .terms ul li {
     display: list-item; /* Ensures the list item style is applied */
 }
+.claimgifttitle{
+	text-align:center;
+	font-family: 'BaseFont', sans-serif !important;
+	text-transform: uppercase !important;
+	font-size: 0.8rem !important;
+	margin-bottom: 10px !important
+}
 @media screen and (max-width: 768px) {
 	.nftinfogrid{
 		font-size: .7rem !important;
@@ -2224,6 +2231,9 @@ margin-top:10px;
 	.grinot{
 		padding: 0px !important
 	}
+	.userleftdesktop .feedcustomparent{
+		border:0px none !important;
+	}
 }
 @media (min-width: 768px) {
 	.botmobmen{
@@ -2243,6 +2253,15 @@ margin-top:10px;
 
 
 /* CSS for PWA mode */
+.pwa-mode .css-1x1xays-MuiButtonBase-root-MuiIconButton-root{
+	bottom: 100px !important;
+}
+.pwa-mode .css-1v1dk4u-MuiButtonBase-root-MuiIconButton-root{
+	bottom: 100px !important;
+}
+.pwa-mode .FloatingMenu_menu__RNb34{
+	bottom: 100px !important;
+}
 .pwa-mode .mobilebottommenu {
   padding-bottom:25px !important;
   padding-top:15px !important

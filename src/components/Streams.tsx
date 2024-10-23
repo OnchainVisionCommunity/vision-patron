@@ -79,6 +79,7 @@ const Streams: React.FC = () => {
 const pickerRef = useRef<HTMLDivElement | null>(null);
 const [imageError, setImageError] = useState<string | null>(null);
 const [transactionPending, setTransactionPending] = useState<boolean>(false);
+const [isValidPatron, setIsValidPatron] = useState<boolean | null>(null);
 
 // Close emoji picker if clicked outside
 useEffect(() => {
@@ -106,27 +107,40 @@ const handleEmojiClick = (emojiData: EmojiClickData) => {
 };
 
   // Fetch main stream and replies
-  useEffect(() => {
-    const fetchStreamAndReplies = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `https://api.visioncommunity.xyz/v02/streams/get/replies?user_wallet=${account?.address}&stream_id=${streamId}&limit=50&offset=0`
-        );
+useEffect(() => {
+  const fetchStreamAndReplies = async () => {
+    if (!account?.address || !streamId) {
+      // If account or streamId is not available, set loading to false and isValidPatron to false
+      setLoading(false);
+      setIsValidPatron(false);
+      return;
+    }
 
-        if (response.data.success) {
-          setMainStream(response.data.main_stream);
-          setReplies(response.data.replies);
-        }
-      } catch (error) {
-        console.error('Error fetching stream and replies:', error);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://api.visioncommunity.xyz/v02/streams/get/replies?user_wallet=${account.address}&stream_id=${streamId}&limit=50&offset=0`
+      );
+
+      if (response.data.success) {
+        setMainStream(response.data.main_stream);
+        setReplies(response.data.replies);
+        setIsValidPatron(true);
+      } else if (response.data.message === "You are not a patron of this community") {
+        setIsValidPatron(false);
+      } else {
+        setIsValidPatron(false); // Handle other unsuccessful cases
       }
-    };
+    } catch (error) {
+      console.error("Error fetching stream and replies:", error);
+      setIsValidPatron(false); // Set isValidPatron to false if there is an error
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchStreamAndReplies();
-  }, [streamId, account?.address, reload]);
+  fetchStreamAndReplies();
+}, [streamId, account?.address, reload]);
 
   // Handle like button toggle for both main stream and replies
   const handleLikeToggle = async (id: number, isReply: boolean) => {
@@ -328,65 +342,66 @@ const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 
 
   // Render the main stream and replies
-  return (
-    <div className="msgmural">
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <>
-          {mainStream && (
-            <Card sx={{ mb: 2, padding: 2 }}>
-              <Box display="flex" alignItems="center">
-                <Link to={`/profile/${mainStream.streamer.wallet}`}>
-                  <Avatar src={mainStream.streamer.avatar} sx={{ mr: 2 }} />
-                </Link>
-                <Box sx={{ flex: 1 }}>
+return (
+  <div className="msgmural">
+    {loading || isValidPatron === null ? ( // Show loading spinner if still loading or checking patron status
+      <CircularProgress />
+    ) : (
+      <>
+        {mainStream && (
+          <Card sx={{ mb: 2, padding: 2 }}>
+            <Box display="flex" alignItems="center">
+              <Link to={`/profile/${mainStream.streamer.wallet}`}>
+                <Avatar src={mainStream.streamer.avatar} sx={{ mr: 2 }} />
+              </Link>
+              <Box sx={{ flex: 1 }}>
+                <Box display="flex" alignItems="center">
+                  <Link to={`/profile/${mainStream.streamer.wallet}`}>
+                    <Typography variant="body1" fontWeight="bold" sx={{ mr: 2 }}>
+                      {mainStream.streamer.basename || shortenWallet(mainStream.streamer.wallet)}
+                    </Typography>
+                  </Link>
                   <Box display="flex" alignItems="center">
-                    <Link to={`/profile/${mainStream.streamer.wallet}`}>
-                      <Typography variant="body1" fontWeight="bold" sx={{ mr: 2 }}>
-                        {mainStream.streamer.basename || shortenWallet(mainStream.streamer.wallet)}
-                      </Typography>
-                    </Link>
-                    <Box display="flex" alignItems="center">
-                      {mainStream.streamer.badges.map((badge, index) => (
-                        <Avatar key={index} src={badge.image} sx={{ width: 20, height: 20, mr: 1 }} />
-                      ))}
-                    </Box>
+                    {mainStream.streamer.badges.map((badge, index) => (
+                      <Avatar key={index} src={badge.image} sx={{ width: 20, height: 20, mr: 1 }} />
+                    ))}
                   </Box>
-                  <Typography variant="caption">
-                    {new Date(mainStream.date).toLocaleString()}
-                  </Typography>
                 </Box>
+                <Typography variant="caption">
+                  {new Date(mainStream.date).toLocaleString()}
+                </Typography>
               </Box>
+            </Box>
 
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                {mainStream.content}
-              </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              {mainStream.content}
+            </Typography>
 
-              {mainStream.media && mainStream.media_kind === 'image' && (
-                <Box sx={{ mt: 2 }}>
-                  <img
-                    src={mainStream.media}
-                    alt="stream media"
-                    style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
-                  />
-                </Box>
-              )}
-
-              <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
-                <IconButton onClick={() => handleLikeToggle(mainStream.id, false)} sx={{ color: mainStream.likes > 0 ? '#0070f3' : 'inherit' }}>
-                  {mainStream.likes > 0 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                </IconButton>
-                <Typography variant="caption">{mainStream.likes}</Typography>
-
-                <IconButton onClick={() => handleDownvoteToggle(mainStream.id, false)} sx={{ ml: 2, color: mainStream.downvotes > 0 ? 'red' : 'inherit' }}>
-                  {mainStream.downvotes > 0 ? <ThumbDownAltIcon /> : <ThumbDownOffAltIcon />}
-                </IconButton>
-                <Typography variant="caption">{mainStream.downvotes}</Typography>
+            {mainStream.media && mainStream.media_kind === 'image' && (
+              <Box sx={{ mt: 2 }}>
+                <img
+                  src={mainStream.media}
+                  alt="stream media"
+                  style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
+                />
               </Box>
-            </Card>
-          )}
+            )}
 
+            <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
+              <IconButton onClick={() => handleLikeToggle(mainStream.id, false)} sx={{ color: mainStream.likes > 0 ? '#0070f3' : 'inherit' }}>
+                {mainStream.likes > 0 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </IconButton>
+              <Typography variant="caption">{mainStream.likes}</Typography>
+
+              <IconButton onClick={() => handleDownvoteToggle(mainStream.id, false)} sx={{ ml: 2, color: mainStream.downvotes > 0 ? 'red' : 'inherit' }}>
+                {mainStream.downvotes > 0 ? <ThumbDownAltIcon /> : <ThumbDownOffAltIcon />}
+              </IconButton>
+              <Typography variant="caption">{mainStream.downvotes}</Typography>
+            </Box>
+          </Card>
+        )}
+
+        {isValidPatron ? ( // If user is a valid patron, show the reply section
           <Card sx={{ mb: 2, padding: 2 }}>
             <TextField
               fullWidth
@@ -407,112 +422,142 @@ const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
                 />
               </Box>
             )}
-<Box display="flex" justifyContent="space-between" alignItems="center">
-  <div>
-    <IconButton color="primary" component="label">
-      <AddPhotoAlternateIcon />
-<input type="file" accept="image/*" hidden onChange={(e: ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (file) {
-    setImagePreview(URL.createObjectURL(file));
-    handleImageUpload(file);
-  }
-}} />
-    </IconButton>
-    
-    {/* Emoji Picker Toggle Button */}
-    <IconButton color="primary" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-      <EmojiEmotionsIcon />
-    </IconButton>
-    
-    {/* Emoji Picker */}
-    {showEmojiPicker && (
-      <Box ref={pickerRef} sx={{ position: 'absolute', zIndex: 1 }}>
-        <Picker onEmojiClick={handleEmojiClick} />
-      </Box>
-    )}
-  </div>
-  
-<Button
-  variant="contained"
-  onClick={handleAddReply}
-  disabled={mediaUploading || transactionPending} // Disable when uploading or waiting for confirmation
->
-  {mediaUploading ? "Uploading media..." : transactionPending ? "Awaiting confirmation..." : "Post Reply"}
-</Button>
-</Box>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <div>
+                <IconButton color="primary" component="label">
+                  <AddPhotoAlternateIcon />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setImagePreview(URL.createObjectURL(file));
+                        handleImageUpload(file);
+                      }
+                    }}
+                  />
+                </IconButton>
 
+                <IconButton color="primary" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                  <EmojiEmotionsIcon />
+                </IconButton>
+
+                {showEmojiPicker && (
+                  <Box ref={pickerRef} sx={{ position: 'absolute', zIndex: 1 }}>
+                    <Picker onEmojiClick={handleEmojiClick} />
+                  </Box>
+                )}
+              </div>
+
+              <Button
+                variant="contained"
+                onClick={handleAddReply}
+                disabled={mediaUploading || transactionPending}
+              >
+                {mediaUploading ? "Uploading media..." : transactionPending ? "Awaiting confirmation..." : "Post Reply"}
+              </Button>
+            </Box>
           </Card>
-
-          {replies.map((reply) => (
-            <Card
-  key={reply.id}
+        ) : ( // If user is not a valid patron, show the message
+<Box
   sx={{
-    mb: 2,
-    padding: 2,
-    backgroundColor: '#111',
-    color: '#fff',
-    boxShadow: 'none', 
-    border: 'none'    
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    mt: 4,
   }}
 >
+  <img
+    src="https://patron.visioncommunity.xyz/img/vp-logo.png"
+    alt="Not a valid patron"
+    style={{ maxWidth: '200px', marginBottom: '16px' }}
+  />
+  <Typography variant="h6" gutterBottom>
+    You cannot comment on this post because it was published in a community where you are not yet a valid patron.
+  </Typography>
+  <Button
+    variant="contained"
+    onClick={() => window.location.href = `/communities/${ownerWallet}`}
+    className="btnpatronme"
+  >
+    See the community
+  </Button>
+</Box>
 
-              <Box display="flex" alignItems="center">
-                <Link to={`/profile/${reply.streamer.wallet}`}>
-                  <Avatar src={reply.streamer.avatar} sx={{ mr: 2 }} />
-                </Link>
-                <Box sx={{ flex: 1 }}>
+        )}
+
+        {replies.map((reply) => (
+          <Card
+            key={reply.id}
+            sx={{
+              mb: 2,
+              padding: 2,
+              backgroundColor: '#111',
+              color: '#fff',
+              boxShadow: 'none',
+              border: 'none'
+            }}
+          >
+            <Box display="flex" alignItems="center">
+              <Link to={`/profile/${reply.streamer.wallet}`}>
+                <Avatar src={reply.streamer.avatar} sx={{ mr: 2 }} />
+              </Link>
+              <Box sx={{ flex: 1 }}>
+                <Box display="flex" alignItems="center">
+                  <Link to={`/profile/${reply.streamer.wallet}`}>
+                    <Typography variant="body1" fontWeight="bold" sx={{ mr: 2 }}>
+                      {reply.streamer.basename || shortenWallet(reply.streamer.wallet)}
+                    </Typography>
+                  </Link>
                   <Box display="flex" alignItems="center">
-                    <Link to={`/profile/${reply.streamer.wallet}`}>
-                      <Typography variant="body1" fontWeight="bold" sx={{ mr: 2 }}>
-                        {reply.streamer.basename || shortenWallet(reply.streamer.wallet)}
-                      </Typography>
-                    </Link>
-                    <Box display="flex" alignItems="center">
-                      {reply.streamer.badges.map((badge, index) => (
-                        <Avatar key={index} src={badge.image} sx={{ width: 20, height: 20, mr: 1 }} />
-                      ))}
-                    </Box>
+                    {reply.streamer.badges.map((badge, index) => (
+                      <Avatar key={index} src={badge.image} sx={{ width: 20, height: 20, mr: 1 }} />
+                    ))}
                   </Box>
-                  <Typography variant="caption" sx={{ color: '#aaa' }}>
-                    {new Date(reply.date).toLocaleString()}
-                  </Typography>
                 </Box>
+                <Typography variant="caption" sx={{ color: '#aaa' }}>
+                  {new Date(reply.date).toLocaleString()}
+                </Typography>
               </Box>
+            </Box>
 
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                {reply.content}
-              </Typography>
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              {reply.content}
+            </Typography>
 
-              {reply.media && reply.media_kind === 'image' && (
-                <Box sx={{ mt: 2 }}>
-                  <img
-                    src={reply.media}
-                    alt="reply media"
-                    style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
-                  />
-                </Box>
-              )}
-
-              <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
-                <IconButton onClick={() => handleLikeToggle(reply.id, true)} sx={{ color: reply.likes > 0 ? '#0070f3' : 'inherit' }}>
-                  {reply.likes > 0 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                </IconButton>
-                <Typography variant="caption">{reply.likes}</Typography>
-
-                <IconButton onClick={() => handleDownvoteToggle(reply.id, true)} sx={{ ml: 2, color: reply.downvotes > 0 ? 'red' : 'inherit' }}>
-                  {reply.downvotes > 0 ? <ThumbDownAltIcon /> : <ThumbDownOffAltIcon />}
-                </IconButton>
-                <Typography variant="caption">{reply.downvotes}</Typography>
+            {reply.media && reply.media_kind === 'image' && (
+              <Box sx={{ mt: 2 }}>
+                <img
+                  src={reply.media}
+                  alt="reply media"
+                  style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }}
+                />
               </Box>
-              <hr className="sep" />
-            </Card>
-            
-          ))}
-        </>
-      )}
-    </div>
-  );
+            )}
+
+            <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
+              <IconButton onClick={() => handleLikeToggle(reply.id, true)} sx={{ color: reply.likes > 0 ? '#0070f3' : 'inherit' }}>
+                {reply.likes > 0 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              </IconButton>
+              <Typography variant="caption">{reply.likes}</Typography>
+
+              <IconButton onClick={() => handleDownvoteToggle(reply.id, true)} sx={{ ml: 2, color: reply.downvotes > 0 ? 'red' : 'inherit' }}>
+                {reply.downvotes > 0 ? <ThumbDownAltIcon /> : <ThumbDownOffAltIcon />}
+              </IconButton>
+              <Typography variant="caption">{reply.downvotes}</Typography>
+            </Box>
+            <hr className="sep" />
+          </Card>
+        ))}
+      </>
+    )}
+  </div>
+);
+
 };
 
 export default Streams;

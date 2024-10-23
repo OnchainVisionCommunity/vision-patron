@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import UserDetails from './feed/UserDetails';
-import CommunityMessages from './feed/CommunityMessages';
+import FAQComp from './FAQ';
 import TrendingCommunities from './feed/TrendingCommunities';
 import { useActiveAccount } from 'thirdweb/react';
 import WelcomeTutorial from './WelcomeTutorial';
@@ -68,13 +68,7 @@ const FAQPage = () => {
               scrollbarWidth: 'none',
             }}
           >
-            <CommunityMessages
-              userWallet={account.address}
-              isOwner={false}
-              ownerWallet={account?.address} // Use the wallet address if connected
-              messages={[]} // Placeholder messages
-              setMessages={() => {}} // Placeholder function
-            />
+            <FAQComp />
           </Grid>
 
           {/* Right Sidebar */}
