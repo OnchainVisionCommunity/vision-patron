@@ -56,6 +56,7 @@ Any wallet can create a community on Patron, but if you believe a community is n
 - **$VISION Dex**: [https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d](https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d)
 
 ## Path Updates
+*2.3.5*: Visual fix in the lateral menu icons
 *2.3.4*: Visual correction in the replies. Timezones correction. Social cards included.
 *2.3.3*: Reply bug correction. Mobile post comment in communities page duplicated "post button" corrected. Remove from menu border on mobile to improve visibility and design.
 

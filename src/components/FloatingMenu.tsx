@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Modal, Box, Typography, Button } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFire, faTrophy, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Whatshot, EmojiEvents, Close } from '@mui/icons-material'; // MUI icons
 import styles from '../styles/FloatingMenu.module.css';
 import { useActiveAccount } from 'thirdweb/react';
 import { useUserStatus } from '../context/UserStatusContext'; // Import the user status context
@@ -58,18 +57,18 @@ export default function FloatingMenu() {
         {!isExpanded ? (
           <div className={styles.smallMenu}>
             <div className={`${styles.counter} ${styles.reputation}`}>
-              <FontAwesomeIcon icon={faTrophy} />
+              <EmojiEvents className="iconfloatmenu" />
               <span>{formatNumber(reputation)}</span> {/* Dynamic formatted reputation */}
             </div>
             <div className={styles.separator}></div> {/* Soft gray separator */}
             <div className={`${styles.counter} ${styles.energy}`}>
-              <FontAwesomeIcon icon={faFire} />
+              <Whatshot className="iconfloatmenu" />
               <span>{formatNumber(energy)}</span> {/* Dynamic formatted energy */}
             </div>
           </div>
         ) : (
           <div className={styles.closeIcon}>
-            <FontAwesomeIcon icon={faTimes} />
+            <Close className="iconfloatmenu" />
           </div>
         )}
       </div>
@@ -78,7 +77,7 @@ export default function FloatingMenu() {
       {isExpanded && (
         <div className={`${styles.expandedContainer} ${closing ? styles.slideDown : ''}`}>
           <div className={`${styles.row} ${styles.reputation}`}>
-            <FontAwesomeIcon icon={faTrophy} className={styles.icon} />
+            <EmojiEvents className="iconfloatmenu" />
             <span>Reputation [{formatNumber(reputation)}]</span>
             <Button
               onClick={() => handleOpenModal('reputation')}
@@ -92,7 +91,7 @@ export default function FloatingMenu() {
             </Button>
           </div>
           <div className={`${styles.row} ${styles.energy}`}>
-            <FontAwesomeIcon icon={faFire} className={styles.icon} />
+            <Whatshot className="iconfloatmenu" />
             <span>Energy [{formatNumber(energy)}]</span>
             <Button
               onClick={() => handleOpenModal('energy')}

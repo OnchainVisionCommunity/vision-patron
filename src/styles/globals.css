@@ -2260,7 +2260,17 @@ margin-top:10px;
 .iconlikedown{
 	font-size: 18px !important;
 }
-
+.icon-14px {
+  font-size: 15px !important;
+}
+.svg-inline--fa{
+	font-size: 15px !important;
+	width: 15px !important
+}
+.fa-trophy{
+	font-size: 15px !important;
+	width: 15px !important
+}
 /* CSS for PWA mode */
 .pwa-mode .css-1x1xays-MuiButtonBase-root-MuiIconButton-root{
 	bottom: 100px !important;

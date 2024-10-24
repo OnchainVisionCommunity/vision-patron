@@ -44,6 +44,8 @@ import ClaimsPage from '../components/ClaimsPage';
 import StatusPage from '../components/StatusPage';
 import TermsPage from '../components/TermsPage';
 import FAQPage from '../components/FAQPage';
+import DailyPage from '../components/DailyPage';
+import RankPage from '../components/RankPage'
 import { UserStatusProvider } from '../context/UserStatusContext';
 import favicon from '../assets/images/favicon.png'
 
@@ -362,6 +364,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 	                    <Route path="/searchshard" element={<SearchFragmentPage />} />
 	                    <Route path="/terms" element={<TermsPage />} />
 	                    <Route path="/faq" element={<FAQPage />} />
+	                    <Route path="/rank" element={<RankPage />} />
+	                    <Route path="/daily" element={<DailyPage />} />
 	                  </Route>
 	                </Routes>
 	              </Router>

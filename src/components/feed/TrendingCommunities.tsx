@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faPlus, faCrown, faTrophy, faArrowUp, faArrowDown, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom'; // Assuming you use react-router-dom
+import { ArrowUpward, ArrowDownward, Remove, ShowChart, Add, EmojiEvents, MilitaryTech } from '@mui/icons-material'; // MUI icons
+import { Link } from 'react-router-dom';
 
 // Function to format reputation with k and mil rounding
 const formatReputation = (reputation) => {
@@ -20,19 +19,19 @@ const getReputationChange = (change) => {
   if (change > 0) {
     return (
       <span className="positive-change">
-        <FontAwesomeIcon icon={faArrowUp} /> +{formatReputation(change)} <FontAwesomeIcon icon={faArrowUp} />
+        <ArrowUpward className="icon-14px" /> +{formatReputation(change)} <ArrowUpward className="icon-14px" />
       </span>
     );
   } else if (change < 0) {
     return (
       <span className="negative-change">
-        <FontAwesomeIcon icon={faArrowDown} /> {formatReputation(change)} <FontAwesomeIcon icon={faArrowDown} />
+        <ArrowDownward className="icon-14px" /> {formatReputation(change)} <ArrowDownward className="icon-14px" />
       </span>
     );
   } else {
     return (
       <span className="neutral-change">
-        <FontAwesomeIcon icon={faMinus} /> 0
+        <Remove className="icon-14px" /> 0
       </span>
     );
   }
@@ -84,7 +83,7 @@ const TrendingCommunities = () => {
         <>
           {/* Trending Communities Title */}
           <Typography className="basestylefont marginbot title-with-icon" gutterBottom>
-            <FontAwesomeIcon icon={faChartLine} className="title-icon" /> Trending Communities
+            <ShowChart className="icon-14px title-icon" /> Trending Communities
           </Typography>
 
           <div className="trending-communities feedcustom">
@@ -100,7 +99,7 @@ const TrendingCommunities = () => {
                   <div>
                     <p className="community-name" style={{ margin: 0 }}>{getCommunityName(community)}</p>
                     <small className="community-reputation">
-                      <FontAwesomeIcon icon={faTrophy} /> {formatReputation(community.reputation_sum_7days)} (
+                      <EmojiEvents className="icon-14px" /> {formatReputation(community.reputation_sum_7days)} (
                       {getReputationChange(community.reputation_sum_1day)} last 7D)
                     </small>
                   </div>
@@ -112,7 +111,7 @@ const TrendingCommunities = () => {
           {/* New Communities Title */}
           <hr className="sep marginbot" />
           <Typography className="basestylefont marginbot title-with-icon" gutterBottom>
-            <FontAwesomeIcon icon={faPlus} className="title-icon" /> New Communities
+            <Add className="icon-14px title-icon" /> New Communities
           </Typography>
 
           <div className="new-communities feedcustom">
@@ -128,7 +127,7 @@ const TrendingCommunities = () => {
                   <div>
                     <p className="community-name" style={{ margin: 0 }}>{getCommunityName(community)}</p>
                     <small className="community-reputation">
-                      <FontAwesomeIcon icon={faTrophy} /> {formatReputation(community.reputation_sum_1day)} (
+                      <EmojiEvents className="icon-14px" /> {formatReputation(community.reputation_sum_1day)} (
                       {getReputationChange(community.reputation_sum_1hour)} last 24h)
                     </small>
                   </div>
@@ -140,7 +139,7 @@ const TrendingCommunities = () => {
           {/* Top Reputation Communities Title */}
           <hr className="sep marginbot" />
           <Typography className="basestylefont marginbot title-with-icon" gutterBottom>
-            <FontAwesomeIcon icon={faCrown} className="title-icon" /> Top Reputation (Last 7D)
+            <MilitaryTech className="icon-14px title-icon" /> Top Reputation (Last 7D)
           </Typography>
 
           <div className="top-reputation-communities feedcustom">
@@ -156,7 +155,7 @@ const TrendingCommunities = () => {
                   <div>
                     <p className="community-name" style={{ margin: 0 }}>{getCommunityName(community)}</p>
                     <small className="community-reputation">
-                      <FontAwesomeIcon icon={faTrophy} /> {formatReputation(community.reputation_sum_7days)} (
+                      <EmojiEvents className="icon-14px" /> {formatReputation(community.reputation_sum_7days)} (
                       {getReputationChange(community.reputation_sum_1day)})
                     </small>
                   </div>
