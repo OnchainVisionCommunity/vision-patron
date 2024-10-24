@@ -28,7 +28,7 @@ Onchain Patron is the primary feature of the Vision platform, designed to bring 
 
 - You can create your own community by visiting the "Communities" section on Patron and clicking the "Create My Community" button.
 - Community creation is currently free, and each wallet can create one community.
-- Community names are tied to your **BASE ONCHAIN IDENTITY**, meaning you can use your wallet address or basename, but custom names are not supported.
+- Community names are tied to your **BASE ONCHAIN IDENTITY**, meaning you can use your wallet address or basename. Custom names are only supported to communities, users can choose between be identified by their wallets addresses or basename.
 
 ## Future Features
 
