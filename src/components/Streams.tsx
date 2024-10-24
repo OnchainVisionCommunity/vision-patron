@@ -26,6 +26,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useUserStatus } from '../context/UserStatusContext';
 import { useActiveAccount } from 'thirdweb/react';
 import { signMessage } from 'thirdweb/utils';
+import { parseISO, formatDistanceToNow, addMinutes } from 'date-fns';
 
 interface Reply {
   id: number;
@@ -63,6 +64,28 @@ interface StreamDetails {
 
 const shortenWallet = (wallet: string) => `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
 
+const timeAgo = (dateString: string) => {
+  if (!dateString || typeof dateString !== 'string') {
+    return "Invalid date"; // Handle cases where dateString is undefined, null, or not a string
+  }
+
+  // Convert the date string to a format that can be parsed
+  const formattedDateString = dateString.replace(" ", "T"); // Replace space with 'T' to make it ISO-like
+
+  // Parse the date string
+  const dateUTCPlus1 = new Date(formattedDateString);
+
+  if (isNaN(dateUTCPlus1.getTime())) {
+    return "Invalid date"; // Handle invalid date format
+  }
+
+  // Add 60 minutes to account for the server's UTC+1 offset
+  const adjustedDate = addMinutes(dateUTCPlus1, -60);
+
+  // Calculate the "time ago" format using formatDistanceToNow
+  return formatDistanceToNow(adjustedDate, { addSuffix: true });
+};
+
 const Streams: React.FC = () => {
   const { ownerWallet, streamId } = useParams<{ ownerWallet: string; streamId: string }>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -80,6 +103,22 @@ const pickerRef = useRef<HTMLDivElement | null>(null);
 const [imageError, setImageError] = useState<string | null>(null);
 const [transactionPending, setTransactionPending] = useState<boolean>(false);
 const [isValidPatron, setIsValidPatron] = useState<boolean | null>(null);
+const [showFullContent, setShowFullContent] = useState(false);
+
+const formatMessageContent = (content: string) => {
+  const mentionRegex = /@([a-zA-Z0-9._-]+)/g;
+  const urlRegex = /((https?:\/\/|www\.)[^\s]+|[^\s]+?\.(com|io|xyz|net|org|edu|gov|co|info)(\/[^\s]*)?)/g;
+
+  return content
+    .replace(mentionRegex, '<a href="/profile/$1">@$1</a>') // Replace @mentions with profile links
+    .replace(urlRegex, (url) => {
+      const href = url.startsWith('http') ? url : `http://${url}`; // Add http:// if missing
+      return `<a href="${href}" target="_blank" rel="nofollow">${url}</a>`;
+    });
+};
+const handleToggleContent = () => {
+  setShowFullContent((prev) => !prev);
+};
 
 // Close emoji picker if clicked outside
 useEffect(() => {
@@ -349,7 +388,16 @@ return (
     ) : (
       <>
         {mainStream && (
-          <Card sx={{ mb: 2, padding: 2 }}>
+          <Card
+            sx={{
+              mb: 2,
+              padding: 2,
+              backgroundColor: '#111',
+              color: '#fff',
+              boxShadow: 'none',
+              border: 'none'
+            }}
+          >
             <Box display="flex" alignItems="center">
               <Link to={`/profile/${mainStream.streamer.wallet}`}>
                 <Avatar src={mainStream.streamer.avatar} sx={{ mr: 2 }} />
@@ -368,14 +416,22 @@ return (
                   </Box>
                 </Box>
                 <Typography variant="caption">
-                  {new Date(mainStream.date).toLocaleString()}
+                  {timeAgo(mainStream.date)}
                 </Typography>
               </Box>
             </Box>
 
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              {mainStream.content}
-            </Typography>
+<Typography
+  variant="body2"
+  className="msgcontentformat"
+  sx={{ mt: 1 }}
+  dangerouslySetInnerHTML={{
+    __html: mainStream.content
+      ? formatMessageContent(mainStream.content)
+      : '', // Fallback to an empty string if mainStream.content is undefined or null
+  }}
+/>
+            
 
             {mainStream.media && mainStream.media_kind === 'image' && (
               <Box sx={{ mt: 2 }}>
@@ -453,6 +509,7 @@ return (
 
               <Button
                 variant="contained"
+                className="btnpatronme"
                 onClick={handleAddReply}
                 disabled={mediaUploading || transactionPending}
               >
@@ -494,12 +551,15 @@ return (
           <Card
             key={reply.id}
             sx={{
-              mb: 2,
+              mb: 0,
               padding: 2,
               backgroundColor: '#111',
               color: '#fff',
               boxShadow: 'none',
-              border: 'none'
+              border: 'none',
+              borderLeft: '2px solid #333',
+              pl: 2,
+              borderRadius: 0
             }}
           >
             <Box display="flex" alignItems="center">
@@ -520,14 +580,44 @@ return (
                   </Box>
                 </Box>
                 <Typography variant="caption" sx={{ color: '#aaa' }}>
-                  {new Date(reply.date).toLocaleString()}
+                  {timeAgo(reply.date)}
                 </Typography>
               </Box>
             </Box>
 
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              {reply.content}
-            </Typography>
+<Typography
+  variant="body2"
+  className="msgcontentformat"
+  sx={{ mt: 1 }}
+  dangerouslySetInnerHTML={{
+    __html: reply.content
+      ? showFullContent
+        ? formatMessageContent(reply.content)
+        : `${formatMessageContent(reply.content.slice(0, 250))}${reply.content.length > 250 ? '...' : ''}`
+      : '', // Fallback to an empty string if msg.content is undefined
+  }}
+/>
+    {/* "View More" button */}
+    {reply.content.length > 250 && !showFullContent && (
+      <Button
+        variant="text"
+        onClick={handleToggleContent}
+        sx={{ mt: 1, padding: 0 }}
+        className="viewmorebtn"
+      >
+        Show More
+      </Button>
+    )}
+    {showFullContent && (
+      <Button
+        variant="text"
+        onClick={handleToggleContent}
+        sx={{ mt: 1, padding: 0 }}
+        className="viewmorebtn"
+      >
+        Show Less
+      </Button>
+    )}
 
             {reply.media && reply.media_kind === 'image' && (
               <Box sx={{ mt: 2 }}>
@@ -539,18 +629,17 @@ return (
               </Box>
             )}
 
-            <Box display="flex" alignItems="center" sx={{ mt: 2 }}>
-              <IconButton onClick={() => handleLikeToggle(reply.id, true)} sx={{ color: reply.likes > 0 ? '#0070f3' : 'inherit' }}>
+            <Box display="flex" alignItems="center" sx={{ fontSize: 18, mt: 2 }}>
+              <IconButton onClick={() => handleLikeToggle(reply.id, true)} sx={{ fontSize: 18, color: reply.likes > 0 ? '#0070f3' : 'inherit' }} className="iconlikedown">
                 {reply.likes > 0 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
               </IconButton>
               <Typography variant="caption">{reply.likes}</Typography>
 
-              <IconButton onClick={() => handleDownvoteToggle(reply.id, true)} sx={{ ml: 2, color: reply.downvotes > 0 ? 'red' : 'inherit' }}>
+              <IconButton onClick={() => handleDownvoteToggle(reply.id, true)} sx={{ fontSize: 18, ml: 2, color: reply.downvotes > 0 ? 'red' : 'inherit' }} className="iconlikedown">
                 {reply.downvotes > 0 ? <ThumbDownAltIcon /> : <ThumbDownOffAltIcon />}
               </IconButton>
               <Typography variant="caption">{reply.downvotes}</Typography>
             </Box>
-            <hr className="sep" />
           </Card>
         ))}
       </>

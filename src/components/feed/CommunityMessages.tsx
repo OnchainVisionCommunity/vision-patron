@@ -62,6 +62,18 @@ const [isPortrait, setIsPortrait] = useState(false);
 const [showFullContent, setShowFullContent] = useState(false);
 const [activeTab, setActiveTab] = useState<number>(0);
 
+const formatMessageContent = (content: string) => {
+  const mentionRegex = /@([a-zA-Z0-9._-]+)/g;
+  const urlRegex = /((https?:\/\/|www\.)[^\s]+|[^\s]+?\.(com|io|xyz|net|org|edu|gov|co|info)(\/[^\s]*)?)/g;
+
+  return content
+    .replace(mentionRegex, '<a href="/profile/$1">@$1</a>') // Replace @mentions with profile links
+    .replace(urlRegex, (url) => {
+      const href = url.startsWith('http') ? url : `http://${url}`; // Add http:// if missing
+      return `<a href="${href}" target="_blank" rel="nofollow">${url}</a>`;
+    });
+};
+
   // Function to handle tab change
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -797,11 +809,16 @@ const handleAddMessage = async () => {
       </Box>
 
     {/* Message content */}
-    <Typography variant="body2" sx={{ mt: 1 }}>
-      {showFullContent
-        ? msg.stream.content
-        : `${msg.stream.content.slice(0, 250)}${msg.stream.content.length > 250 ? '...' : ''}`}
-    </Typography>
+<Typography
+  variant="body2"
+  className="msgcontentformat"
+  sx={{ mt: 1 }}
+  dangerouslySetInnerHTML={{
+    __html: showFullContent
+      ? formatMessageContent(msg.stream.content)
+      : `${formatMessageContent(msg.stream.content.slice(0, 250))}${msg.stream.content.length > 250 ? '...' : ''}`,
+  }}
+/>
 
     {/* "View More" button */}
     {msg.stream.content.length > 250 && !showFullContent && (

@@ -9,10 +9,11 @@ import {
   CircularProgress,
   IconButton,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { format } from "date-fns";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import axios from "axios";
+import { parseISO, formatDistanceToNow, addMinutes } from 'date-fns';
 
 // Helper to format wallet address as 0x1234...5678
 const formatWalletAddress = (wallet: string): string => {
@@ -61,6 +62,28 @@ const NotificationsPage: React.FC<NotificationsPageProps> = ({ walletAddress }) 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+const timeAgo = (dateString: string) => {
+  if (!dateString || typeof dateString !== 'string') {
+    return "Invalid date"; // Handle cases where dateString is undefined, null, or not a string
+  }
+
+  // Convert the date string to a format that can be parsed
+  const formattedDateString = dateString.replace(" ", "T"); // Replace space with 'T' to make it ISO-like
+
+  // Parse the date string
+  const dateUTCPlus1 = new Date(formattedDateString);
+
+  if (isNaN(dateUTCPlus1.getTime())) {
+    return "Invalid date"; // Handle invalid date format
+  }
+
+  // Add 60 minutes to account for the server's UTC+1 offset
+  const adjustedDate = addMinutes(dateUTCPlus1, -60);
+
+  // Calculate the "time ago" format using formatDistanceToNow
+  return formatDistanceToNow(adjustedDate, { addSuffix: true });
+};
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -184,42 +207,48 @@ useEffect(() => {
                   subtitle = `Check out the community and engage to gain more reputation on Patron`;
                   linkTo = `/communities/${notification.community_info?.owner}`;
                   break;
+                case "tag":
+                  title = `${senderName} tagged you in a post in ${notification.community_info?.customname || notification.community_info?.basename || formatWalletAddress(notification.community_info?.owner || "")}`;
+                  linkTo = `/communities/${notification.community_info?.owner}/stream/${notification.stream_id}`;
+                  break;
                 default:
                   title = "Unknown notification type";
               }
 
               return (
-                <Box
-                  key={notification.id}
-                  display="flex"
-                  alignItems="center"
-                  my={1}
-                  p={2}
-                  sx={{
-                    cursor: "pointer",
-                    backgroundColor,
-                    borderRadius: 1,
-                    '&:hover': {
-                      backgroundColor: "#333",
-                    },
-                  }}
-                  onClick={() => navigate(linkTo)} // Navigate to the link when the box is clicked
-                >
-                  <Avatar src={avatarUrl} alt={senderName} sx={{ width: 30, height: 30 }} />
-
-                  <Box ml={2}>
-                    <div className="notitle">{title}</div>
-                    {subtitle && (
-                      <div className="nosubtitle">
-                        {subtitle}
-                      </div>
-                    )}
-                    <div className="nodate">
-                      {formatToLocalDate(notification.date)}
-                    </div>
-                  </Box>
-
-                </Box>
+				  <Link to={linkTo} key={notification.id} style={{ textDecoration: 'none' }}>
+	                <Box
+	                  key={notification.id}
+	                  display="flex"
+	                  alignItems="center"
+	                  my={1}
+	                  p={2}
+	                  sx={{
+	                    cursor: "pointer",
+	                    backgroundColor,
+	                    borderRadius: 1,
+	                    '&:hover': {
+	                      backgroundColor: "#333",
+	                    },
+	                  }}
+	                  onClick={() => navigate(linkTo)} // Navigate to the link when the box is clicked
+	                >
+	                  <Avatar src={avatarUrl} alt={senderName} sx={{ width: 30, height: 30 }} />
+	
+	                  <Box ml={2}>
+	                    <div className="notitle">{title}</div>
+	                    {subtitle && (
+	                      <div className="nosubtitle">
+	                        {subtitle}
+	                      </div>
+	                    )}
+	                    <div className="nodate">
+	                      {timeAgo(notification.date)}
+	                    </div>
+	                  </Box>
+	
+	                </Box>
+	              </Link>
               );
             })
           ) : (

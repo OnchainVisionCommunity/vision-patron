@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter as Router, Route, Routes, Link, Outlet } from 'react-router-dom';
 import axios from 'axios';
+import { useLocation, useParams } from 'react-router-dom';
 
 import logo from '../assets/images/vp-logo-rec.png';
 import logoswap from '../assets/images/logo-onbase-v02.png';
@@ -54,6 +55,71 @@ const thirdwebClientId = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID;
 const onchainKitApiKey = process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY;
 
 
+function TwitterMeta() {
+  const location = useLocation();
+  const { id } = useParams(); // Get the community ID from the URL
+  const [communityName, setCommunityName] = useState('');
+  const [communityDescription, setCommunityDescription] = useState('Join my onchain community!');
+
+  useEffect(() => {
+    // Fetch community data if the route is for a specific community
+    if (location.pathname.startsWith('/communities') && id) {
+      const fetchCommunityData = async () => {
+        try {
+          const response = await axios.get(`https://api.visioncommunity.xyz/v02/community/basic?wallet=${id}`);
+          if (response.data.success && response.data.data) {
+            const { customname, basename, owner, description } = response.data.data;
+            
+            // Set the community name based on the priority
+            const name = customname || basename || owner;
+            setCommunityName(name);
+            
+            // Set the description if available
+            if (description) {
+              setCommunityDescription(description);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching community data:', error);
+        }
+      };
+
+      fetchCommunityData();
+    }
+  }, [location, id]);
+
+  // Construct the title as "Patron / COMMUNITYNAME"
+  const pageTitle = location.pathname.startsWith('/communities') && id ? `Patron /${communityName}` : 'Patron';
+
+  // Set meta tags
+  const metaTags = {
+    title: pageTitle,
+    description: location.pathname.startsWith('/communities') && id ? communityDescription : 'Unlock a new world of onchain communities and become an onchain patron.',
+    image: location.pathname.startsWith('/communities') && id ? `https://patron.visioncommunity.xyz/img/socialcards/community/${id}.jpg` : 'https://patron.visioncommunity.xyz/img/socialcards/default.jpg',
+    url: location.pathname.startsWith('/communities') && id ? `https://patron.visioncommunity.xyz/communities/${id}` : 'https://patron.visioncommunity.xyz',
+  };
+
+  return (
+    <Head>
+      <title>{metaTags.title}</title>
+      <meta name="description" content={metaTags.description} />
+
+      {/* Twitter Card Meta Tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={metaTags.title} />
+      <meta name="twitter:description" content={metaTags.description} />
+      <meta name="twitter:image" content={metaTags.image} />
+      <meta name="twitter:url" content={metaTags.url} />
+
+      {/* Open Graph Meta Tags for other social media */}
+      <meta property="og:title" content={metaTags.title} />
+      <meta property="og:description" content={metaTags.description} />
+      <meta property="og:image" content={metaTags.image} />
+      <meta property="og:url" content={metaTags.url} />
+      <meta property="og:type" content="website" />
+    </Head>
+  );
+}
 
 // Notifications Menu Icon with Unread Badge
 function NotificationsIcon({ unreadCount }: { unreadCount: number }) {
@@ -230,7 +296,8 @@ function NavItem({ to, text, icon, isMobile }: { to: string, text: string, icon:
 function Layout() {
   return (
     <div className="relative flex flex-col min-h-screen a100width">
-      <ResponsiveMenu /> {/* The Menu stays persistent across pages */}
+    	<TwitterMeta />
+      <ResponsiveMenu />
       <main className="maindivparent">
         <Outlet />
       </main>
@@ -240,7 +307,7 @@ function Layout() {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [isClient, setIsClient] = useState(false);
-
+  
   // Combined useEffect for client-side rendering and PWA detection
   useEffect(() => {
     setIsClient(true);
@@ -275,7 +342,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 	              	<link rel="manifest" href="/manifest.json" />
 	              	<link rel="icon" href="/vp-favicon.png" type="image/png" />
 	              	<meta name="theme-color" content="#111111" />
-	              	<title>Patron</title>
 	              	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	              </Head>
 	                <Routes>

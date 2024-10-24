@@ -1927,7 +1927,10 @@ margin-top:10px;
 .nftinfogrid{
 	font-size: .8rem !important;
 }
-
+.msgcontentformat a{
+	color: #ceccff !important;
+	font-weight: 600 !important;
+}
 
 
 
@@ -2251,6 +2254,12 @@ margin-top:10px;
 
 }
 
+
+
+
+.iconlikedown{
+	font-size: 18px !important;
+}
 
 /* CSS for PWA mode */
 .pwa-mode .css-1x1xays-MuiButtonBase-root-MuiIconButton-root{

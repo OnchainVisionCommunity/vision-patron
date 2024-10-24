@@ -19,7 +19,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
-import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useActiveAccount } from "thirdweb/react";
 import { signMessage } from "thirdweb/utils";
@@ -50,17 +49,30 @@ interface CommunityMessagesProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-const formatToLocalDate = (utcDateString: string) => {
-  try {
-    const parsedDate = new Date(utcDateString);
-    if (isNaN(parsedDate.getTime())) {
-      return "Invalid date";
-    }
-    return format(parsedDate, "PPpp");
-  } catch (error) {
-    return "Invalid date";
+const timeAgo = (dateString: string) => {
+  if (!dateString || typeof dateString !== 'string') {
+    return "Invalid date"; // Handle cases where dateString is undefined, null, or not a string
   }
+
+  // Convert the date string to a format that can be parsed
+  const formattedDateString = dateString.replace(" ", "T"); // Replace space with 'T' to make it ISO-like
+
+  // Parse the date string
+  const dateUTCPlus1 = new Date(formattedDateString);
+
+  if (isNaN(dateUTCPlus1.getTime())) {
+    return "Invalid date"; // Handle invalid date format
+  }
+
+  // Add 60 minutes to account for the server's UTC+1 offset
+  const adjustedDate = addMinutes(dateUTCPlus1, -60);
+
+  // Calculate the "time ago" format using formatDistanceToNow
+  return formatDistanceToNow(adjustedDate, { addSuffix: true });
 };
+
+
+
 
 // Define the modal style
 const modalStyle = {
@@ -79,28 +91,8 @@ const formatWalletAddress = (wallet: string) => {
   return `${wallet.slice(0, 6)}...${wallet.slice(-4)}`;
 };
 
-const timeAgo = (date) => {
-  const now = new Date();
-  const seconds = Math.floor((now.getTime() - new Date(date).getTime()) / 1000);
-
-  if (seconds < 60) return 'Now';
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d`;
-
-  // If more than a week, return the formatted date (e.g., "Oct 15, 2024")
-  return new Date(date).toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-};
 
 
-  
 export default function CommunityMessages({
   isOwner,
   ownerWallet,
@@ -125,7 +117,23 @@ const [isPortrait, setIsPortrait] = useState(false);
   const [openBoostModal, setOpenBoostModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string>(""); 
+  const [showFullContent, setShowFullContent] = useState(false);
 
+
+const formatMessageContent = (content: string) => {
+  const mentionRegex = /@([a-zA-Z0-9._-]+)/g;
+  const urlRegex = /((https?:\/\/|www\.)[^\s]+|[^\s]+?\.(com|io|xyz|net|org|edu|gov|co|info)(\/[^\s]*)?)/g;
+
+  return content
+    .replace(mentionRegex, '<a href="/profile/$1">@$1</a>') // Replace @mentions with profile links
+    .replace(urlRegex, (url) => {
+      const href = url.startsWith('http') ? url : `http://${url}`; // Add http:// if missing
+      return `<a href="${href}" target="_blank" rel="nofollow">${url}</a>`;
+    });
+};
+const handleToggleContent = () => {
+  setShowFullContent((prev) => !prev);
+};
   const handleBoostModalOpen = () => setOpenBoostModal(true);
 const handleBoostModalClose = () => {
   setOpenBoostModal(false);
@@ -457,9 +465,40 @@ const handleDownvoteToggle = async (id: number) => {
                   {timeAgo(msg.date)}
                 </Typography>
               </Box>
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                {msg.content}
-              </Typography>
+              
+<Typography
+  variant="body2"
+  className="msgcontentformat"
+  sx={{ mt: 1 }}
+  dangerouslySetInnerHTML={{
+    __html: msg.content
+      ? showFullContent
+        ? formatMessageContent(msg.content)
+        : `${formatMessageContent(msg.content.slice(0, 250))}${msg.content.length > 250 ? '...' : ''}`
+      : '', // Fallback to an empty string if msg.content is undefined
+  }}
+/>
+    {/* "View More" button */}
+    {msg.content.length > 250 && !showFullContent && (
+      <Button
+        variant="text"
+        onClick={handleToggleContent}
+        sx={{ mt: 1, padding: 0 }}
+        className="viewmorebtn"
+      >
+        Show More
+      </Button>
+    )}
+    {showFullContent && (
+      <Button
+        variant="text"
+        onClick={handleToggleContent}
+        sx={{ mt: 1, padding: 0 }}
+        className="viewmorebtn"
+      >
+        Show Less
+      </Button>
+    )}
 
               {msg.media && (!msg.media_kind || msg.media_kind === "image") && (
     <Box sx={{ mt: 2 }}>
