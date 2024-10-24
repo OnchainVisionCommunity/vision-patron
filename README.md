@@ -46,6 +46,11 @@ Vision Patron has a long-term roadmap to introduce new features and improvements
 
 Any wallet can create a community on Patron, but if you believe a community is not legitimate, please contact us via **Telegram** or email at [contact@visioncommunity.xyz](mailto:contact@visioncommunity.xyz).
 
+## Smart Contracts (Verified)
+- $VISION (Token): [https://basescan.org/address/0x07609D76e2E098766AD4e2b70B84f05b215d380a](https://basescan.org/address/0x07609D76e2E098766AD4e2b70B84f05b215d380a)
+- Patron System: [https://basescan.org/address/0x1cfE4E6f7eD7C1693086C158cCF022EC11Ad506A](https://basescan.org/address/0x1cfE4E6f7eD7C1693086C158cCF022EC11Ad506A)
+- Airdrop: [https://basescan.org/address/0xbBf1076719187B59ae46029d44AF8fdeC0C1817F](https://basescan.org/address/0xbBf1076719187B59ae46029d44AF8fdeC0C1817F)
+
 ## Social Links
 
 - **Patron Site**: [https://patron.visioncommunity.xyz/](https://patron.visioncommunity.xyz/)
@@ -56,9 +61,9 @@ Any wallet can create a community on Patron, but if you believe a community is n
 - **$VISION Dex**: [https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d](https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d)
 
 ## Path Updates
-*2.3.5*: Visual fix in the lateral menu icons
-*2.3.4*: Visual correction in the replies. Timezones correction. Social cards included.
-*2.3.3*: Reply bug correction. Mobile post comment in communities page duplicated "post button" corrected. Remove from menu border on mobile to improve visibility and design.
+- *2.3.5*: Visual fix in the lateral menu icons
+- *2.3.4*: Visual correction in the replies. Timezones correction. Social cards included.
+- *2.3.3*: Reply bug correction. Mobile post comment in communities page duplicated "post button" corrected. Remove from menu border on mobile to improve visibility and design.
 
 ---
 
