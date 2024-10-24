@@ -1,14 +1,14 @@
-# Vision Patron
+# Patron
 
 Vision Patron is a utility designed for the **$VISION** token that enables communities to connect and thrive **onchain**. With Vision Patron, users can create their own communities, receive $VISION donations from supporters (patrons), and engage with their patrons in a meaningful and decentralized manner.
 
 ## What is $VISION?
 
-$VISION is the core utility token of the Vision ecosystem. It powers various features and utilities within the platform, including Vision Patron.
+$VISION is the core utility token of the Vision ecosystem. It powers various features and utilities within the platform, including Patron. $VISION is a CTO Token and a tribute to Coinbase, althought $VISION is not affiliate with Coinbase Vision.
 
 ## What is Onchain Patron?
 
-Onchain Patron is the primary feature of the Vision platform, designed to bring communities onchain. Users can create their own communities and receive $VISION donations from patrons who wish to support their work. Community owners have the flexibility to set a minimum donation amount required for access, control their community's announcements, and offer exclusive utilities and benefits to their patrons.
+Onchain Patron is the primary feature of the Vision platform, designed to bring communities onchain. Users can create their own communities and receive $VISION patron to support their work. Community owners have the flexibility to set a minimum donation amount required for access, control their community's announcements, and offer exclusive utilities and benefits to their patrons.
 
 ## Key Features
 
