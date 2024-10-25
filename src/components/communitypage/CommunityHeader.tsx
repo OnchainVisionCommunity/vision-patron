@@ -19,7 +19,8 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
-import LockIcon from '@mui/icons-material/Lock';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import axios from "axios";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts";
@@ -793,13 +794,13 @@ const handleCreateAnnouncement = async () => {
         >
           <Typography variant="h6">Custom Announcement</Typography>
           <Box display="flex" alignItems="center" gap={1} mt={1}>
-            <EditIcon />
+            <EmojiEventsIcon />
             <Typography>20,000</Typography>
-            <LockIcon />
+            <LocalFireDepartmentIcon />
             <Typography>25,000</Typography>
           </Box>
           <Typography variant="body2" sx={{ mt: 1 }}>
-            Send an announcement to all your patrons. Your community wins 25k reputation and all patrons wins 1k reputation each.
+            Send an announcement to all your patrons. Your community wins 20k reputation and all patrons wins 2k reputation each.
           </Typography>
         </Box>
       </Box>
@@ -845,9 +846,9 @@ const handleCreateAnnouncement = async () => {
         >
           <Typography variant="h6">Airdrop</Typography>
           <Box display="flex" alignItems="center" gap={1} mt={1}>
-            <EditIcon />
+            <EmojiEventsIcon />
             <Typography>50,000</Typography>
-            <LockIcon />
+            <LocalFireDepartmentIcon />
             <Typography>100,000</Typography>
           </Box>
           <Typography variant="body2" sx={{ mt: 1 }}>

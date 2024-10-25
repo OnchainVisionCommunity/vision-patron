@@ -121,7 +121,7 @@ const [isPortrait, setIsPortrait] = useState(false);
 
 
 const formatMessageContent = (content: string) => {
-  const mentionRegex = /@([a-zA-Z0-9._-]+)/g;
+  const mentionRegex = /@([a-zA-Z0-9._-]+\.base\.eth)\b/g;
   const urlRegex = /((https?:\/\/|www\.)[^\s]+|[^\s]+?\.(com|io|xyz|net|org|edu|gov|co|info)(\/[^\s]*)?)/g;
 
   return content

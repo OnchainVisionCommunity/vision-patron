@@ -211,6 +211,10 @@ useEffect(() => {
                   title = `${senderName} tagged you in a post in ${notification.community_info?.customname || notification.community_info?.basename || formatWalletAddress(notification.community_info?.owner || "")}`;
                   linkTo = `/communities/${notification.community_info?.owner}/stream/${notification.stream_id}`;
                   break;
+                case "tag_reply":
+                  title = `${senderName} tagged you in a reply in ${notification.community_info?.customname || notification.community_info?.basename || formatWalletAddress(notification.community_info?.owner || "")}`;
+                  linkTo = `/communities/${notification.community_info?.owner}/stream/${notification.stream_id}`;
+                  break;
                 default:
                   title = "Unknown notification type";
               }

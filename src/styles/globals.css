@@ -315,6 +315,12 @@ padding-bottom: 20px;
 .basefont{
 	font-family: 'BaseFont', sans-serif !important;
 }
+.onerem{
+	font-size: 1.5rem !important
+}
+.titleday{
+	font-size: 1.2rem !important
+}
 .basefontblue{
 	font-family: 'BaseFont', sans-serif !important;
 	color: #3873f5 !important;
@@ -2090,6 +2096,10 @@ margin-top:10px;
 }
 .msgtab{
 	font-size: 1rem !important;
+	font-family: 'BaseFont', sans-serif !important;
+}
+.rankdisplayname{
+	font-size: 0.8rem !important;
 	font-family: 'BaseFont', sans-serif !important;
 }
 .unreadmobi {

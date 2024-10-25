@@ -232,7 +232,7 @@ const handleToggleContent = () => {
 
         // Send the data to your API
         const response = await axios.post(
-          "https://api.visioncommunity.xyz/community/stream/post",
+          "https://api.visioncommunity.xyz/community/stream/postv2",
           postData
         );
 

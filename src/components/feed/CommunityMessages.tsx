@@ -63,7 +63,7 @@ const [showFullContent, setShowFullContent] = useState(false);
 const [activeTab, setActiveTab] = useState<number>(0);
 
 const formatMessageContent = (content: string) => {
-  const mentionRegex = /@([a-zA-Z0-9._-]+)/g;
+  const mentionRegex = /@([a-zA-Z0-9._-]+\.base\.eth)\b/g;
   const urlRegex = /((https?:\/\/|www\.)[^\s]+|[^\s]+?\.(com|io|xyz|net|org|edu|gov|co|info)(\/[^\s]*)?)/g;
 
   return content
@@ -293,7 +293,7 @@ const handleAddMessage = async () => {
       };
 
       const response = await axios.post(
-        'https://api.visioncommunity.xyz/community/stream/post',
+        'https://api.visioncommunity.xyz/community/stream/postv2',
         postData
       );
 
