@@ -269,7 +269,7 @@ const UserDetails = ({ walletAddress }: { walletAddress: string }) => {
                 })}
             </div>
           </div>
-        <div className="otherlinks">v2.3.6 | <Link to="/faq">FAQ</Link> | <Link to="/status">System Status</Link> | <Link to="/terms">Terms of use</Link></div>
+        <div className="otherlinks">v2.3.8 | <Link to="/faq">FAQ</Link> | <Link to="/status">System Status</Link> | <Link to="/terms">Terms of use</Link></div>
         <div className="divmenuicons">
         	<a href="https://visioncommunity.xyz" target="_blank"><Image src={visionicon} /></a>
         	<a href="https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d" target="_blank"><Image src={dexicon} /></a>
@@ -509,7 +509,7 @@ const UserDetails = ({ walletAddress }: { walletAddress: string }) => {
                 })}
                 
                 <div className="footermobile">
-			        <div className="otherlinks">v2.3.6 | <Link to="/faq">FAQ</Link> | <Link to="/status">System Status</Link> | <Link to="/terms">Terms of use</Link></div>
+			        <div className="otherlinks">v2.3.8 | <Link to="/faq">FAQ</Link> | <Link to="/status">System Status</Link> | <Link to="/terms">Terms of use</Link></div>
 			        <div className="divmenuicons">
 			        	<a href="https://visioncommunity.xyz" target="_blank"><Image src={visionicon} /></a>
 			        	<a href="https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d" target="_blank"><Image src={dexicon} /></a>

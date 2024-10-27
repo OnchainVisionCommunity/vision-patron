@@ -61,6 +61,8 @@ Any wallet can create a community on Patron, but if you believe a community is n
 - **$VISION Dex**: [https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d](https://dexscreener.com/base/0xe659020edd96ff279bfb9680e664e4ed44198c7d)
 
 ## Path Updates
+- *2.3.8*: Home Page update and fixed error where was not possible to click in "Search Shards"
+- *2.3.7*: Patrons and Communities can connect their Lunchbreak and Drakula accounts
 - *2.3.6*: Visual fix in announcements page. New features: daily checkpoints, rank and mention basenames in comments and replies
 - *2.3.5*: Visual fix in the lateral menu icons
 - *2.3.4*: Visual correction in the replies. Timezones correction. Social cards included.

@@ -42,7 +42,15 @@ interface SocialMedia {
     status: string;
     account: string;
   };
+  site?: {
+    status: string;
+    account: string;
+  };
   lunchbreak?: {
+    status: string;
+    account: string;
+  };
+  drakula?: {
     status: string;
     account: string;
   };
@@ -492,11 +500,29 @@ const handleCreateAnnouncement = async () => {
                   />
                 </a>
               )}
+              {socialMedia?.site?.status === "yes" && (
+                <a href={`${socialMedia.site.account}`} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="https://patron.visioncommunity.xyz/img/icons/www-black.png"
+                    alt="Site"
+                    style={{ width: 28, height: 28 }}
+                  />
+                </a>
+              )}
               {socialMedia?.lunchbreak?.status === "yes" && (
                 <a href={`https://lunchbreak.com/${socialMedia.lunchbreak.account}`} target="_blank" rel="noopener noreferrer">
                   <img
                     src="https://patron.visioncommunity.xyz/img/icons/lunchbreak-black.png"
                     alt="Lunchbreak"
+                    style={{ width: 28, height: 28 }}
+                  />
+                </a>
+              )}
+              {socialMedia?.drakula?.status === "yes" && (
+                <a href={`https://drakula.app/user/${socialMedia.drakula.account}`} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="https://patron.visioncommunity.xyz/img/icons/drakula-black.png"
+                    alt="Drakula"
                     style={{ width: 28, height: 28 }}
                   />
                 </a>

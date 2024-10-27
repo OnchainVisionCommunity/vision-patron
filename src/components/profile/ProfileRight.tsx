@@ -59,6 +59,10 @@ interface ProfileData {
       status?: string;
       account?: string;
     };
+    drakula?: {
+      status?: string;
+      account?: string;
+    };
     site?: {
       status?: string;
       account?: string;
@@ -81,12 +85,14 @@ const ProfileRight: React.FC<ProfileRightProps> = ({ profileData, connectionType
   const [socialMedia, setSocialMedia] = useState({
     lunchbreak: profileData?.social?.lunchbreak?.account || "",
     site: profileData?.social?.site?.account || "",
+    drakula: profileData?.social?.drakula?.account || "",
   });
 
   const [twitterConnected, setTwitterConnected] = useState(profileData?.social?.twitter?.status === "yes");
   const [twitterAccount, setTwitterAccount] = useState(profileData?.social?.twitter?.account || "");
   const [warpcastConnected, setWarpcastConnected] = useState(profileData?.social?.warpcast?.status === "yes");
   const [instagramConnected, setInstagramConnected] = useState(profileData?.social?.instagram?.status === "yes");
+  const [drakulaConnected, setDrakulaConnected] = useState(profileData?.social?.drakula?.status === "yes");
 
   const [openModal, setOpenModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -110,6 +116,7 @@ useEffect(() => {
   setSocialMedia({
     lunchbreak: profileData?.social?.social?.lunchbreak?.account || "",
     site: profileData?.social?.social?.site?.account || "",
+    drakula: profileData?.social?.social?.drakula?.account || "",
   });
 
   // Ensure Banner and Avatar are updated from profile data
@@ -183,6 +190,7 @@ const saveProfile = async () => {
       socialLinks: {
         lunchbreak: socialMedia.lunchbreak,
         site: socialMedia.site,
+        drakula: socialMedia.drakula,
       },
       basename: finalBasename, // Ensure we pass the re-validated Basename
       walletAddress: account.address,
@@ -191,7 +199,7 @@ const saveProfile = async () => {
     };
 
     // Send the updated profile data to the backend
-    const response = await axios.put(`https://api.visioncommunity.xyz/v02/user/update`, updatedData);
+    const response = await axios.put(`https://api.visioncommunity.xyz/v02/user/updatev2`, updatedData);
 
     if (response.data.success) {
       setModalMessage("Profile updated successfully! Reloading page...");
@@ -484,6 +492,27 @@ const handleWarpcastLoginSuccess = (fid: number, username: string) => {
               "& .MuiInputLabel-root.Mui-focused": { color: "white" },
             }}
           />
+          
+          {/* Drakula (Editable) */}
+          <TextField
+            label="Drakula"
+            value={socialMedia.drakula}
+            onChange={(e) => setSocialMedia({ ...socialMedia, drakula: e.target.value })}
+            fullWidth
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                color: "white",
+                borderRadius: "50px",
+                "& fieldset": { borderColor: "white" },
+                "&:hover fieldset": { borderColor: "white" },
+                "&.Mui-focused fieldset": { borderColor: "white" },
+              },
+              "& .MuiInputLabel-root": { color: "white" },
+              "& .MuiInputLabel-root.Mui-focused": { color: "white" },
+              marginTop: '25px'
+            }}
+          />
+          
         </Box>
       </Box>
 

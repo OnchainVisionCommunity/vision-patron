@@ -87,7 +87,7 @@ const NFTList: React.FC<NFTListProps> = ({ nfts, showOnlyUnrolled, onOpenModal }
                   transition: 'transform 0.3s ease',
                 },
               }}
-              onClick={() => !nft.rolled && onOpenModal(nft, reputation, amount, pooled)} // Pass amount and pooled to modal
+              onClick={() => onOpenModal(nft, reputation, amount, pooled)} // Pass amount and pooled to modal
             >
               {/* Name */}
               <Box flex={2} mb={{ xs: 1, md: 0 }}>

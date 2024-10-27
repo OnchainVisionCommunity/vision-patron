@@ -82,7 +82,31 @@ const PublicProfile: React.FC = () => {
   const [error, setError] = useState<string | null>(null); // State to handle errors
   const [communitiesPage, setCommunitiesPage] = useState(1); // Page state for paginated communities
   const [openModal, setOpenModal] = useState<"reputation" | "energy" | "normalizedReputation" | null>(null);
+const [isOwner, setIsOwner] = useState(false);
+const [community, setCommunity] = useState(null);  
+  
   const navigate = useNavigate();
+const socialMediaIcons = {
+  twitter: "https://patron.visioncommunity.xyz/img/icons/x-white.png",
+  instagram: "https://patron.visioncommunity.xyz/img/icons/instagram-white.png",
+  warpcast: "https://patron.visioncommunity.xyz/img/icons/warpcast-white.png",
+  lunchbreak: "https://patron.visioncommunity.xyz/img/icons/lunchbreak-white.png",
+  drakula: "https://patron.visioncommunity.xyz/img/icons/drakula-white.png",
+  site: "https://patron.visioncommunity.xyz/img/icons/www-white.png",
+};
+
+// Base URLs for social media platforms (editable)
+const socialMediaBaseUrls = {
+  twitter: "https://x.com",
+  instagram: "https://instagram.com",
+  warpcast: "https://warpcast.com",
+  lunchbreak: "https://lunchbreak.com",
+  drakula: "https://drakula.app/user",
+  site: "", // Full link provided directly
+};
+
+const socialLinks = profileData?.social?.social || {};
+
 
   // Fetch profile data based on wallet address
   useEffect(() => {
@@ -94,6 +118,8 @@ const PublicProfile: React.FC = () => {
         if (response.status === 404) {
           throw new Error("Profile not found");
         }
+
+        // Set state with the fetched data
         setProfileData(response.data.user);
         setBadges([...response.data.badges.highlight, ...response.data.badges.earned]); // Combine badges
         setPatronCommunities(response.data.patronCommunities || []); // Set patron communities
@@ -102,6 +128,9 @@ const PublicProfile: React.FC = () => {
           energy: response.data.energy,
           normalizedReputation: response.data.reputation.normalized,
         });
+        setIsOwner(response.data.isOwner); // Set ownership status
+        setCommunity(response.data.community); // Set community data
+
       } catch (error) {
         console.error("Error fetching public profile:", error);
         setError("Profile not found or an error occurred");
@@ -170,6 +199,21 @@ const PublicProfile: React.FC = () => {
           borderRadius: "5px"
         }}
       />
+{isOwner && community?.status === 1 && (
+  <Box position="absolute" top="10px" right="10px">
+    <Button
+      variant="contained"
+      onClick={() => navigate(`/communities/${community.owner}`)}
+      sx={{
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        color: "white",
+        padding: "4px 8px",
+      }}
+    >
+      My Community
+    </Button>
+  </Box>
+)}
 
       {/* Avatar Section - Positioned to be 50% inside banner */}
       <Box display="flex" justifyContent="center" position="relative" sx={{ top: "-60px" }}>
@@ -180,9 +224,9 @@ const PublicProfile: React.FC = () => {
         />
       </Box>
 
-      <Box>
+      <Box mt={-5}>
         {/* Display Name (Basename or Wallet Address) */}
-        <Box display="flex" justifyContent="center" mb={3}>
+        <Box display="flex" justifyContent="center" mb={0}>
           <Typography className="basefont bigtext" fontWeight="bold">
             {displayName}
           </Typography>
@@ -201,6 +245,42 @@ const PublicProfile: React.FC = () => {
               ))}
           </Box>
         </Box>
+
+
+<Box display="flex" justifyContent="center" gap={1} mt={1} mb={1}>
+  {Object.entries(socialLinks).map(([platform, { status, account }]) => {
+    if (status === "yes" && account) {
+      // Use full link for "site" and construct links for other platforms
+      const href =
+        platform === "site"
+          ? account // Use the full link provided for the website
+          : `${socialMediaBaseUrls[platform]}/${account}`; // Construct URL for other platforms
+
+      const iconUrl = socialMediaIcons[platform];
+
+      return (
+        <IconButton
+          key={platform}
+          component="a"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          aria-label={platform}
+          sx={{marginbottom:'15px'}}
+        >
+          <img
+            src={iconUrl}
+            alt={`${platform} icon`}
+            style={{ width: 24, height: 24 }}
+          />
+        </IconButton>
+      );
+    }
+    return null;
+  })}
+</Box>
+
+
 
 <Box display="flex" justifyContent="center" mb={4}>
   <Box

@@ -82,6 +82,9 @@ const EditCommunityForm: React.FC<EditCommunityFormProps> = ({
 
   const [lunchbreakConnected, setLunchbreakConnected] = useState<boolean>(false);
   const [lunchbreakAccount, setLunchbreakAccount] = useState<string>("");
+  
+  const [drakulaConnected, setDrakulaConnected] = useState<boolean>(false);
+  const [drakulaAccount, setDrakulaAccount] = useState<string>("");
 
   const [siteConnected, setSiteConnected] = useState<boolean>(false);
   const [siteAccount, setSiteAccount] = useState<string>("");
@@ -150,6 +153,7 @@ const [customNameError, setCustomNameError] = useState<string | null>(null); // 
             twitter: communitySettings.social?.twitter?.account || "",
             warpcast: communitySettings.social?.warpcast?.account || "",
             lunchbreak: communitySettings.social?.lunchbreak?.account || "",
+            drakula: communitySettings.social?.drakula?.account || "",
             site: communitySettings.social?.site?.account || "",
           });
 
@@ -184,6 +188,15 @@ const [customNameError, setCustomNameError] = useState<string | null>(null); // 
           } else {
             setLunchbreakConnected(false);
             setLunchbreakAccount("");
+          }
+          
+          // Update the Lunchbreak connection state
+          if (communitySettings.social?.drakula?.status === "yes") {
+            seDrakulaConnected(true);
+            setDrakulaAccount(communitySettings.social.drakula.account);
+          } else {
+            setDrakulaConnected(false);
+            setDrakulaAccount("");
           }
 
           // Update the Site connection state
@@ -327,6 +340,7 @@ const saveCommunitySettings = async () => {
 
     // Filter only the lunchbreak and site fields from socialLinks
     const filteredSocialLinks = {
+		drakula: socialLinks.drakula,
       lunchbreak: socialLinks.lunchbreak,
       site: socialLinks.site,
     };
@@ -348,7 +362,7 @@ const communityPayload = {
 
     // Send the request to the API
     const response = await axios.put(
-      `https://api.visioncommunity.xyz/v02/communities/edit/${sanitizedId}`,
+      `https://api.visioncommunity.xyz/v02/communities/editv2/${sanitizedId}`,
       communityPayload
     );
 
@@ -630,7 +644,16 @@ if (loading || !communityData) {
 
 
 
-
+            {/* Drakula (Editable) */}
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Drakula"
+                value={socialLinks.drakula}
+                onChange={(e) => handleSocialChange("drakula", e.target.value)}
+              />
+            </Grid>
+            
             {/* Lunchbreak (Editable) */}
             <Grid item xs={12} md={6}>
               <TextField
@@ -641,7 +664,7 @@ if (loading || !communityData) {
               />
             </Grid>
             
-            {/* Lunchbreak (Editable) */}
+            {/* Site (Editable) */}
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth

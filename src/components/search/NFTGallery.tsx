@@ -77,7 +77,7 @@ const NFTGallery: React.FC<NFTGalleryProps> = ({ nfts, view, showOnlyUnrolled, o
       key={nft.id}
       xs={12 / columns}
       sx={{ cursor: nft.rolled ? 'default' : 'pointer' }}
-      onClick={() => !nft.rolled && onOpenModal(nft, reputation, amount, pooled, id)}
+      onClick={() => onOpenModal(nft, reputation, amount, pooled, id)}
     >
       <Card
         sx={{

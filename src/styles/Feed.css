@@ -100,22 +100,39 @@
 }
 
 .info-block {
-  background-size: cover !important;
-  background-position: center !important;
-  padding: 2rem !important;
-  color: #fff !important;
-  height: 200px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  transition: transform 0.3s ease !important;
-  background-color:#333 !important;
-  border-radius:5px !important
+    position: relative !important;
+    background-size: cover !important;
+    background-position: center !important;
+    padding: 2rem !important;
+    color: #fff !important;
+    height: 200px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: transform 0.3s ease !important;
+    border-radius: 5px !important;
+    overflow: hidden !important; /* Ensure content stays inside the div */
+}
+
+.info-block::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Adjust the opacity as needed */
+    z-index: 1 !important;
+}
+
+.info-block * {
+    position: relative !important;
+    z-index: 2 !important; /* Make sure the content is above the overlay */
 }
 
 .info-block:hover {
-  transform: scale(1.05) !important;
+    transform: scale(1.05) !important;
 }
 
 /* Shape Divider */
@@ -172,7 +189,11 @@
   height: 60px !important;
   margin-top: 1rem !important;
 }
-
+.faq-section{
+	background-color: white !important;
+	padding-top:100px !important;
+	padding-bottom: 100px !important
+}
 /* Partners Section */
 .partners-section {
   width: 100% !important;
@@ -183,6 +204,11 @@
 .partner-logo {
   width: 100% !important;
   height: auto !important;
+}
+.divtitlefaq{
+	width: 100% !important;
+	color: black !important;
+	text-align: center !important
 }
 
 /* FAQ and Contact Section */

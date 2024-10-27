@@ -7,6 +7,8 @@ import UserFeed from './UserFeed';
 import CreateProfile from './CreateProfile';
 import { connectButtonConfig } from '../config/connectButtonConfig';
 import WelcomeTutorial from './WelcomeTutorial';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function Feed() {
   const account = useActiveAccount();
@@ -240,20 +242,20 @@ export default function Feed() {
               {/* Block Elements */}
               <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} md={6}>
-                  <Box className="info-block" style={{ backgroundImage: 'url(/block1.jpg)' }}>
-                    <Typography variant="h6">Private Social Media</Typography>
+                  <Box className="info-block" style={{ backgroundImage: 'url(https://patron.visioncommunity.xyz/img/home/home001.png)' }}>
+                    <Typography variant="h6" className="basefont">Private Social Media</Typography>
                     <Typography variant="body2">Users can discover communities to become patrons of. By becoming a patron of a community, the user receives an NFT Shard representing "a piece of that community".</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Box className="info-block" style={{ backgroundImage: 'url(/block2.jpg)' }}>
-                    <Typography variant="h6">Gamified Experience</Typography>
+                  <Box className="info-block" style={{ backgroundImage: 'url(https://patron.visioncommunity.xyz/img/home/home002.png)' }}>
+                    <Typography variant="h6" className="basefont">Gamified Experience</Typography>
                     <Typography variant="body2">By interacting with communities and other members, patrons gain reputation for themselves and their communities. The higher the reputation, the greater the prizes won within the platform such as lotteries, mini-games and events.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  <Box className="info-block" style={{ backgroundImage: 'url(/block3.jpg)' }}>
-                    <Typography variant="h6">Build and Discover Communtities</Typography>
+                  <Box className="info-block" style={{ backgroundImage: 'url(https://patron.visioncommunity.xyz/img/home/home003.png)' }}>
+                    <Typography variant="h6" className="basefont">Build and Discover Communtities</Typography>
                     <Typography variant="body2">Patron is the perfect platform for creating, growing, and participating in onchain communities. Built entirely on Base and fully on-chain, it ensures transparency and offers rewards for highly engaged communities and active members.</Typography>
                   </Box>
                 </Grid>
@@ -264,6 +266,158 @@ export default function Feed() {
             <Box className="shape-divider" />
           </Box>
           
+{/* Features Section */}
+<Box className="features-section">
+  <Container maxWidth="lg">
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={3}>
+        <Box
+          className="feature-block"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#fff',
+          }}
+        >
+          <Typography variant="h6" className="basefont">Energy</Typography>
+          <Typography variant="body2">Patron a community or daily check-in to earn energy</Typography>
+          <img
+            src="https://patron.visioncommunity.xyz/img/home/energy-icon-home.png"
+            className="feature-icon"
+            style={{ width: '80px', height: '80px', marginTop: '15px' }}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={3}>
+        <Box
+          className="feature-block"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#fff',
+          }}
+        >
+          <Typography variant="h6" className="basefont">Reputation</Typography>
+          <Typography variant="body2">Use your energy to interact with communities and win reputation</Typography>
+          <img
+            src="https://patron.visioncommunity.xyz/img/home/reputation-icon-home.png"
+            className="feature-icon"
+            style={{ width: '80px', height: '80px', marginTop: '15px' }}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={3}>
+        <Box
+          className="feature-block"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#fff',
+          }}
+        >
+          <Typography variant="h6" className="basefont">Communities</Typography>
+          <Typography variant="body2">Patron communities to collect their NFTs Shard</Typography>
+          <img
+            src="https://patron.visioncommunity.xyz/img/home/community-icon-home.png"
+            className="feature-icon"
+            style={{ width: '80px', height: '80px', marginTop: '15px' }}
+          />
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={3}>
+        <Box
+          className="feature-block"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#fff',
+          }}
+        >
+          <Typography variant="h6" className="basefont">NFT Shards</Typography>
+          <Typography variant="body2">Combine the reputations to roll NFTs Shard in lotteries</Typography>
+          <img
+            src="https://patron.visioncommunity.xyz/img/home/nft-icon-home.png"
+            className="feature-icon"
+            style={{ width: '80px', height: '80px', marginTop: '15px' }}
+          />
+        </Box>
+      </Grid>
+    </Grid>
+  </Container>
+
+  {/* Shape Divider */}
+  <Box className="shape-divider" />
+</Box>
+
+{/* FAQ Section */}
+<Box className="faq-section">
+  <Container maxWidth="lg">
+  <div className="divtitlefaq">
+    <Typography variant="h2" gutterBottom className="section-title">
+      FAQ
+    </Typography>
+   </div>
+    {/* FAQ Accordion */}
+    <Box>
+      {
+[
+  { question: "What is Patron?", answer: "Patron is a gamified social media that reward users (patrons) that supports community and engage in the plantaform through NFT lotteries with $VISION token rewards" },
+  { question: "Who created Patron?", answer: "Patron is a decentralized application (dApp) developed by the $VISION community, an open-source and community-driven initiative. The $VISION token serves as a community takeover token (CTO) and a tribute token for Coinbase Vision, though it operates independently and is not affiliated with Coinbase. The Patron project embodies the principles of decentralization, with contributions and governance driven entirely by the community." },
+  { question: "How do I join a community?", answer: "You can join a community by signing up and selecting a community to support. You'll receive an NFT shard representing your membership." },
+  { question: "What rewards can I earn?", answer: "Active members can earn reputation points and rewards like lotteries, mini-games, and event prizes." },
+  { question: "How do I patron a community?", answer: "To patron a community, go to the 'Patron' section and enter the wallet or basename of the community owner you want to patron. If you are searching for a community, explore the 'Communities' section and click the 'Patron me' button." },
+  { question: "Can I become a patron of any wallet/basename?", answer: "Yes, the patron system is permissionless, and any EVM wallet can be patroned. However, note that if you patron a community that has not been created yet, the NFT artwork will be generic, and you will not have access to the community since it has not been established." },
+  { question: "If I patron a community that is not yet created and it is created in the future, will I have access to it?", answer: "Yes, your patrons are recorded on-chain and are permanent. Therefore, if a wallet creates a community in the future and you have already been a patron of the community before it was created, you will automatically gain access. However, past patrons before the community was established will still have the NFT with the generic artwork, but they will use the system normally." },
+  { question: "How do I create my community? Can anyone create a community?", answer: "To create a community, go to 'Communities,' scroll down, and click on the 'Claim Community' button. You will sign with your wallet, and your community will be created. The community creation system is permissionless, and anyone can create communities. However, if a community violates the terms of use, it may be deactivated." },
+  { question: "How does the Energy and Reputation system work?", answer: "Reputations are earned through interactions on the site with the community where you are a patron. Energy is the amount required for you to perform an action that generates reputation. Reputations are distributed among users involved in an action and the community where that action took place." },
+  { question: "How is the reputation of an NFT calculated?", answer: "The reputation of an NFT is calculated using normalized reputation: ((user + community) / 2)." },
+  { question: "What are reputation tiers?", answer: "The system classifies normalized reputation into tiers. Tiers are assigned as follows:\n0 to 20 = Tier 1\n21 to 40 = Tier 2\n41 to 60 = Tier 3\n61 to 80 = Tier 4\nAbove 80 = Tier 5." },
+  { question: "If I sell my NFT Shard on the secondary market, will I still have access to the community?", answer: "Yes, even if you sell your NFT Shard, you will still have access to the community as usual." },
+  { question: "If I buy an NFT Shard on the secondary market, do I gain access to the community?", answer: "No, NFT Shards have metadata tied to the person who became a patron of a community. If the NFT is not rolled, you can roll it in the lottery; however, it will not grant access to the community." },
+  { question: "If I buy an NFT Shard on the secondary market, will the reputation of the NFT change?", answer: "No, the reputation of an NFT is defined by the patron and the community. Therefore, regardless of the owner of an NFT Shard, its status will always be linked to the reputation status of the community and the patron." },
+]
+
+      .map((faq, index) => (
+        <Accordion key={index}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`faq-content-${index}`}
+            id={`faq-header-${index}`}
+          >
+            <Typography variant="h6">{faq.question}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body2">{faq.answer}</Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Box>
+  </Container>
+</Box>
+
+<div className="homefooter">
+Patron is a project powered by OCV (Onchain Vision Community). $VISION is a CTO token and community-driven tribute project. Not affiliated with Coinbase Vision. Developed by <a href="https://x.com/christianpongl/" target="_blank">Chris Pongl</a>.
+</div>          
         </>
       ) : null}
     </>
